@@ -1,36 +1,32 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Aviant — web
 
-## Getting Started
-
-First, run the development server:
+AI CFI/DPE study app for student pilots. Next.js 16 + Tailwind v4.
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm run dev   # http://localhost:3000
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## What's real vs. placeholder (phase 1)
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+| Area | Status | Where to swap it |
+|---|---|---|
+| Practice content (questions, lessons, quizzes) | **Sample** — written to exercise the UI | `src/content/*` — keep the types in `src/content/types.ts`, replace the arrays with verified FAA material |
+| AI examiner / tutor | **Claude Opus 5.5** when `ANTHROPIC_API_KEY` is set (structured reply + grade, bank as cached grounding); keyword sample engine otherwise and for the home-page demo | `src/lib/ai/claude-provider.ts`, `src/app/api/assistant/route.ts` |
+| Voice | Browser Web Speech API (Chrome/Edge/Safari) | `src/components/portal/VoiceAssistant.tsx` |
+| Auth | **Supabase Auth** (email + password, confirmation + reset emails) | `src/lib/auth/`, `src/lib/supabase/`, `src/app/auth/confirm` |
+| Progress, history, voice choices | **Supabase** tables with row-level security | Schema: `supabase/schema.sql` · reads `src/lib/data/queries.ts` · writes `src/lib/data/actions.ts` |
+| Natural voice | ElevenLabs (or OpenAI) via `/api/tts` | `src/app/api/tts/route.ts`, voice list in `src/lib/tts/voices.ts` |
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Structure
 
-## Learn More
+- `src/app/(marketing)` — public home page
+- `src/app/(auth)` — login, signup, forgot password
+- `src/app/portal` — dashboard, voice assistant, question bank, quizzes, study guides, settings
+- `src/components/brand` — logo + traced plane mark (also used for the 3D hero)
+- `src/app/globals.css` — design tokens (brand: #000000, #87DA81, #E5FFBB; Tenor Sans + Afacad Flux)
 
-To learn more about Next.js, take a look at the following resources:
+## Setup
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+1. `cp .env.example .env.local` and fill in Supabase URL + publishable key and a voice provider key.
+2. In Supabase → SQL Editor, run `supabase/schema.sql` once.
+3. In Supabase → Authentication → URL Configuration, set Site URL to your site and add `<site>/auth/confirm` to Redirect URLs.
