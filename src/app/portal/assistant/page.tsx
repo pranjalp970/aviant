@@ -4,12 +4,17 @@ import { PageHeader } from "@/components/portal/PageHeader";
 import { VoiceAssistant } from "@/components/portal/VoiceAssistant";
 import { ratingById } from "@/content/acs";
 import { getSession } from "@/lib/auth/session";
+import { topicById } from "@/lib/plan/topics";
 
 export const metadata: Metadata = { title: "Voice CFI" };
 
 export default async function AssistantPage({ searchParams }: PageProps<"/portal/assistant">) {
   const session = (await getSession())!;
-  const { mode } = await searchParams;
+  const { mode, topic } = await searchParams;
+  const topicMeta = typeof topic === "string" ? topicById(topic) : undefined;
+  const autoStart = topicMeta
+    ? `Teach me ${topicMeta.title.toLowerCase()} for my private pilot written. Start with the essentials, then quiz me on it.`
+    : undefined;
   const rating = ratingById(session.rating);
 
   return (
@@ -24,8 +29,10 @@ export default async function AssistantPage({ searchParams }: PageProps<"/portal
           </Link>
         }
       />
-      <VoiceAssistant rating={session.rating} ratingLabel={rating.short} initialMode={mode === "examine" ? "examine" : "teach"}
+      <VoiceAssistant rating={session.rating} ratingLabel={rating.short} initialMode={mode === "examine" && !topicMeta ? "examine" : "teach"}
         savedVoices={{ cfi: session.voiceCfi ?? undefined, dpe: session.voiceDpe ?? undefined }}
+        autoStart={autoStart}
+        key={topicMeta?.id ?? "assistant"}
       />
     </>
   );

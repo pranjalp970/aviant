@@ -45,13 +45,15 @@ function resolveVoice(provider: TtsProvider, mode: Mode, requested?: string) {
   return env || DEFAULT_VOICES[provider][role];
 }
 
-async function elevenlabs(text: string, mode: Mode, voice: string, key: string) {
+async function elevenlabs(text: string, mode: Mode, voice: string, key: string, previousText?: string) {
   return fetch(`https://api.elevenlabs.io/v1/text-to-speech/${voice}?output_format=mp3_44100_128`, {
     method: "POST",
     headers: { "xi-api-key": key, "Content-Type": "application/json", Accept: "audio/mpeg" },
     body: JSON.stringify({
       text,
       model_id: process.env.ELEVENLABS_MODEL ?? "eleven_flash_v2_5",
+      // replies are spoken sentence by sentence; the previous sentence keeps intonation continuous
+      ...(previousText ? { previous_text: previousText.slice(-400) } : {}),
       voice_settings: mode === "teach" ? { stability: 0.45, similarity_boost: 0.8, style: 0.25 } : { stability: 0.7, similarity_boost: 0.8, style: 0.05 },
     }),
   });
@@ -85,7 +87,7 @@ export async function POST(request: Request) {
   // Only signed-in users may spend the TTS quota.
   if (!(await getSession())) return Response.json({ error: "Not signed in" }, { status: 401 });
 
-  const { text, mode, voiceId } = (await request.json()) as { text?: string; mode?: Mode; voiceId?: string };
+  const { text, mode, voiceId, previousText } = (await request.json()) as { text?: string; mode?: Mode; voiceId?: string; previousText?: string };
   if (!text?.trim()) return Response.json({ error: "text is required" }, { status: 400 });
   const m: Mode = mode === "examine" ? "examine" : "teach";
   const input = text.slice(0, MAX_CHARS);
@@ -100,7 +102,7 @@ export async function POST(request: Request) {
 
   const upstream =
     provider === "elevenlabs"
-      ? await elevenlabs(input, m, voice, process.env.ELEVENLABS_API_KEY!)
+      ? await elevenlabs(input, m, voice, process.env.ELEVENLABS_API_KEY!, previousText)
       : await openai(input, m, voice, process.env.OPENAI_API_KEY!);
   if (!upstream.ok || !upstream.body) {
     console.error("TTS provider error", upstream.status, await upstream.text().catch(() => ""));

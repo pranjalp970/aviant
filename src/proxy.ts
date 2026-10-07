@@ -13,7 +13,7 @@ export async function proxy(request: NextRequest) {
     return r;
   };
 
-  if (pathname.startsWith("/portal") && !userId) {
+  if ((pathname.startsWith("/portal") || pathname === "/onboarding") && !userId) {
     const url = new URL("/login", request.url);
     url.searchParams.set("next", pathname);
     return redirect(url);
@@ -25,5 +25,5 @@ export async function proxy(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/portal/:path*", "/login", "/signup", "/reset-password", "/api/:path*"],
+  matcher: ["/portal/:path*", "/onboarding", "/login", "/signup", "/reset-password", "/api/:path*"],
 };

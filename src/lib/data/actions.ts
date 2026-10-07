@@ -5,6 +5,8 @@ import type { RatingId } from "@/content/types";
 import type { AssistantMode, ChatMessage, Grade } from "@/lib/ai/types";
 import { createClient } from "@/lib/supabase/server";
 import { questionById } from "@/content/questions";
+import { logStudy } from "@/lib/progress/log";
+import { quizXp, XP } from "@/lib/progress/xp";
 import { recordAnswers } from "@/lib/review";
 import type { VoiceRole } from "@/lib/tts/voices";
 
@@ -41,7 +43,16 @@ export async function saveQuizAttempt(input: {
     return { ok: false };
   }
   // Answered questions feed the spaced-repetition schedule (unanswered ones don't count).
-  await recordAnswers(input.answers.filter((a) => a.chosen !== null).map(({ questionId, topic, correct }) => ({ questionId, topic, correct })));
+  const answered = input.answers.filter((a) => a.chosen !== null);
+  await recordAnswers(answered.map(({ questionId, topic, correct }) => ({ questionId, topic, correct })));
+  const correct = answered.filter((a) => a.correct).length;
+  await logStudy({
+    minutes: Math.min(input.durationSec / 60, answered.length * 1.5 + 3), // ignore time left idle on the page
+    questions: answered.length,
+    correct,
+    sessions: 1,
+    xp: quizXp(answered.length, correct, input.total),
+  });
   revalidatePath("/portal");
   revalidatePath("/portal/review");
   revalidatePath("/portal/history");
@@ -56,8 +67,16 @@ export async function saveOralSession(input: {
   transcript: ChatMessage[];
   grades: Grade[];
   checkrideId?: string | null;
+  /** This save added a new examiner grade (bonus XP). */
+  newGrade?: boolean;
 }): Promise<{ id: string | null }> {
   const supabase = await createClient();
+  // Study time: minutes since this session was last saved, capped so an idle tab doesn't count.
+  let minutes = 1;
+  if (input.id) {
+    const { data: prev } = await supabase.from("oral_sessions").select("updated_at").eq("id", input.id).maybeSingle();
+    if (prev) minutes = Math.min(5, Math.max(0, (Date.now() - Date.parse(prev.updated_at)) / 60_000));
+  }
   const avg = input.grades.length ? input.grades.reduce((n, g) => n + g.score, 0) / input.grades.length : null;
   const row = {
     mode: input.mode,
@@ -75,6 +94,7 @@ export async function saveOralSession(input: {
     console.error("saveOralSession", error.message);
     return { id: input.id };
   }
+  await logStudy({ minutes, sessions: input.id ? 0 : 1, xp: input.newGrade ? XP.gradedOral : 2 });
   return { id: data.id };
 }
 
@@ -95,5 +115,6 @@ export async function recordFlashcard(questionId: string, correct: boolean): Pro
   const q = questionById(questionId);
   if (!q) return { ok: false };
   await recordAnswers([{ questionId, topic: q.topic, correct }]);
+  await logStudy({ minutes: 1 / 3, questions: 1, correct: correct ? 1 : 0, xp: XP.flashcard });
   return { ok: true };
 }

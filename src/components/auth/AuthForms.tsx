@@ -2,6 +2,7 @@
 
 import { useActionState } from "react";
 import Link from "next/link";
+import { RatingPicker } from "@/components/auth/RatingPicker";
 import { Field } from "@/components/ui/Field";
 import { buttonClass } from "@/components/ui/button";
 import { login, requestPasswordReset, signup, updatePassword, type AuthState } from "@/lib/auth/actions";
@@ -90,23 +91,7 @@ export function SignupForm() {
         hint="At least 8 characters."
         error={state.fieldErrors?.password}
       />
-      <fieldset>
-        <legend className="mb-2 text-sm text-fg-muted">I&rsquo;m training for</legend>
-        <div className="grid grid-cols-2 gap-2">
-          {[
-            { v: "ppl", label: "Private Pilot" },
-            { v: "ir", label: "Instrument" },
-          ].map((r, i) => (
-            <label
-              key={r.v}
-              className="flex min-h-12 cursor-pointer items-center gap-3 rounded-xl border border-border-strong bg-inset px-4 text-[15px] transition-colors has-[:checked]:border-green has-[:checked]:bg-green/10"
-            >
-              <input type="radio" name="rating" value={r.v} defaultChecked={i === 0} className="accent-[var(--green)]" />
-              {r.label}
-            </label>
-          ))}
-        </div>
-      </fieldset>
+      <RatingPicker />
       <Submit pending={pending} idle="Create account" busy="Creating account…" />
     </form>
   );

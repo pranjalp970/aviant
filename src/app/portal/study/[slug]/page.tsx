@@ -7,6 +7,7 @@ import { buttonClass } from "@/components/ui/button";
 import { areaById } from "@/content/acs";
 import { lessonBySlug, lessonsFor } from "@/content/lessons";
 import type { LessonBlock } from "@/content/types";
+import { getSession } from "@/lib/auth/session";
 import { markLessonViewed } from "@/lib/data/queries";
 
 export async function generateMetadata({ params }: PageProps<"/portal/study/[slug]">): Promise<Metadata> {
@@ -80,7 +81,8 @@ function Block({ b }: { b: LessonBlock }) {
 export default async function LessonPage({ params }: PageProps<"/portal/study/[slug]">) {
   const lesson = lessonBySlug((await params).slug);
   if (!lesson) notFound();
-  await markLessonViewed(lesson.slug); // powers "pick up where you left off"
+  const session = await getSession();
+  await markLessonViewed(lesson.slug, lesson.minutes, session?.timezone ?? null); // progress + study time
   const area = areaById(lesson.areaId);
   const siblings = lessonsFor(lesson.rating);
   const next = siblings[siblings.findIndex((l) => l.slug === lesson.slug) + 1];

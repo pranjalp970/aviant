@@ -46,6 +46,8 @@ export interface AssistantRequest {
   state: ExamState;
   /** Present for a full mock checkride built around the student's own plan. */
   checkride?: CheckrideContext;
+  /** ACS codes the student missed on the FAA knowledge test (examiners probe these). */
+  focusCodes?: string[];
 }
 
 export interface AssistantResponse {
@@ -62,5 +64,6 @@ export interface AssistantResponse {
  */
 export interface AssistantProvider {
   name: string;
-  respond(req: AssistantRequest): Promise<AssistantResponse>;
+  /** `onReply` (optional) receives the spoken reply as it streams in, so the UI can show and speak it early. */
+  respond(req: AssistantRequest, onReply?: (replySoFar: string) => void): Promise<AssistantResponse>;
 }

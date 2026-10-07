@@ -6,6 +6,7 @@ import { getSession } from "@/lib/auth/session";
 export default async function PortalLayout({ children }: LayoutProps<"/portal">) {
   const session = await getSession();
   if (!session) redirect("/login");
+  if (!session.onboarded) redirect("/onboarding"); // build their personalized plan first
 
   return (
     <div className="flex min-h-dvh">

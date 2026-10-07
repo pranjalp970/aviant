@@ -14,6 +14,8 @@ export interface Rating {
   name: string;
   short: string;
   acsCode: string; // e.g. FAA-S-ACS-6C
+  /** false = "coming soon": not selectable, content hidden. */
+  available: boolean;
 }
 
 export interface AcsTask {

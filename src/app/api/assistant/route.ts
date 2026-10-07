@@ -1,3 +1,4 @@
+import { availableRating } from "@/content/acs";
 import { claudeProvider } from "@/lib/ai/claude-provider";
 import { mockProvider } from "@/lib/ai/mock-provider";
 import type { AssistantProvider, AssistantRequest } from "@/lib/ai/types";
@@ -12,7 +13,7 @@ const configuredProvider = (): AssistantProvider => (process.env.ANTHROPIC_API_K
 const MAX_TURNS = 60; // keep requests bounded
 
 export async function POST(request: Request) {
-  const body = (await request.json()) as Partial<AssistantRequest> & { demo?: boolean; checkrideId?: string };
+  const body = (await request.json()) as Partial<AssistantRequest> & { demo?: boolean; checkrideId?: string; stream?: boolean };
   if (!body.mode || !body.rating || !Array.isArray(body.messages)) {
     return Response.json({ error: "mode, rating and messages are required" }, { status: 400 });
   }
@@ -33,12 +34,38 @@ export async function POST(request: Request) {
   // Full mock checkride: load the student's own plan + documents (RLS-scoped).
   const checkrideRow = engine === claudeProvider && body.checkrideId ? await getCheckride(body.checkrideId) : null;
 
-  const res = await engine.respond({
+  const req: AssistantRequest = {
     mode: body.mode === "examine" ? "examine" : "teach",
-    rating: body.rating === "ir" ? "ir" : "ppl",
+    rating: availableRating(body.rating), // Instrument is "coming soon"
     messages: body.messages.slice(-MAX_TURNS).map((m) => ({ role: m.role === "assistant" ? "assistant" : "user", content: String(m.content ?? "").slice(0, 4000) })),
     state: body.state ?? { askedIds: [], currentQuestionId: null },
     checkride: checkrideRow ? toContext(checkrideRow) : undefined,
+    focusCodes: engine === claudeProvider ? (await getSession())?.missedAcsCodes : undefined,
+  };
+
+  if (!body.stream) {
+    const res = await engine.respond(req);
+    return Response.json({ ...res, engine: engine.name });
+  }
+
+  // Streaming: newline-delimited JSON. {"type":"reply","text":…} events carry the reply so far,
+  // then one {"type":"done",…} with the full response (grade, references, state).
+  const encoder = new TextEncoder();
+  const stream = new ReadableStream({
+    async start(controller) {
+      const send = (obj: unknown) => controller.enqueue(encoder.encode(JSON.stringify(obj) + "\n"));
+      try {
+        const res = await engine.respond(req, (text) => send({ type: "reply", text }));
+        send({ type: "done", ...res, engine: engine.name });
+      } catch (e) {
+        console.error("assistant stream", e);
+        send({ type: "error" });
+      } finally {
+        controller.close();
+      }
+    },
   });
-  return Response.json({ ...res, engine: engine.name });
+  return new Response(stream, {
+    headers: { "Content-Type": "application/x-ndjson; charset=utf-8", "Cache-Control": "no-store", "X-Accel-Buffering": "no" },
+  });
 }

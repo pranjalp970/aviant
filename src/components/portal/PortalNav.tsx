@@ -1,6 +1,6 @@
 "use client";
 
-import { AirplaneTakeoff, BookOpenText, Cards, ClockCounterClockwise, Gear, House, ListChecks, Microphone, SignOut, Timer } from "@phosphor-icons/react";
+import { AirplaneTakeoff, BookOpenText, MapTrifold, Notebook, Cards, ClockCounterClockwise, Gear, House, ListChecks, Microphone, SignOut, Timer } from "@phosphor-icons/react";
 import clsx from "clsx";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -17,8 +17,10 @@ const NAV = [
 
 // Desktop sidebar only; the mobile tab bar stays at five items.
 const SIDEBAR_EXTRA = [
+  { href: "/portal/plan", label: "Study plan", icon: MapTrifold, exact: false },
   { href: "/portal/checkride", label: "Mock checkride", icon: AirplaneTakeoff, exact: false },
   { href: "/portal/questions", label: "Question bank", icon: ListChecks, exact: false },
+  { href: "/portal/logbook", label: "Logbook", icon: Notebook, exact: false },
   { href: "/portal/history", label: "History", icon: ClockCounterClockwise, exact: false },
 ];
 
@@ -30,7 +32,7 @@ function useActive() {
 export function Sidebar({ name, ratingLabel }: { name: string; ratingLabel: string }) {
   const isActive = useActive();
   return (
-    <aside className="sticky top-0 hidden h-dvh w-64 shrink-0 flex-col border-r border-border bg-panel p-5 lg:flex">
+    <aside className="sticky top-0 hidden h-dvh w-64 shrink-0 flex-col border-r border-border bg-panel p-5 lg:flex print:hidden">
       <Link href="/portal" className="px-2 py-2 text-xl" aria-label="Aviant portal home">
         <Logo />
       </Link>
@@ -91,7 +93,7 @@ export function MobileNav() {
   const isActive = useActive();
   return (
     <>
-      <header className="sticky top-0 z-40 flex h-14 items-center justify-between border-b border-border bg-bg/85 px-4 backdrop-blur-lg lg:hidden">
+      <header className="sticky top-0 z-40 flex h-14 items-center justify-between border-b border-border bg-bg/85 px-4 backdrop-blur-lg lg:hidden print:hidden">
         <Link href="/portal" aria-label="Aviant portal home" className="text-lg">
           <Logo />
         </Link>
@@ -106,7 +108,7 @@ export function MobileNav() {
       </header>
       <nav
         aria-label="Portal"
-        className="fixed inset-x-0 bottom-0 z-40 border-t border-border bg-bg/90 pb-[env(safe-area-inset-bottom)] backdrop-blur-lg lg:hidden"
+        className="fixed inset-x-0 bottom-0 z-40 border-t border-border bg-bg/90 pb-[env(safe-area-inset-bottom)] backdrop-blur-lg lg:hidden print:hidden"
       >
         <ul className="grid grid-cols-5">
           {NAV.map(({ href, label, icon: Icon, exact }) => {

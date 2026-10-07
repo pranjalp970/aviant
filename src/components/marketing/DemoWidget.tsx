@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowRight, ArrowsClockwise, CheckCircle, Circle, Sparkle } from "@phosphor-icons/react";
+import { ArrowRight, ArrowsClockwise, CheckCircle, Circle } from "@phosphor-icons/react";
 import Link from "next/link";
 import { useId, useState } from "react";
 import { buttonClass } from "@/components/ui/button";
@@ -52,17 +52,12 @@ export function DemoWidget() {
   const feedback = result?.reply.split(/Moving on\.|Next question\.|Let's shift gears\./)[0].trim();
 
   return (
-    <div className="glass relative overflow-hidden rounded-[28px] p-5 sm:p-8">
-      <div className="mb-6 flex items-center gap-3">
-        <span className="grid size-10 place-items-center rounded-full bg-green/15 text-green">
-          <Sparkle size={18} weight="fill" aria-hidden />
-        </span>
-        <div>
-          <p className="text-sm text-fg-subtle">AI Examiner · Private Pilot · Area I.B</p>
-          <p className="text-fg">Airworthiness Requirements</p>
-        </div>
+    <div className="overflow-hidden rounded-2xl border border-border-strong bg-bg-elevated shadow-[0_30px_80px_-40px_rgba(0,0,0,0.6)]">
+      <div className="annot flex items-center justify-between gap-4 border-b border-border px-5 py-3 text-fg-subtle">
+        <span>AI examiner · Private Pilot</span>
+        <span className="text-accent">PA.I.B</span>
       </div>
-
+      <div className="p-5 sm:p-8">
       <p className="font-display text-2xl leading-snug text-fg sm:text-[28px]">&ldquo;{DEMO_PROMPT}&rdquo;</p>
 
       {!result ? (
@@ -78,7 +73,7 @@ export function DemoWidget() {
             placeholder="e.g. The airworthiness certificate, registration…"
             aria-invalid={!!error}
             aria-describedby={error ? `${id}-err` : undefined}
-            className="w-full resize-none rounded-2xl border border-border-strong bg-inset px-4 py-3 text-base text-fg placeholder:text-fg-subtle focus:border-green focus:outline-none"
+            className="w-full resize-none rounded-xl border border-border-strong bg-inset px-4 py-3 text-base text-fg placeholder:text-fg-subtle focus:border-green focus:outline-none"
           />
           {error && (
             <p id={`${id}-err`} role="alert" className="mt-2 text-sm text-danger">
@@ -96,7 +91,7 @@ export function DemoWidget() {
       ) : (
         <div className="mt-6" aria-live="polite">
           <div className="flex items-baseline justify-between gap-4">
-            <p className="text-sm uppercase tracking-[0.14em] text-fg-subtle">Debrief</p>
+            <p className="annot text-fg-subtle">Debrief</p>
             {grade && (
               <p className="font-display text-3xl text-accent">
                 {Math.round(grade.score * 100)}
@@ -138,6 +133,7 @@ export function DemoWidget() {
           </div>
         </div>
       )}
+      </div>
     </div>
   );
 }

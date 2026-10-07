@@ -45,3 +45,16 @@ export function writeRecent(quizId: string, ids: string[]) {
     /* storage unavailable — draws are still random */
   }
 }
+
+/**
+ * A balanced sample: `perTopic` random questions from every topic (e.g. the
+ * onboarding diagnostic), interleaved so topics don't come in blocks.
+ */
+export function drawStratified(pool: readonly McQuestion[], perTopic: number): McQuestion[] {
+  const byTopic = new Map<string, McQuestion[]>();
+  for (const q of pool) byTopic.set(q.topic ?? q.areaId, [...(byTopic.get(q.topic ?? q.areaId) ?? []), q]);
+  const picks = [...byTopic.values()].map((qs) => shuffle(qs).slice(0, perTopic));
+  const out: McQuestion[] = [];
+  for (let round = 0; round < perTopic; round++) for (const p of shuffle(picks)) if (p[round]) out.push(p[round]);
+  return out.map(shuffleChoices);
+}

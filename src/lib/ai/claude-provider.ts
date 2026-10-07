@@ -5,6 +5,7 @@ import { z } from "zod";
 import { areasFor, ratingById } from "@/content/acs";
 import { QUESTIONS } from "@/content/questions";
 import type { RatingId } from "@/content/types";
+import { partialStringField } from "./partial-json";
 import type { AssistantMode, AssistantProvider, AssistantRequest, AssistantResponse, CheckrideContext } from "./types";
 
 /**
@@ -97,13 +98,19 @@ How to teach:
   return `${role}\n\n${VOICE_RULES}\n\n${ACCURACY_RULES}\n\nReturn JSON matching the provided schema.`;
 }
 
+/** Knowledge-test codes the student missed: real examiners are required to re-test these. */
+function focusNote(req: AssistantRequest): string {
+  if (!req.focusCodes?.length || (req.mode !== "examine" && !req.checkride)) return "";
+  return `\n\nThe student missed these ACS knowledge codes on their FAA knowledge test: ${req.focusCodes.join(", ")}. Examiners must re-test missed areas, so work questions on these areas in early, naturally, without naming the codes.`;
+}
+
 // ── Provider ──
 let client: Anthropic | null = null;
 const getClient = () => (client ??= new Anthropic()); // reads ANTHROPIC_API_KEY
 
 export const claudeProvider: AssistantProvider = {
   name: "claude",
-  async respond(req: AssistantRequest): Promise<AssistantResponse> {
+  async respond(req: AssistantRequest, onReply?: (replySoFar: string) => void): Promise<AssistantResponse> {
     // The API needs the conversation to start with a user turn.
     const messages: Anthropic.Beta.BetaMessageParam[] = req.messages.map((m) => ({ role: m.role, content: m.content }));
     if (req.checkride) {
@@ -125,20 +132,32 @@ export const claudeProvider: AssistantProvider = {
     }
 
     try {
-      const response = await getClient().beta.messages.parse({
+      // Streamed so the reply can be shown and spoken while the rest (grade, refs) is still generating.
+      const stream = getClient().beta.messages.stream({
         model: MODEL,
         max_tokens: 8000,
         betas: ["server-side-fallback-2026-07-01"],
         fallbacks: "default", // a declined request is retried server-side on Anthropic's recommended model
-        // Examine needs careful grading; Teach favors quick spoken replies.
-        output_config: { effort: req.mode === "examine" ? "medium" : "low", format: betaZodOutputFormat(TurnSchema) },
+        // Low effort keeps time-to-first-word short for voice; a full mock checkride
+        // works through the student's documents, so it gets a bit more.
+        output_config: { effort: req.checkride ? "medium" : "low", format: betaZodOutputFormat(TurnSchema) },
+        cache_control: { type: "ephemeral" }, // also cache the growing conversation between turns
         system: [
-          { type: "text", text: systemPrompt(req.checkride ? "examine" : req.mode, req.rating, req.checkride) },
+          { type: "text", text: systemPrompt(req.checkride ? "examine" : req.mode, req.rating, req.checkride) + focusNote(req) },
           // Large, byte-stable grounding block: cached so each turn only pays for the conversation.
           { type: "text", text: grounding(req.rating), cache_control: { type: "ephemeral" } },
         ],
         messages,
       });
+      let lastLen = 0;
+      stream.on("text", (_delta, snapshot) => {
+        const reply = partialStringField(snapshot, "reply");
+        if (onReply && reply && reply.value.length > lastLen) {
+          lastLen = reply.value.length;
+          onReply(reply.value);
+        }
+      });
+      const response = await stream.finalMessage();
 
       if (response.stop_reason === "refusal") {
         return { reply: "Let's keep things focused on your checkride prep. Ask me about another topic and we'll keep going.", state: req.state };

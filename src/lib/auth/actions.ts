@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
+import { availableRating } from "@/content/acs";
 import { createClient } from "@/lib/supabase/server";
 
 export interface AuthState {
@@ -47,7 +48,8 @@ export async function signup(_: AuthState, formData: FormData): Promise<AuthStat
   const name = String(formData.get("name") ?? "").trim();
   const email = String(formData.get("email") ?? "").trim();
   const password = String(formData.get("password") ?? "");
-  const rating = formData.get("rating") === "ir" ? "ir" : "ppl";
+  const rating = availableRating(formData.get("rating"));
+  const irWaitlist = formData.get("ir_waitlist") === "on";
   const fieldErrors: AuthState["fieldErrors"] = {};
   if (!name) fieldErrors.name = "Tell us what to call you.";
   if (!EMAIL_RE.test(email)) fieldErrors.email = "Enter a valid email address.";
@@ -60,7 +62,7 @@ export async function signup(_: AuthState, formData: FormData): Promise<AuthStat
     password,
     options: {
       data: { name, rating }, // copied into the profile by the on_auth_user_created trigger
-      emailRedirectTo: `${await siteOrigin()}/auth/confirm?next=/portal`,
+      emailRedirectTo: `${await siteOrigin()}/auth/confirm?next=/onboarding`,
     },
   });
   if (error) return { error: friendly(error.message) };
@@ -68,7 +70,8 @@ export async function signup(_: AuthState, formData: FormData): Promise<AuthStat
     // email confirmation is on: no session until they click the link
     return { message: `Almost there. We sent a confirmation link to ${email}. Click it to activate your account.` };
   }
-  redirect("/portal");
+  if (irWaitlist && data.user) await supabase.from("profiles").update({ ir_waitlist: true }).eq("id", data.user.id);
+  redirect("/onboarding"); // build their personalized plan first
 }
 
 export async function requestPasswordReset(_: AuthState, formData: FormData): Promise<AuthState> {
@@ -100,13 +103,16 @@ export async function updateTraining(formData: FormData) {
   const uid = data?.claims?.sub;
   if (!uid) redirect("/login");
   const name = String(formData.get("name") ?? "").trim();
-  const rating = formData.get("rating") === "ir" ? "ir" : "ppl";
-  const date = String(formData.get("checkride_date") ?? "").trim();
-  const checkride_date = /^\d{4}-\d{2}-\d{2}$/.test(date) ? date : null;
-  await supabase
+  const rating = availableRating(formData.get("rating"));
+  const ir_waitlist = formData.get("ir_waitlist") === "on";
+  const { error } = await supabase
     .from("profiles")
-    .update({ rating, checkride_date, ...(name ? { name } : {}) })
+    .update({ rating, ir_waitlist, ...(name ? { name } : {}) })
     .eq("id", uid);
+  if (error) {
+    // before migration 005 (no ir_waitlist column)
+    await supabase.from("profiles").update({ rating, ...(name ? { name } : {}) }).eq("id", uid);
+  }
   revalidatePath("/portal", "layout");
 }
 

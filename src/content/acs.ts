@@ -1,9 +1,15 @@
 import type { AcsArea, Rating, RatingId } from "./types";
 
 export const RATINGS: Rating[] = [
-  { id: "ppl", name: "Private Pilot — Airplane", short: "Private Pilot", acsCode: "FAA-S-ACS-6" },
-  { id: "ir", name: "Instrument Rating — Airplane", short: "Instrument", acsCode: "FAA-S-ACS-8" },
+  { id: "ppl", name: "Private Pilot — Airplane", short: "Private Pilot", acsCode: "FAA-S-ACS-6", available: true },
+  { id: "ir", name: "Instrument Rating — Airplane", short: "Instrument", acsCode: "FAA-S-ACS-8", available: false },
 ];
+
+/** A selectable rating, falling back to Private Pilot for anything unavailable ("coming soon"). */
+export const availableRating = (id: unknown): RatingId => {
+  const r = RATINGS.find((x) => x.id === id);
+  return r?.available ? r.id : "ppl";
+};
 
 export const ratingById = (id: RatingId) => RATINGS.find((r) => r.id === id)!;
 
