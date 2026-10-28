@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Logo } from "@/components/brand/Logo";
+import { SITE } from "@/lib/site";
 
 const NAV = [
   { href: "/#route", label: "How it works" },
@@ -28,6 +29,9 @@ export function Footer() {
           </nav>
           <div className="annot flex flex-col gap-2 md:items-end">
             <span className="text-fg-muted">Made for student pilots</span>
+            <a href={`mailto:${SITE.supportEmail}`} className="normal-case tracking-normal text-fg-muted">
+              {SITE.supportEmail}
+            </a>
             <span className="flex gap-4 text-fg-subtle">
               <Link href="/privacy">Privacy</Link>
               <Link href="/terms">Terms</Link>

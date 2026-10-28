@@ -73,6 +73,7 @@ function PlaneMesh({ reduced, light }: { reduced: boolean; light: boolean }) {
  */
 function FlightRig({ progress, reduced, children }: { progress?: MotionValue<number>; reduced: boolean; children: React.ReactNode }) {
   const ref = useRef<THREE.Group>(null);
+  const placed = useRef(false);
   const { viewport, size } = useThree();
 
   useFrame(() => {
@@ -91,8 +92,11 @@ function FlightRig({ progress, reduced, children }: { progress?: MotionValue<num
     const tx = home.x - e * viewport.width * 0.5;
     const ty = home.y + e * viewport.height * 0.9;
     // ease toward the target so wheel steps feel like flight, not jumps
-    g.position.x = THREE.MathUtils.lerp(g.position.x, tx, 0.12);
-    g.position.y = THREE.MathUtils.lerp(g.position.y, ty, 0.12);
+    // (but start already parked, instead of drifting in from the centre)
+    const k = placed.current ? 0.12 : 1;
+    placed.current = true;
+    g.position.x = THREE.MathUtils.lerp(g.position.x, tx, k);
+    g.position.y = THREE.MathUtils.lerp(g.position.y, ty, k);
     g.rotation.z = THREE.MathUtils.lerp(g.rotation.z, -0.32 * roll, 0.1);
     g.scale.setScalar(base * (1 - 0.3 * climb));
   });

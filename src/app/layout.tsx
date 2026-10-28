@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Afacad_Flux, JetBrains_Mono, Tenor_Sans } from "next/font/google";
+import { SITE } from "@/lib/site";
 import { THEME_SCRIPT } from "@/lib/theme";
 import "./globals.css";
 
@@ -21,6 +22,7 @@ const tenor = Tenor_Sans({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(SITE.url),
   title: {
     default: "Aviant — Train smarter. Fly better.",
     template: "%s · Aviant",
