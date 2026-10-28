@@ -37,11 +37,11 @@ function Choice({ selected, onClick, title, detail }: { selected: boolean; onCli
       aria-checked={selected}
       onClick={onClick}
       className={clsx(
-        "w-full cursor-pointer rounded-2xl border px-5 py-4 text-left transition-colors",
-        selected ? "border-green bg-green/10" : "border-border-strong bg-inset hover:border-green/50",
+        "w-full cursor-pointer rounded-2xl border px-5 py-4 text-left",
+        selected ? "border-green bg-green/10" : "border-border-strong bg-inset",
       )}
     >
-      <span className="block text-[17px] text-fg">{title}</span>
+      <span className="block text-base text-fg">{title}</span>
       {detail && <span className="mt-0.5 block text-sm text-fg-muted">{detail}</span>}
     </button>
   );
@@ -127,7 +127,7 @@ export function OnboardingWizard({ defaults, topics, diagnostic, startAt }: { de
 
       {step === "stage" && (
         <section>
-          <h1 className="font-display text-[clamp(2rem,5vw,2.75rem)] leading-tight">Hi {defaults.name.split(" ")[0]}! Let&rsquo;s build your plan.</h1>
+          <h1 className="font-display text-2xl sm:text-3xl leading-tight">Hi {defaults.name.split(" ")[0]}! Let&rsquo;s build your plan.</h1>
           <p className="mt-2 text-fg-muted">Five quick questions and an optional 10-minute check. Where are you in your training?</p>
           <div role="radiogroup" className="mt-8 grid gap-3">
             <Choice selected={stage === "starting"} onClick={() => setStage("starting")} title="Just getting started" detail="Few or no lessons yet. I want to learn the material from the ground up." />
@@ -139,7 +139,7 @@ export function OnboardingWizard({ defaults, topics, diagnostic, startAt }: { de
 
       {step === "dates" && (
         <section>
-          <h1 className="font-display text-[clamp(2rem,5vw,2.75rem)] leading-tight">{passed ? "When's your checkride?" : "When's your written test?"}</h1>
+          <h1 className="font-display text-2xl sm:text-3xl leading-tight">{passed ? "When's your checkride?" : "When's your written test?"}</h1>
           <p className="mt-2 text-fg-muted">Your plan works back from these dates. Not scheduled yet? Leave it blank and we&rsquo;ll suggest one from your pace.</p>
           <div className="mt-8 space-y-5">
             {!passed && (
@@ -178,7 +178,7 @@ export function OnboardingWizard({ defaults, topics, diagnostic, startAt }: { de
 
       {step === "time" && (
         <section>
-          <h1 className="font-display text-[clamp(2rem,5vw,2.75rem)] leading-tight">How much time can you study?</h1>
+          <h1 className="font-display text-2xl sm:text-3xl leading-tight">How much time can you study?</h1>
           <p className="mt-2 text-fg-muted">Be realistic: a plan you keep beats an ambitious one you don&rsquo;t. You can change this anytime.</p>
           <fieldset className="mt-8">
             <legend className="mb-3 text-sm text-fg-muted">Days per week</legend>
@@ -189,7 +189,7 @@ export function OnboardingWizard({ defaults, topics, diagnostic, startAt }: { de
                   type="button"
                   aria-pressed={days === d}
                   onClick={() => setDays(d)}
-                  className={clsx("h-12 cursor-pointer rounded-xl border text-lg transition-colors", days === d ? "border-green bg-green/10 text-fg" : "border-border-strong bg-inset text-fg-muted hover:text-fg")}
+                  className={clsx("h-12 cursor-pointer rounded-xl border text-lg", days === d ? "border-green bg-green/10 text-fg" : "border-border-strong bg-inset text-fg-muted")}
                 >
                   {d}
                 </button>
@@ -205,7 +205,7 @@ export function OnboardingWizard({ defaults, topics, diagnostic, startAt }: { de
                   type="button"
                   aria-pressed={minutes === m}
                   onClick={() => setMinutes(m)}
-                  className={clsx("h-12 cursor-pointer rounded-xl border transition-colors", minutes === m ? "border-green bg-green/10 text-fg" : "border-border-strong bg-inset text-fg-muted hover:text-fg")}
+                  className={clsx("h-12 cursor-pointer rounded-xl border", minutes === m ? "border-green bg-green/10 text-fg" : "border-border-strong bg-inset text-fg-muted")}
                 >
                   {m} min
                 </button>
@@ -220,12 +220,12 @@ export function OnboardingWizard({ defaults, topics, diagnostic, startAt }: { de
 
       {step === "confidence" && (
         <section>
-          <h1 className="font-display text-[clamp(2rem,5vw,2.75rem)] leading-tight">How do you feel about each topic?</h1>
+          <h1 className="font-display text-2xl sm:text-3xl leading-tight">How do you feel about each topic?</h1>
           <p className="mt-2 text-fg-muted">A gut check is fine. Confident topics get a quicker pass; new ones get more time.</p>
-          <ul className="mt-8 divide-y divide-border rounded-2xl border border-border">
+          <ul className="mt-8 rounded-2xl border border-border">
             {topics.map((t) => (
               <li key={t.id} className="flex flex-col gap-2 px-4 py-3 sm:flex-row sm:items-center sm:justify-between">
-                <span className="text-[15px] text-fg">{t.title}</span>
+                <span className="text-sm text-fg">{t.title}</span>
                 <div role="radiogroup" aria-label={t.title} className="grid grid-cols-3 gap-1 rounded-xl border border-border-strong bg-inset p-1 sm:w-[300px]">
                   {([1, 2, 3] as Confidence[]).map((c) => (
                     <button
@@ -234,7 +234,7 @@ export function OnboardingWizard({ defaults, topics, diagnostic, startAt }: { de
                       role="radio"
                       aria-checked={confidence[t.id] === c}
                       onClick={() => setConfidence((prev) => ({ ...prev, [t.id]: c }))}
-                      className={clsx("h-9 cursor-pointer rounded-lg text-sm transition-colors", confidence[t.id] === c ? "bg-lime font-medium text-on-accent" : "text-fg-muted hover:text-fg")}
+                      className={clsx("h-9 cursor-pointer rounded-lg text-sm", confidence[t.id] === c ? "bg-green font-medium text-on-accent" : "text-fg-muted")}
                     >
                       {CONF_LABELS[c]}
                     </button>
@@ -251,7 +251,7 @@ export function OnboardingWizard({ defaults, topics, diagnostic, startAt }: { de
       {step === "summary" && <Summary summary={summary} />}
 
       {error && (
-        <p role="alert" className="mt-6 flex items-start gap-2 rounded-xl border border-danger/40 bg-danger/10 px-4 py-3 text-[15px] text-fg">
+        <p role="alert" className="mt-6 flex items-start gap-2 rounded-xl border border-danger/40 bg-danger/10 px-4 py-3 text-sm text-fg">
           <Warning size={18} className="mt-0.5 shrink-0 text-danger" aria-hidden /> {error}
         </p>
       )}
@@ -287,7 +287,7 @@ function DateField({ label, value, onChange, min }: { label: string; value: stri
           className="h-12 rounded-xl border border-border-strong bg-inset px-4 text-base text-fg focus:border-green focus:outline-none"
         />
         {value ? (
-          <button type="button" onClick={() => onChange("")} className="text-sm text-fg-muted hover:text-fg">
+          <button type="button" onClick={() => onChange("")} className="text-sm text-fg-muted">
             Not scheduled yet
           </button>
         ) : (
@@ -301,7 +301,7 @@ function DateField({ label, value, onChange, min }: { label: string; value: stri
 function Summary({ summary }: { summary: PlanSummary | null }) {
   if (!summary) {
     return (
-      <div className="text-center">
+      <div>
         <h1 className="font-display text-3xl">You&rsquo;re all set</h1>
         <Link href="/portal" className={buttonClass("primary", "lg", "mt-8")}>
           Go to my dashboard <ArrowRight size={16} weight="bold" aria-hidden />
@@ -311,25 +311,25 @@ function Summary({ summary }: { summary: PlanSummary | null }) {
   }
   const statusTone = summary.status === "behind" || summary.status === "overdue" ? "text-warning" : "text-accent";
   return (
-    <section className="text-center">
-      <CheckCircle size={44} weight="fill" className="mx-auto text-green" aria-hidden />
-      <h1 className="mt-4 font-display text-[clamp(2rem,5vw,2.75rem)] leading-tight">Your plan is ready</h1>
-      <p className="mx-auto mt-3 max-w-lg text-fg-muted">
+    <section>
+      <CheckCircle size={44} weight="fill" className="text-accent" aria-hidden />
+      <h1 className="mt-4 font-display text-2xl sm:text-3xl leading-tight">Your plan is ready</h1>
+      <p className="mt-3 max-w-lg text-fg-muted">
         {summary.phase === "written" ? "Written test" : "Checkride"} {summary.dateSuggested ? "target" : "on"}{" "}
         <span className="text-fg">{fmtDate(summary.targetDate)}</span>
         {summary.dateSuggested ? " (suggested from your pace)" : ""}: {summary.weeks} week{summary.weeks === 1 ? "" : "s"} at {summary.minutesPerDay} minutes, {summary.daysPerWeek} days a
         week.
       </p>
 
-      <div className="mt-8 grid gap-3 text-left sm:grid-cols-2">
+      <div className="mt-8 grid gap-3 sm:grid-cols-2">
         <div className="card p-5">
           <p className="flex items-center gap-2 text-sm text-fg-subtle">
-            <Target size={16} className="text-green" aria-hidden /> Most of your time goes to
+            <Target size={16} className="text-accent" aria-hidden /> Most of your time goes to
           </p>
           <ul className="mt-3 space-y-2">
             {summary.focus.map((f) => (
               <li key={f.title}>
-                <span className="flex items-baseline justify-between gap-2 text-[15px] text-fg">
+                <span className="flex items-baseline justify-between gap-2 text-sm text-fg">
                   {f.title} <span className="font-display tabular-nums text-accent">{Math.round(f.share * 100)}%</span>
                 </span>
                 <span className="block text-xs text-fg-subtle">{f.reason}</span>
@@ -339,7 +339,7 @@ function Summary({ summary }: { summary: PlanSummary | null }) {
         </div>
         <div className="card p-5">
           <p className="flex items-center gap-2 text-sm text-fg-subtle">
-            <CalendarBlank size={16} className="text-green" aria-hidden /> Pace
+            <CalendarBlank size={16} className="text-accent" aria-hidden /> Pace
           </p>
           <p className={clsx("mt-3 font-display text-xl", statusTone)}>
             {{ ahead: "Ahead of schedule", on_track: "On track", behind: "Tight on time", overdue: "Date has passed" }[summary.status] ?? "On track"}
@@ -350,7 +350,7 @@ function Summary({ summary }: { summary: PlanSummary | null }) {
         </div>
       </div>
 
-      <p className="mx-auto mt-6 max-w-md text-sm text-fg-subtle">Your plan recalculates every day from how you actually do, so it stays honest if you get ahead or fall behind.</p>
+      <p className="mt-6 max-w-md text-sm text-fg-subtle">Your plan recalculates every day from how you actually do, so it stays honest if you get ahead or fall behind.</p>
       <Link href="/portal" className={buttonClass("primary", "lg", "mt-8")}>
         Start today&rsquo;s session <ArrowRight size={16} weight="bold" aria-hidden />
       </Link>

@@ -1,10 +1,10 @@
-import { ArrowLeft, Cards, Timer } from "@phosphor-icons/react/dist/ssr";
+import { ArrowLeft, Cards, CheckSquareOffset, SealCheck, Timer } from "@phosphor-icons/react/dist/ssr";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Flashcards } from "@/components/portal/Flashcards";
 import { PageHeader } from "@/components/portal/PageHeader";
 import { QuizRunner } from "@/components/portal/QuizRunner";
-import { buttonClass } from "@/components/ui/button";
+import { EmptyState } from "@/components/ui/EmptyState";
 import { PPL_BANK_TOPICS } from "@/content/banks/ppl-practice-bank";
 import { QUESTIONS } from "@/content/questions";
 import type { McQuestion } from "@/content/types";
@@ -23,7 +23,7 @@ export default async function ReviewPage({ searchParams }: PageProps<"/portal/re
   const stats = reviewStats(rows, session.rating);
 
   const back = (
-    <Link href="/portal/review" className="mb-6 inline-flex min-h-10 items-center gap-2 text-sm text-fg-muted hover:text-accent">
+    <Link href="/portal/review" className="mb-6 inline-flex min-h-10 items-center gap-2 text-sm text-fg-muted">
       <ArrowLeft size={14} aria-hidden /> Review
     </Link>
   );
@@ -70,10 +70,10 @@ export default async function ReviewPage({ searchParams }: PageProps<"/portal/re
           {fresh.length ? (
             <QuizRunner quizId={`new-${t?.id ?? "all"}`} title={title} rating={session.rating} pool={fresh} count={Math.min(10, fresh.length)} />
           ) : (
-            <div className="card p-10 text-center">
-              <p className="font-display text-2xl">You&rsquo;ve seen every question here</p>
-              <p className="mt-2 text-fg-muted">Keep reviewing to move them into &ldquo;mastered&rdquo;.</p>
-            </div>
+            <EmptyState icon={SealCheck} title="You've seen every question here" action={{ href: "/portal/review", label: "Go to review" }} secondary={{ href: "/portal/plan", label: "Back to your plan" }}>
+              Nothing new is left{t ? " in this topic" : ""}. Questions move to &ldquo;mastered&rdquo; once you recall them correctly a few
+              times, spaced out, so keep reviewing the ones that come due.
+            </EmptyState>
           )}
         </div>
       </>
@@ -98,31 +98,39 @@ export default async function ReviewPage({ searchParams }: PageProps<"/portal/re
         ))}
       </dl>
 
-      <div className="mt-8 grid gap-4 md:grid-cols-2">
-        <Link href="/portal/review?mode=quiz" aria-disabled={!stats.due} className={`card group p-7 transition-colors hover:border-green/40 hover:bg-surface-strong ${stats.due ? "" : "pointer-events-none opacity-50"}`}>
-          <span className="grid size-11 place-items-center rounded-full bg-green/12 text-green">
+      {!stats.seen ? (
+        <div className="mt-10">
+          <EmptyState icon={Cards} title="Your review deck is empty" action={{ href: "/portal/quizzes/ppl-quick-20", label: "Take a Quick 20" }} secondary={{ href: "/portal/review?mode=new", label: "Learn new questions" }}>
+            The deck builds itself from your practice tests. Every question you answer is scheduled here, and the ones you miss come back
+            first.
+          </EmptyState>
+        </div>
+      ) : !stats.due ? (
+        <div className="mt-10">
+          <EmptyState icon={CheckSquareOffset} title="All caught up" action={{ href: "/portal/review?mode=new", label: "Learn new questions" }} secondary={{ href: "/portal/quizzes", label: "Take a practice test" }}>
+            Nothing is due right now. Questions you&rsquo;ve answered come back on a schedule, sooner if you missed them and later if you
+            knew them, so check back tomorrow.
+          </EmptyState>
+        </div>
+      ) : (
+      <div className="mt-10 grid gap-4 md:grid-cols-2">
+        <Link href="/portal/review?mode=quiz" className="card p-7">
+          <span className="grid size-11 place-items-center rounded-full bg-green/12 text-accent">
             <Timer size={22} weight="fill" aria-hidden />
           </span>
           <h2 className="mt-5 font-display text-2xl">Review quiz</h2>
           <p className="mt-2 text-fg-muted">Up to 20 due questions, multiple choice, scored like a regular quiz.</p>
         </Link>
-        <Link href="/portal/review?mode=cards" aria-disabled={!stats.due} className={`card group p-7 transition-colors hover:border-green/40 hover:bg-surface-strong ${stats.due ? "" : "pointer-events-none opacity-50"}`}>
-          <span className="grid size-11 place-items-center rounded-full bg-green/12 text-green">
+        <Link href="/portal/review?mode=cards" className="card p-7">
+          <span className="grid size-11 place-items-center rounded-full bg-green/12 text-accent">
             <Cards size={22} weight="fill" aria-hidden />
           </span>
           <h2 className="mt-5 font-display text-2xl">Flashcards</h2>
           <p className="mt-2 text-fg-muted">Recall the answer yourself, flip, and rate. Faster, and great on your phone.</p>
         </Link>
       </div>
-
-      {!stats.seen && (
-        <div className="card mt-8 p-7 text-center">
-          <p className="text-fg-muted">Your review deck builds itself from your quizzes. Take one to get started.</p>
-          <Link href="/portal/quizzes" className={buttonClass("primary", "md", "mt-4")}>
-            Take a quiz
-          </Link>
-        </div>
       )}
+
     </>
   );
 }

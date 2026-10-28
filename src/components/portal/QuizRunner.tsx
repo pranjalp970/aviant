@@ -5,6 +5,7 @@ import clsx from "clsx";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { buttonClass } from "@/components/ui/button";
+import { ProgressRing } from "@/components/ui/ProgressRing";
 import type { McQuestion, RatingId } from "@/content/types";
 import { saveQuizAttempt } from "@/lib/data/actions";
 import { drawAttempt, readRecent, writeRecent } from "@/lib/quiz/draw";
@@ -78,9 +79,9 @@ export function QuizRunner({ quizId, title, rating, pool, count, timeLimitMin }:
 
   if (questions === null) {
     return (
-      <div className="card p-8 text-center sm:p-10">
+      <div className="card p-8 sm:p-10">
         <p className="font-display text-2xl">Ready when you are</p>
-        <p className="mx-auto mt-2 max-w-md text-fg-muted">
+        <p className="mt-2 max-w-md text-fg-muted">
           {count} questions{timeLimitMin ? `, ${timeLimitMin} minutes` : ""}. Each attempt draws a new random set
           {pool.length > count ? ` from ${pool.length} questions` : ""}, and the answer order is shuffled.
         </p>
@@ -100,17 +101,13 @@ export function QuizRunner({ quizId, title, rating, pool, count, timeLimitMin }:
   if (done) {
     const passed = pct >= 70;
     return (
-      <div className="space-y-6">
-        <section className="card flex flex-col items-center p-8 text-center sm:p-10" aria-labelledby="score">
-          <div
-            className="relative grid size-36 place-items-center rounded-full"
-            style={{ background: `conic-gradient(var(--green) 0 ${pct}%, var(--track) ${pct}% 100%)` }}
-            aria-hidden
-          >
-            <div className="absolute inset-[8px] rounded-full bg-card-solid" />
-            <span className="relative font-display text-4xl">{pct}%</span>
-          </div>
-          <h2 id="score" className="mt-6 font-display text-3xl">
+      <div className="space-y-10">
+        <section className="card flex flex-col gap-8 p-8 sm:flex-row sm:items-center sm:p-10" aria-labelledby="score">
+          <ProgressRing value={pct / 100} size={136} stroke={10} label={`Score ${pct}%`}>
+            <span className="font-display text-3xl">{pct}%</span>
+          </ProgressRing>
+          <div>
+          <h2 id="score" className="font-display text-2xl">
             {passed ? "Nice work. That's a pass." : "Not quite there yet."}
           </h2>
           <p className="mt-2 text-fg-muted">
@@ -120,7 +117,7 @@ export function QuizRunner({ quizId, title, rating, pool, count, timeLimitMin }:
             {saveStatus === "saved" ? (
               <>
                 Saved to your{" "}
-                <Link href="/portal/history" className="text-accent hover:underline">
+                <Link href="/portal/history" className="text-accent">
                   history
                 </Link>
                 .
@@ -131,7 +128,7 @@ export function QuizRunner({ quizId, title, rating, pool, count, timeLimitMin }:
               "Saving your results…"
             )}
           </p>
-          <div className="mt-6 flex flex-wrap justify-center gap-3">
+          <div className="mt-6 flex flex-wrap gap-3">
             <button type="button" onClick={restart} className={buttonClass("primary")}>
               Retake with new questions
             </button>
@@ -143,6 +140,7 @@ export function QuizRunner({ quizId, title, rating, pool, count, timeLimitMin }:
             <Link href="/portal/quizzes" className={buttonClass("ghost")}>
               All quizzes
             </Link>
+          </div>
           </div>
         </section>
 
@@ -158,7 +156,7 @@ export function QuizRunner({ quizId, title, rating, pool, count, timeLimitMin }:
                 <li key={qq.id} className="card p-5">
                   <div className="flex items-start gap-3">
                     {ok ? (
-                      <CheckCircle size={22} weight="fill" className="mt-0.5 shrink-0 text-green" aria-label="Correct" />
+                      <CheckCircle size={22} weight="fill" className="mt-0.5 shrink-0 text-accent" aria-label="Correct" />
                     ) : (
                       <XCircle size={22} weight="fill" className="mt-0.5 shrink-0 text-danger" aria-label="Incorrect" />
                     )}
@@ -170,7 +168,7 @@ export function QuizRunner({ quizId, title, rating, pool, count, timeLimitMin }:
                         </p>
                       )}
                       <p className="mt-1 text-sm text-accent">Correct: {qq.choices[qq.answerIndex]}</p>
-                      <p className="mt-2 text-sm leading-relaxed text-fg-muted">{qq.explanation}</p>
+                      <p className="mt-2 text-sm text-fg-muted">{qq.explanation}</p>
                       <p className="mt-2 text-xs text-fg-subtle">Reference: {qq.reference}</p>
                     </div>
                   </div>
@@ -186,7 +184,7 @@ export function QuizRunner({ quizId, title, rating, pool, count, timeLimitMin }:
   return (
     <div className="card overflow-hidden">
       {/* Progress header */}
-      <div className="flex items-center justify-between gap-4 border-b border-border px-6 py-4">
+      <div className="flex items-center justify-between gap-4 px-6 pb-4 pt-6 sm:px-8">
         <p className="text-sm text-fg-muted">
           <span className="sr-only">{title}: </span>Question {i + 1} of {questions.length}
         </p>
@@ -197,8 +195,8 @@ export function QuizRunner({ quizId, title, rating, pool, count, timeLimitMin }:
           </p>
         )}
       </div>
-      <div className="h-1 bg-surface-strong" aria-hidden>
-        <div className="h-full bg-green transition-[width] duration-300" style={{ width: `${((i + 1) / questions.length) * 100}%` }} />
+      <div className="mx-6 h-1 overflow-hidden rounded-full bg-surface-strong sm:mx-8" aria-hidden>
+        <div className="h-full bg-green" style={{ width: `${((i + 1) / questions.length) * 100}%` }} />
       </div>
 
       <div className="p-6 sm:p-8">
@@ -212,8 +210,8 @@ export function QuizRunner({ quizId, title, rating, pool, count, timeLimitMin }:
                 <label
                   key={k}
                   className={clsx(
-                    "flex min-h-13 cursor-pointer items-center gap-3 rounded-xl border px-4 py-3 text-[15px] transition-colors has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-lime",
-                    selected ? "border-green bg-green/10 text-fg" : "border-border-strong text-fg-muted hover:border-green/40 hover:text-fg",
+                    "flex min-h-13 cursor-pointer items-center gap-3 rounded-xl border px-4 py-3 text-sm  has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-green",
+                    selected ? "border-green bg-green/10 text-fg" : "border-border-strong text-fg-muted",
                   )}
                 >
                   <input

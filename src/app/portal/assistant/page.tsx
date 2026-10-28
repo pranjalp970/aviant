@@ -24,7 +24,7 @@ export default async function AssistantPage({ searchParams }: PageProps<"/portal
         title="Talk it through"
         description="One assistant, two modes. Learn with your CFI, then switch to Examine for a checkride-style oral."
         action={
-          <Link href="/portal/checkride" className="inline-flex items-center gap-2 text-sm text-fg-muted hover:text-accent">
+          <Link href="/portal/checkride" className="inline-flex items-center gap-2 text-sm text-fg-muted">
             Full mock checkride with your own plan →
           </Link>
         }

@@ -27,7 +27,7 @@ export function CheckrideList({ items }: { items: Item[] }) {
       <ul className="space-y-3">
         {items.map((c) => (
           <li key={c.id} className="card flex items-center gap-4 p-5">
-            <Link href={`/portal/checkride/${c.id}`} className="group flex min-w-0 flex-1 items-center gap-4">
+            <Link href={`/portal/checkride/${c.id}`} className="flex min-w-0 flex-1 items-center gap-4">
               <span className="min-w-0 flex-1">
                 <span className="block truncate font-display text-lg text-fg">
                   {c.departure} → {c.destination}
@@ -42,7 +42,7 @@ export function CheckrideList({ items }: { items: Item[] }) {
                 </span>
               </span>
               <span className="hidden items-center gap-1 text-sm text-accent sm:inline-flex">
-                Continue <ArrowRight size={14} className="transition-transform group-hover:translate-x-1" aria-hidden />
+                Continue <ArrowRight size={14} className="transition-transform" aria-hidden />
               </span>
             </Link>
             <button
@@ -57,7 +57,7 @@ export function CheckrideList({ items }: { items: Item[] }) {
                 });
               }}
               aria-label={`Delete ${c.departure} to ${c.destination} checkride`}
-              className="grid size-10 shrink-0 cursor-pointer place-items-center rounded-lg text-fg-subtle hover:bg-surface-strong hover:text-danger disabled:opacity-50"
+              className="grid size-10 shrink-0 cursor-pointer place-items-center rounded-lg text-fg-subtle disabled:opacity-50"
             >
               <Trash size={18} aria-hidden />
             </button>

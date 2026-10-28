@@ -1,20 +1,19 @@
 import Link from "next/link";
 import { Logo, PlaneMark } from "@/components/brand/Logo";
-import { CompassRose, Contours } from "@/components/marketing/ChartMarks";
+import { ChartBorder } from "@/components/marketing/ChartMarks";
 
 export default function AuthLayout({ children }: LayoutProps<"/">) {
   return (
     <div className="relative grid min-h-dvh lg:grid-cols-2">
       {/* Brand panel */}
-      <aside className="relative hidden overflow-hidden border-r border-border bg-panel lg:flex lg:flex-col lg:justify-between lg:p-12">
-        <Contours className="pointer-events-none absolute inset-0 size-full text-fg/[0.07]" />
-        <CompassRose className="pointer-events-none absolute -right-[30%] top-[8%] w-[85%] text-fg/[0.09]" />
+      <aside className="relative hidden overflow-hidden bg-panel lg:flex lg:flex-col lg:justify-between lg:p-12">
+        <ChartBorder className="pointer-events-none absolute inset-5 text-fg/15" />
         <Link href="/" className="relative text-2xl" aria-label="Aviant home">
           <Logo />
         </Link>
         <div className="relative">
           <PlaneMark className="mb-10 h-12 w-auto text-accent" />
-          <p className="font-display text-5xl leading-[1.02] tracking-[-0.02em]">
+          <p className="font-display text-4xl tracking-[-0.02em] xl:text-5xl">
             Train smarter.
             <br />
             <span className="text-accent">Fly better.</span>

@@ -21,14 +21,14 @@ export function DeleteAccount() {
         <button
           type="button"
           onClick={() => setOpen(true)}
-          className="mt-5 inline-flex h-11 cursor-pointer items-center rounded-full border border-danger/50 px-5 text-[15px] text-danger transition-colors hover:bg-danger/10"
+          className="mt-5 inline-flex h-11 cursor-pointer items-center rounded-full border border-danger/50 px-5 text-sm text-danger"
         >
           Delete my account…
         </button>
       ) : (
         <form action={action} className="mt-5 space-y-4" noValidate>
           {state.error && (
-            <p role="alert" className="rounded-xl border border-danger/40 bg-danger/10 px-4 py-3 text-[15px] text-fg">
+            <p role="alert" className="rounded-xl border border-danger/40 bg-danger/10 px-4 py-3 text-sm text-fg">
               {state.error}
             </p>
           )}
@@ -37,11 +37,11 @@ export function DeleteAccount() {
             <button
               type="submit"
               disabled={pending}
-              className="inline-flex h-11 cursor-pointer items-center rounded-full bg-danger px-5 text-[15px] font-medium text-bg transition-opacity hover:opacity-90 disabled:opacity-50"
+              className="inline-flex h-11 cursor-pointer items-center rounded-full bg-danger px-5 text-sm font-medium text-bg transition-opacity disabled:opacity-50"
             >
               {pending ? "Deleting…" : "Permanently delete"}
             </button>
-            <button type="button" onClick={() => setOpen(false)} className="inline-flex h-11 cursor-pointer items-center rounded-full px-5 text-[15px] text-fg-muted hover:text-fg">
+            <button type="button" onClick={() => setOpen(false)} className="inline-flex h-11 cursor-pointer items-center rounded-full px-5 text-sm text-fg-muted">
               Cancel
             </button>
           </div>

@@ -14,9 +14,9 @@ export default async function LoginPage({ searchParams }: PageProps<"/login">) {
       <p className="mb-8 mt-2 text-fg-muted">Log in to pick up where you left off.</p>
       <OAuthButtons providers={providers} />
       <LoginForm linkError={error === "link"} oauthError={error === "oauth"} />
-      <p className="mt-8 text-center text-[15px] text-fg-muted">
+      <p className="mt-8 text-sm text-fg-muted">
         New to Aviant?{" "}
-        <Link href="/signup" className="text-accent hover:underline">
+        <Link href="/signup" className="text-accent">
           Create a free account
         </Link>
       </p>

@@ -18,7 +18,7 @@ export default async function CheckrideSessionPage({ params }: PageProps<"/porta
 
   return (
     <>
-      <Link href="/portal/checkride" className="mb-6 inline-flex min-h-10 items-center gap-2 text-sm text-fg-muted hover:text-accent">
+      <Link href="/portal/checkride" className="mb-6 inline-flex min-h-10 items-center gap-2 text-sm text-fg-muted">
         <ArrowLeft size={14} aria-hidden /> All checkrides
       </Link>
       <PageHeader eyebrow={`Mock checkride · ${row.aircraft}`} title={label} description={row.notes || undefined} />
@@ -26,7 +26,7 @@ export default async function CheckrideSessionPage({ params }: PageProps<"/porta
         <ul className="-mt-6 mb-8 flex flex-wrap gap-2">
           {row.documents.map((d) => (
             <li key={d.fileId} className="inline-flex items-center gap-1.5 rounded-full border border-border px-3 py-1 text-sm text-fg-muted">
-              <FilePdf size={14} className="text-green" aria-hidden /> {d.name}
+              <FilePdf size={14} className="text-accent" aria-hidden /> {d.name}
             </li>
           ))}
         </ul>

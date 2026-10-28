@@ -38,8 +38,8 @@ export function ThemePicker() {
               aria-checked={selected}
               onClick={() => saveThemePref(value)}
               className={clsx(
-                "flex min-h-14 cursor-pointer flex-col items-center justify-center gap-1 rounded-xl border px-3 py-2 text-[15px] transition-colors",
-                selected ? "border-green bg-green/10 text-fg" : "border-border-strong bg-inset text-fg-muted hover:text-fg",
+                "flex min-h-14 cursor-pointer flex-col items-start justify-center gap-1 rounded-xl border px-3 py-2 text-sm",
+                selected ? "border-green bg-green/10 text-fg" : "border-border-strong bg-inset text-fg-muted",
               )}
             >
               <Icon size={20} weight={selected ? "fill" : "regular"} className={selected ? "text-accent" : undefined} aria-hidden />

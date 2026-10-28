@@ -20,12 +20,12 @@ function Block({ b }: { b: LessonBlock }) {
     case "h":
       return <h2 className="mt-10 font-display text-2xl text-fg">{b.text}</h2>;
     case "p":
-      return <p className="mt-4 text-[17px] leading-[1.75] text-fg-muted">{b.text}</p>;
+      return <p className="mt-4 text-base leading-[1.75] text-fg-muted">{b.text}</p>;
     case "list":
       return (
-        <ul className="mt-4 space-y-2">
+        <ul className="mt-4 max-w-[68ch] space-y-2">
           {b.items.map((it) => (
-            <li key={it} className="flex gap-3 text-[17px] leading-relaxed text-fg-muted">
+            <li key={it} className="flex gap-3 text-base leading-relaxed text-fg-muted">
               <span className="mt-[11px] size-1.5 shrink-0 rounded-full bg-green" aria-hidden />
               {it}
             </li>
@@ -36,7 +36,7 @@ function Block({ b }: { b: LessonBlock }) {
       return (
         <div
           className={clsx(
-            "mt-6 flex gap-3 rounded-2xl border p-5 text-[15px] leading-relaxed",
+            "mt-6 flex gap-3 rounded-2xl border p-5 text-sm leading-relaxed",
             b.tone === "tip" ? "border-green/30 bg-green/8 text-fg" : "border-warning/30 bg-warning/8 text-fg",
           )}
         >
@@ -51,7 +51,7 @@ function Block({ b }: { b: LessonBlock }) {
     case "table":
       return (
         <div className="mt-6 overflow-x-auto rounded-2xl border border-border">
-          <table className="w-full min-w-[480px] text-left text-[15px]">
+          <table className="w-full min-w-[480px] text-left text-sm">
             <thead className="bg-surface-strong text-fg">
               <tr>
                 {b.head.map((h) => (
@@ -61,9 +61,9 @@ function Block({ b }: { b: LessonBlock }) {
                 ))}
               </tr>
             </thead>
-            <tbody className="divide-y divide-border text-fg-muted">
+            <tbody className="text-fg-muted">
               {b.rows.map((r, i) => (
-                <tr key={i}>
+                <tr key={i} className={clsx(i % 2 === 1 && "bg-surface")}>
                   {r.map((c, j) => (
                     <td key={j} className={clsx("px-4 py-3", j === 0 && "text-fg")}>
                       {c}
@@ -88,25 +88,25 @@ export default async function LessonPage({ params }: PageProps<"/portal/study/[s
   const next = siblings[siblings.findIndex((l) => l.slug === lesson.slug) + 1];
 
   return (
-    <article className="mx-auto max-w-[720px]">
-      <Link href="/portal/study" className="mb-6 inline-flex min-h-10 items-center gap-2 text-sm text-fg-muted hover:text-accent">
+    <article className="max-w-[720px]">
+      <Link href="/portal/study" className="mb-6 inline-flex min-h-10 items-center gap-2 text-sm text-fg-muted">
         <ArrowLeft size={14} aria-hidden />
         All study guides
       </Link>
-      <p className="text-sm uppercase tracking-[0.14em] text-green">
+      <p className="annot text-accent">
         Area {area?.numeral} · {area?.name}
       </p>
-      <h1 className="mt-3 font-display text-[clamp(2rem,5vw,3rem)] leading-tight">{lesson.title}</h1>
+      <h1 className="mt-3 font-display text-2xl sm:text-3xl leading-tight">{lesson.title}</h1>
       <p className="mt-3 text-lg text-fg-muted">{lesson.summary}</p>
       <p className="mt-4 text-sm text-fg-subtle">{lesson.minutes} min read · Sources: {lesson.reference}</p>
 
-      <div className="mt-8 border-t border-border pt-2">
+      <div className="mt-10">
         {lesson.blocks.map((b, i) => (
           <Block key={i} b={b} />
         ))}
       </div>
 
-      <div className="mt-14 flex flex-col gap-4 rounded-[24px] border border-green/30 bg-gradient-to-br from-green/12 to-transparent p-7 sm:flex-row sm:items-center sm:justify-between">
+      <div className="mt-14 flex flex-col gap-4 rounded-[24px] border border-green/40 bg-surface p-7 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <p className="font-display text-xl">Think you&rsquo;ve got it?</p>
           <p className="mt-1 text-fg-muted">Have the examiner question you on this topic out loud.</p>
@@ -118,7 +118,7 @@ export default async function LessonPage({ params }: PageProps<"/portal/study/[s
       </div>
 
       {next && (
-        <Link href={`/portal/study/${next.slug}`} className="card mt-4 flex items-center justify-between p-6 transition-colors hover:border-green/40">
+        <Link href={`/portal/study/${next.slug}`} className="card mt-4 flex items-center justify-between p-6">
           <span>
             <span className="block text-sm text-fg-subtle">Next lesson</span>
             <span className="font-display text-lg">{next.title}</span>

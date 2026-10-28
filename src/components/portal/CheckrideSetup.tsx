@@ -21,9 +21,9 @@ interface Picked {
 const KIND_LABEL: Record<Kind, string> = { plan: "Cross-country plan", poh: "Aircraft POH / AFM", other: "Other" };
 
 function FileIcon({ mime }: { mime: string }) {
-  if (mime === "application/pdf") return <FilePdf size={20} className="text-green" aria-hidden />;
-  if (mime.startsWith("image/")) return <ImageIcon size={20} className="text-green" aria-hidden />;
-  return <FileText size={20} className="text-green" aria-hidden />;
+  if (mime === "application/pdf") return <FilePdf size={20} className="text-accent" aria-hidden />;
+  if (mime.startsWith("image/")) return <ImageIcon size={20} className="text-accent" aria-hidden />;
+  return <FileText size={20} className="text-accent" aria-hidden />;
 }
 
 export function CheckrideSetup({ userId }: { userId: string }) {
@@ -126,7 +126,7 @@ export function CheckrideSetup({ userId }: { userId: string }) {
             id={`${inputId}-kind`}
             value={kindForNext}
             onChange={(e) => setKindForNext(e.target.value as Kind)}
-            className="h-11 cursor-pointer rounded-xl border border-border-strong bg-inset px-3 text-[15px] text-fg focus:border-green focus:outline-none"
+            className="h-11 cursor-pointer rounded-xl border border-border-strong bg-inset px-3 text-sm text-fg focus:border-green focus:outline-none"
           >
             <option value="plan">Cross-country plan / nav log</option>
             <option value="poh">Aircraft POH / AFM</option>
@@ -143,7 +143,7 @@ export function CheckrideSetup({ userId }: { userId: string }) {
               <li key={i} className="flex items-center gap-3 rounded-xl border border-border bg-inset px-4 py-3">
                 <FileIcon mime={p.file.type} />
                 <span className="min-w-0 flex-1">
-                  <span className="block truncate text-[15px] text-fg">{p.file.name}</span>
+                  <span className="block truncate text-sm text-fg">{p.file.name}</span>
                   <span className="block text-xs text-fg-subtle">
                     {KIND_LABEL[p.kind]} · {(p.file.size / 1024 / 1024).toFixed(1)} MB
                   </span>
@@ -152,7 +152,7 @@ export function CheckrideSetup({ userId }: { userId: string }) {
                   type="button"
                   onClick={() => setFiles((prev) => prev.filter((_, j) => j !== i))}
                   aria-label={`Remove ${p.file.name}`}
-                  className="grid size-10 cursor-pointer place-items-center rounded-lg text-fg-subtle hover:bg-surface-strong hover:text-fg"
+                  className="grid size-10 cursor-pointer place-items-center rounded-lg text-fg-subtle"
                 >
                   <Trash size={18} aria-hidden />
                 </button>
@@ -167,7 +167,7 @@ export function CheckrideSetup({ userId }: { userId: string }) {
       </fieldset>
 
       {error && (
-        <p role="alert" className="rounded-xl border border-danger/40 bg-danger/10 px-4 py-3 text-[15px] text-fg">
+        <p role="alert" className="rounded-xl border border-danger/40 bg-danger/10 px-4 py-3 text-sm text-fg">
           {error}
         </p>
       )}

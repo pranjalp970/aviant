@@ -1,11 +1,11 @@
 "use client";
 
 import { List, X } from "@phosphor-icons/react";
-import clsx from "clsx";
-import { motion, useMotionValueEvent, useScroll, useSpring } from "motion/react";
+import { motion, useScroll, useSpring } from "motion/react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { Logo } from "@/components/brand/Logo";
+import { cta } from "./cta";
 
 const LINKS = [
   { href: "/#route", label: "How it works" },
@@ -16,13 +16,10 @@ const LINKS = [
 ];
 
 export function SiteHeader() {
-  const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
-  const { scrollY, scrollYProgress } = useScroll();
-  // the thin line under the bar is the page's "flight progress"
+  const { scrollYProgress } = useScroll();
+  // the hairline under the bar fills with the page's "flight progress"
   const progress = useSpring(scrollYProgress, { stiffness: 140, damping: 30, mass: 0.4 });
-
-  useMotionValueEvent(scrollY, "change", (y) => setScrolled(y > 24));
 
   useEffect(() => {
     if (!open) return;
@@ -32,22 +29,17 @@ export function SiteHeader() {
   }, [open]);
 
   return (
-    <header
-      className={clsx(
-        "fixed inset-x-0 top-0 z-50 transition-[background-color,border-color] duration-300",
-        scrolled || open ? "border-b border-border bg-bg/80 backdrop-blur-xl" : "border-b border-transparent",
-      )}
-    >
+    <header className="fixed inset-x-0 top-0 z-50 bg-bg/90 backdrop-blur-md">
       <div className="mx-auto flex h-16 max-w-[1320px] items-center justify-between gap-6 px-5 sm:px-8">
         <Link href="/" aria-label="Aviant home" className="text-xl">
           <Logo />
         </Link>
 
         <nav aria-label="Main" className="hidden lg:block">
-          <ul className="flex items-center gap-1">
+          <ul className="flex items-center gap-8">
             {LINKS.map((l) => (
               <li key={l.href}>
-                <Link href={l.href} className="rounded-lg px-3 py-2 text-[15px] text-fg-muted transition-colors hover:text-fg">
+                <Link href={l.href} className="annot text-fg-muted">
                   {l.label}
                 </Link>
               </li>
@@ -55,40 +47,46 @@ export function SiteHeader() {
           </ul>
         </nav>
 
-        <div className="flex items-center gap-2">
-          <Link href="/login" className="hidden h-10 items-center rounded-lg px-3 text-[15px] text-fg-muted transition-colors hover:text-fg sm:flex">
+        <div className="flex items-center gap-4">
+          <Link href="/login" className="annot hidden text-fg-muted sm:block">
             Log in
           </Link>
-          <Link
-            href="/signup"
-            className="flex h-10 items-center rounded-[10px] bg-lime px-4 text-[15px] font-medium text-on-accent transition-colors hover:bg-fg hover:text-bg"
-          >
-            Start training
-          </Link>
+          <span className="hidden sm:block">
+            <Link href="/signup" className={cta.primary("h-10 whitespace-nowrap px-4")}>
+              Start training
+            </Link>
+          </span>
           <button
             type="button"
             onClick={() => setOpen((v) => !v)}
             aria-expanded={open}
             aria-controls="site-menu"
             aria-label={open ? "Close menu" : "Open menu"}
-            className="grid size-11 cursor-pointer place-items-center rounded-lg text-fg-muted hover:text-fg lg:hidden"
+            className="grid size-11 cursor-pointer place-items-center text-fg-muted lg:hidden"
           >
             {open ? <X size={20} aria-hidden /> : <List size={20} aria-hidden />}
           </button>
         </div>
       </div>
 
-      <motion.div aria-hidden style={{ scaleX: progress }} className="h-px origin-left bg-green/70" />
+      <div className="relative h-px bg-border">
+        <motion.div aria-hidden style={{ scaleX: progress }} className="absolute inset-0 origin-left bg-green/70" />
+      </div>
 
-      <div id="site-menu" hidden={!open} className="border-t border-border lg:hidden">
-        <ul className="mx-auto flex max-w-[1320px] flex-col px-5 py-3 sm:px-8">
+      <div id="site-menu" hidden={!open} className="lg:hidden">
+        <ul className="mx-auto flex max-w-[1320px] flex-col px-5 pb-6 pt-3 sm:px-8">
           {[...LINKS, { href: "/login", label: "Log in" }].map((l) => (
             <li key={l.href}>
-              <Link href={l.href} onClick={() => setOpen(false)} className="flex min-h-12 items-center border-b border-border text-lg text-fg-muted last:border-0 hover:text-fg">
+              <Link href={l.href} onClick={() => setOpen(false)} className="annot flex min-h-12 items-center text-fg-muted">
                 {l.label}
               </Link>
             </li>
           ))}
+          <li className="pt-4 sm:hidden">
+            <Link href="/signup" onClick={() => setOpen(false)} className={cta.primary("w-full")}>
+              Start training
+            </Link>
+          </li>
         </ul>
       </div>
     </header>

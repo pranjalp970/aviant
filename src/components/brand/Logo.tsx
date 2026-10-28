@@ -20,7 +20,7 @@ export function Logo({ className, withWordmark = true }: { className?: string; w
     <span className={clsx("inline-flex items-center gap-2.5", className)}>
       <PlaneMark className="h-[1.1em] w-auto text-accent" />
       {withWordmark && (
-        <span className="font-sans text-[1.15em] font-light leading-none tracking-[0.01em] text-green">aviant</span>
+        <span className="font-sans text-[1.15em] font-light leading-none tracking-[0.01em] text-accent">aviant</span>
       )}
     </span>
   );

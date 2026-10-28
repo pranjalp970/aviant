@@ -35,7 +35,7 @@ function Dial({ g, index }: { g: Gauge; index: number }) {
   const ticks = Array.from({ length: g.max / g.minor + 1 }, (_, i) => i * g.minor);
   return (
     <figure className="flex flex-col items-center">
-      <div className="relative aspect-square w-full max-w-[240px] rounded-full bg-[#1a1d19] p-[6%] shadow-[inset_0_2px_3px_rgba(255,255,255,0.08),0_20px_40px_-20px_rgba(0,0,0,0.8)]">
+      <div className="relative aspect-square w-full max-w-[240px] bg-[#1a1d19] p-[6%]">
         <svg viewBox="-100 -100 200 200" className="size-full" role="img" aria-label={`${g.label}: ${g.value} ${g.unit}`}>
           <circle r="98" fill="#070807" stroke="#2c312b" strokeWidth="2" />
           {g.green && <path d={arc(angleOf(g.green[0], g.max), angleOf(g.green[1], g.max), 84)} stroke="#87da81" strokeWidth="6" fill="none" />}
@@ -79,10 +79,10 @@ function Dial({ g, index }: { g: Gauge; index: number }) {
         </svg>
         {/* panel screws */}
         {["left-0 top-0", "right-0 top-0", "left-0 bottom-0", "right-0 bottom-0"].map((pos) => (
-          <span key={pos} aria-hidden className={`absolute ${pos} size-2.5 rounded-full bg-[#2a2f29] shadow-[inset_0_1px_0_rgba(255,255,255,0.15)]`} />
+          <span key={pos} aria-hidden className={`absolute ${pos} size-2.5  bg-[#2a2f29]`} />
         ))}
       </div>
-      <figcaption className="mt-5 max-w-[220px] text-center text-[14px] leading-snug text-[#a3aba0]">{g.caption}</figcaption>
+      <figcaption className="mt-5 max-w-[220px] text-center text-sm text-[#a3aba0]">{g.caption}</figcaption>
     </figure>
   );
 }
@@ -91,11 +91,11 @@ function Dial({ g, index }: { g: Gauge; index: number }) {
 export function Instruments() {
   return (
     <section id="instruments" className="scroll-mt-16 px-3 py-24 sm:px-5 sm:py-32">
-      <div className="mx-auto max-w-[1320px] overflow-hidden rounded-[28px] border border-white/10 bg-[#0b0d0b] text-[#f4f7f2]">
+      <div className="mx-auto max-w-[1320px] overflow-hidden border border-white/10 bg-[#0b0d0b] text-[#f4f7f2]">
         <div className="grid gap-8 border-b border-white/10 px-6 py-12 sm:px-10 md:grid-cols-[1fr_1fr] md:items-end md:py-16">
           <div>
             <p className="annot text-[#87da81]">Your instrument panel</p>
-            <h2 className="mt-5 max-w-lg font-display text-[clamp(2.1rem,4.2vw,3.4rem)] leading-[1.03] tracking-[-0.015em]">
+            <h2 className="mt-5 max-w-lg font-display text-3xl tracking-[-0.015em] md:text-4xl">
               Know you&rsquo;re ready. Don&rsquo;t guess.
             </h2>
           </div>

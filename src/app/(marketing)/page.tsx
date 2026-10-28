@@ -1,13 +1,13 @@
-import { ArrowRight, Check } from "@phosphor-icons/react/dist/ssr";
+import { ArrowRight, Check, Plus } from "@phosphor-icons/react/dist/ssr";
 import Link from "next/link";
 import { AcsTicker } from "@/components/marketing/AcsTicker";
-import { ChartBorder, CompassRose, Contours } from "@/components/marketing/ChartMarks";
+import { ChartBorder, CompassRose } from "@/components/marketing/ChartMarks";
+import { cta } from "@/components/marketing/cta";
 import { DemoWidget } from "@/components/marketing/DemoWidget";
 import { FlightRoute } from "@/components/marketing/FlightRoute";
 import { HeroFlight } from "@/components/marketing/HeroFlight";
 import { Instruments } from "@/components/marketing/Instruments";
 import { RunwayFinale } from "@/components/marketing/RunwayFinale";
-import { buttonClass } from "@/components/ui/button";
 import { Reveal } from "@/components/ui/Reveal";
 
 const PLANS = [
@@ -32,6 +32,27 @@ const PLANS = [
     note: "per seat",
     status: "Planned",
     features: ["Student seats and cohorts", "Instructor dashboards", "Progress sharing with CFIs", "Custom syllabus mapping"],
+  },
+];
+
+const PATHS = [
+  {
+    title: "I'm studying for the written",
+    body: "Drill all 306 practice questions, take timed mock tests, and see a predicted score before you book the exam.",
+    link: "Start with the written",
+    href: "/signup",
+  },
+  {
+    title: "My checkride is coming up",
+    body: "Rehearse the oral with an examiner that asks follow-ups on weak answers and grades you against the ACS.",
+    link: "Rehearse the oral",
+    href: "/signup",
+  },
+  {
+    title: "I teach student pilots",
+    body: "Instructor dashboards and progress sharing are on the way. Your students can start on their own today.",
+    link: "See flight school plans",
+    href: "/#pricing",
   },
 ];
 
@@ -62,14 +83,15 @@ const FAQ = [
   },
 ];
 
-function SectionHead({ eyebrow, title, children }: { eyebrow: string; title: React.ReactNode; children?: React.ReactNode }) {
+/** Panoptical-style section opening: the label sits in its own column, the heading beside it. */
+function SectionHead({ label, title, children }: { label: string; title: React.ReactNode; children?: React.ReactNode }) {
   return (
-    <div className="grid gap-6 md:grid-cols-2 md:items-end">
+    <div className="grid gap-5 md:grid-cols-[180px_minmax(0,1fr)] md:gap-10">
+      <p className="annot pt-2 text-fg-subtle">{label}</p>
       <div>
-        <p className="annot text-fg-subtle">{eyebrow}</p>
-        <h2 className="mt-5 max-w-xl font-display text-[clamp(2.1rem,4.2vw,3.4rem)] leading-[1.03] tracking-[-0.015em]">{title}</h2>
+        <h2 className="max-w-2xl font-display text-3xl tracking-[-0.015em] md:text-4xl">{title}</h2>
+        {children && <p className="mt-5 max-w-[52ch] text-fg-muted">{children}</p>}
       </div>
-      {children && <div className="max-w-md text-fg-muted md:justify-self-end">{children}</div>}
     </div>
   );
 }
@@ -77,39 +99,80 @@ function SectionHead({ eyebrow, title, children }: { eyebrow: string; title: Rea
 export default function Home() {
   return (
     <>
-      <HeroFlight
-        contours={<Contours className="size-full" />}
-        rose={<CompassRose className="size-full" />}
-        border={<ChartBorder className="absolute inset-0" />}
-      />
+      <HeroFlight border={<ChartBorder className="absolute inset-0" />} rose={<CompassRose className="size-full" />} />
 
       <AcsTicker />
 
-      <FlightRoute />
+      {/* ── Who it's for ─────────────────────────────────────── */}
+      <section aria-labelledby="paths" className="mx-auto max-w-[1320px] px-5 py-28 sm:px-8 sm:py-36">
+        <Reveal className="text-center">
+          <p className="annot mx-auto text-fg-subtle">Start where you are</p>
+          <h2 id="paths" className="mx-auto mt-5 font-display text-3xl tracking-[-0.015em] md:text-4xl">
+            Where are you in training?
+          </h2>
+        </Reveal>
+        <ul className="mt-14 grid gap-4 md:grid-cols-3">
+          {PATHS.map((p, i) => (
+            <Reveal as="li" key={p.title} delay={i * 0.06}>
+              <Link href={p.href} className="flex h-full flex-col border border-border-strong bg-bg-elevated p-7">
+                <h3 className="font-display text-xl">{p.title}</h3>
+                <p className="mt-3 flex-1 text-fg-muted">{p.body}</p>
+                <span className="annot mt-8 inline-flex items-center gap-2 text-accent">
+                  <ArrowRight size={12} weight="bold" aria-hidden /> {p.link}
+                </span>
+              </Link>
+            </Reveal>
+          ))}
+        </ul>
+      </section>
+
+      <div className="border-t border-border">
+        <FlightRoute />
+      </div>
 
       <Instruments />
 
+      {/* ── What we do / what we don't ───────────────────────── */}
+      <section className="border-t border-border">
+        <Reveal className="mx-auto grid max-w-[1320px] gap-5 px-5 py-24 sm:px-8 md:grid-cols-[180px_minmax(0,1fr)] md:gap-10 md:py-32">
+          <p className="annot pt-1.5 text-fg-subtle">What Aviant does</p>
+          <p className="max-w-[60ch] text-lg text-fg-muted md:text-xl">
+            Student pilots study alone most of the week, and the oral is the part nobody can cram from a book. Aviant gives you a CFI who
+            explains things out loud and an examiner who asks the follow-up you were hoping to avoid. It keeps track of what you know, what
+            you keep missing, and how many days you have left.
+          </p>
+        </Reveal>
+      </section>
+      <section className="border-t border-border">
+        <Reveal className="mx-auto max-w-[1320px] px-5 py-24 text-center sm:px-8 md:py-32">
+          <h2 className="mx-auto font-display text-3xl tracking-[-0.015em] md:text-4xl">We don&rsquo;t sign you off.</h2>
+          <p className="mx-auto mt-6 max-w-[56ch] text-fg-muted">
+            Only your CFI can endorse you, and only an examiner can pass you. Aviant gets you ready for both. Every answer cites the
+            regulation, the AIM, or the handbook it came from, and when the material doesn&rsquo;t cover something, it says so instead of
+            guessing.
+          </p>
+        </Reveal>
+      </section>
+
       {/* ── Demo ─────────────────────────────────────────────── */}
-      <section id="demo" className="scroll-mt-16 px-5 pb-28 sm:px-8 sm:pb-36">
+      <section id="demo" className="scroll-mt-16 border-t border-border px-5 py-28 sm:px-8 sm:py-36">
         <div className="mx-auto grid max-w-[1320px] grid-cols-1 gap-12 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:gap-16">
           <Reveal>
             <p className="annot text-fg-subtle">Try it now</p>
-            <h2 className="mt-5 font-display text-[clamp(2.1rem,4.2vw,3.4rem)] leading-[1.03] tracking-[-0.015em]">
-              Face the examiner. No account needed.
-            </h2>
-            <p className="mt-5 max-w-md text-fg-muted">
-              A real question from the Private Pilot oral. Answer it the way you would on checkride day, and Aviant grades you against the ACS
-              key points.
+            <h2 className="mt-5 font-display text-3xl tracking-[-0.015em] md:text-4xl">Face the examiner. No account needed.</h2>
+            <p className="mt-5 max-w-[44ch] text-fg-muted">
+              A real question from the Private Pilot oral. Answer it the way you would on checkride day, and Aviant grades you against
+              the ACS key points.
             </p>
-            <dl className="mt-10 max-w-md divide-y divide-border border-y border-border text-[15px]">
+            <dl className="mt-10 max-w-md text-sm">
               {[
                 ["Area", "I · Preflight Preparation"],
                 ["Task", "B · Airworthiness Requirements"],
                 ["Graded on", "ACS knowledge elements"],
               ].map(([k, v]) => (
-                <div key={k} className="flex justify-between gap-6 py-3">
+                <div key={k} className="grid grid-cols-[120px_1fr] gap-4 border-t border-border py-3 last:border-b">
                   <dt className="annot pt-0.5 text-fg-subtle">{k}</dt>
-                  <dd className="text-right text-fg">{v}</dd>
+                  <dd className="text-fg">{v}</dd>
                 </div>
               ))}
             </dl>
@@ -121,39 +184,41 @@ export default function Home() {
       </section>
 
       {/* ── Pricing ──────────────────────────────────────────── */}
-      <section id="pricing" className="scroll-mt-16 px-5 pb-28 sm:px-8 sm:pb-36">
+      <section id="pricing" className="scroll-mt-16 border-t border-border px-5 py-28 sm:px-8 sm:py-36">
         <div className="mx-auto max-w-[1320px]">
-          <SectionHead eyebrow="Pricing" title="Free while we're in beta.">
-            Full access, no card required. Paid plans arrive after launch, and beta pilots will hear first.
-          </SectionHead>
+          <Reveal>
+            <SectionHead label="Pricing" title="Free while we're in beta.">
+              Full access, no card required. Paid plans arrive after launch, and beta pilots will hear first.
+            </SectionHead>
+          </Reveal>
           <div className="mt-14 border-t border-border-strong">
             {PLANS.map((p, i) => (
               <Reveal
                 key={p.name}
                 delay={i * 0.06}
-                className="grid gap-6 border-b border-border py-9 md:grid-cols-[minmax(0,4fr)_minmax(0,6fr)_minmax(0,3fr)] md:gap-10"
+                className="grid gap-6 border-b border-border py-9 md:grid-cols-[180px_minmax(0,4fr)_minmax(0,6fr)_auto] md:gap-10"
               >
+                <p className={`annot pt-1.5 ${p.cta ? "text-accent" : "text-fg-subtle"}`}>{p.status}</p>
                 <div>
-                  <p className={`annot ${p.cta ? "text-accent" : "text-fg-subtle"}`}>{p.status}</p>
-                  <h3 className="mt-3 font-display text-2xl">{p.name}</h3>
-                  <p className="mt-4 flex items-baseline gap-2">
-                    <span className={`font-display text-5xl ${p.cta ? "text-fg" : "text-fg-subtle"}`}>{p.price}</span>
+                  <h3 className="font-display text-xl">{p.name}</h3>
+                  <p className="mt-3 flex items-baseline gap-2">
+                    <span className={`font-display text-4xl ${p.cta ? "text-fg" : "text-fg-subtle"}`}>{p.price}</span>
                     <span className="text-fg-subtle">{p.note}</span>
                   </p>
                 </div>
                 <ul className="grid content-start gap-x-8 gap-y-2.5 sm:grid-cols-2">
                   {p.features.map((f) => (
-                    <li key={f} className={`flex items-start gap-3 text-[15px] ${p.cta ? "text-fg" : "text-fg-muted"}`}>
-                      <Check size={15} weight="bold" className={`mt-1 shrink-0 ${p.cta ? "text-accent" : "text-fg-subtle"}`} aria-hidden />
+                    <li key={f} className={`flex items-start gap-3 text-sm ${p.cta ? "text-fg" : "text-fg-muted"}`}>
+                      <Check size={14} weight="bold" className={`mt-1 shrink-0 ${p.cta ? "text-accent" : "text-fg-subtle"}`} aria-hidden />
                       {f}
                     </li>
                   ))}
                 </ul>
                 <div className="md:justify-self-end">
                   {p.cta ? (
-                    <Link href={p.cta.href} className={buttonClass("primary", "md", "w-full md:w-auto")}>
+                    <Link href={p.cta.href} className={cta.primary("w-full md:w-auto")}>
                       {p.cta.label}
-                      <ArrowRight size={15} weight="bold" aria-hidden />
+                      <ArrowRight size={14} weight="bold" aria-hidden />
                     </Link>
                   ) : (
                     <span className="annot text-fg-subtle">After launch</span>
@@ -166,24 +231,21 @@ export default function Home() {
       </section>
 
       {/* ── FAQ ──────────────────────────────────────────────── */}
-      <section id="faq" className="scroll-mt-16 px-5 pb-12 sm:px-8">
+      <section id="faq" className="scroll-mt-16 border-t border-border px-5 py-28 sm:px-8 sm:py-36">
         <div className="mx-auto grid max-w-[1320px] grid-cols-1 gap-10 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:gap-16">
           <div className="lg:sticky lg:top-28 lg:self-start">
             <p className="annot text-fg-subtle">FAQ</p>
-            <h2 className="mt-5 font-display text-[clamp(2.1rem,4.2vw,3.4rem)] leading-[1.03] tracking-[-0.015em]">Questions, answered.</h2>
+            <h2 className="mt-5 font-display text-3xl tracking-[-0.015em] md:text-4xl">Questions, answered.</h2>
           </div>
           <div className="border-t border-border-strong">
             {FAQ.map((f, i) => (
               <details key={f.q} className="group border-b border-border">
-                <summary className="flex min-h-16 cursor-pointer list-none items-baseline gap-5 py-6 text-lg text-fg transition-colors hover:text-accent [&::-webkit-details-marker]:hidden">
+                <summary className="flex min-h-16 cursor-pointer list-none items-baseline gap-5 py-6 text-lg text-fg [&::-webkit-details-marker]:hidden">
                   <span className="annot w-8 shrink-0 text-fg-subtle">{String(i + 1).padStart(2, "0")}</span>
                   <span className="flex-1">{f.q}</span>
-                  <span className="relative top-[-3px] size-3.5 shrink-0 self-center" aria-hidden>
-                    <span className="absolute inset-x-0 top-1/2 h-px bg-current" />
-                    <span className="absolute inset-y-0 left-1/2 w-px bg-current transition-transform duration-300 group-open:rotate-90 group-open:opacity-0" />
-                  </span>
+                  <Plus size={16} className="shrink-0 self-center text-fg-subtle transition-transform duration-300 group-open:rotate-45" aria-hidden />
                 </summary>
-                <p className="max-w-2xl pb-7 pl-[52px] text-fg-muted">{f.a}</p>
+                <p className="pb-7 pl-[52px] text-fg-muted">{f.a}</p>
               </details>
             ))}
           </div>

@@ -1,52 +1,52 @@
 @import "tailwindcss";
 
 /* ─────────────────────────────────────────────────────────────
-   Aviant design tokens
-   Brand kit: #000000 · #87DA81 · #E5FFBB — Tenor Sans / Afacad Flux
+   Aviant design system
+   One accent (green) · Tenor Sans display, Afacad Flux body, JetBrains Mono labels
+   Major-third type scale on a 16px base
    ───────────────────────────────────────────────────────────── */
 :root {
-  --bg: #000000;
-  --bg-elevated: #0a0c0a;
-  --surface: rgba(255, 255, 255, 0.04);
-  --surface-strong: rgba(255, 255, 255, 0.07);
-  --border: rgba(255, 255, 255, 0.09);
-  --border-strong: rgba(255, 255, 255, 0.16);
+  --bg: #050506; /* warm near-black, not pure black */
+  --bg-elevated: #0c0c0d;
+  --surface: rgba(255, 255, 255, 0.035);
+  --surface-strong: rgba(255, 255, 255, 0.065);
+  --border: rgba(255, 255, 255, 0.08); /* hairlines */
+  --border-strong: rgba(255, 255, 255, 0.15);
 
-  --fg: #f4f7f2;
-  --fg-muted: #a3aba0; /* 8.4:1 on black */
-  --fg-subtle: #7b8478; /* 5.0:1 on black */
+  --fg: #ecebe8; /* warm off-white */
+  --fg-muted: #a5a4a0; /* 8.2:1 */
+  --fg-subtle: #7f7e7a; /* 5.0:1 */
 
+  /* The single accent. "lime" is kept as an alias so older class names resolve to it. */
   --green: #87da81;
-  --lime: #e5ffbb;
+  --lime: var(--green);
   --green-deep: #3f7a3b;
-  --on-accent: #051204;
+  --on-accent: #051204; /* text on the accent */
 
   --danger: #ff8a7a;
   --warning: #ffd27a;
 
-  --panel: #050605; /* sidebars, page frame */
-  --card-solid: #0a0c0a; /* opaque card colour (ring centres) */
+  --panel: #09090a; /* sidebars */
+  --card-solid: #0c0c0d;
   --inset: rgba(0, 0, 0, 0.45); /* inputs and wells inside cards */
-  --track: rgba(255, 255, 255, 0.08); /* empty part of progress rings */
-  --accent-text: var(--lime); /* accent-coloured text and links */
-  --on-green: #051204; /* text on solid green */
+  --track: rgba(255, 255, 255, 0.1); /* empty part of progress bars */
+  --accent-text: var(--green);
+  --on-green: var(--on-accent);
+  --orb-highlight: #e5ffbb; /* voice orb only */
 
   --radius-sm: 10px;
   --radius-md: 16px;
   --radius-lg: 24px;
   --radius-xl: 36px;
-
-  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
-  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
 }
 
-/* Light theme: same brand, deeper greens so accents stay readable on white
+/* Light theme: a deeper green so the accent stays readable on white
    (all text tokens ≥ 4.5:1 on --bg and on cards). */
 [data-theme="light"] {
   --bg: #f3f5f0;
   --bg-elevated: #ffffff;
   --surface: #ffffff;
-  --surface-strong: #eef1ea;
+  --surface-strong: #eaeee6;
   --border: rgba(15, 30, 15, 0.1);
   --border-strong: rgba(15, 30, 15, 0.18);
 
@@ -55,19 +55,18 @@
   --fg-subtle: #646e61;
 
   --green: #2f7d2b;
-  --lime: #c8ef80;
   --green-deep: #2f7d2b;
-  --on-accent: #051204;
+  --on-accent: #ffffff;
 
   --danger: #c0392b;
   --warning: #9a5b00;
 
-  --panel: #ffffff;
+  --panel: #e9ede5;
   --card-solid: #ffffff;
   --inset: #f7f9f5;
   --track: rgba(15, 30, 15, 0.1);
   --accent-text: #2b6a27;
-  --on-green: #ffffff;
+  --orb-highlight: #c8ef80;
 }
 
 @theme inline {
@@ -95,20 +94,45 @@
 
   --font-display: var(--font-tenor), ui-sans-serif, system-ui, sans-serif;
   --font-sans: var(--font-afacad), ui-sans-serif, system-ui, sans-serif;
-  --font-mono: var(--font-plex-mono), ui-monospace, SFMono-Regular, Menlo, monospace;
+  --font-mono: var(--font-jbmono), ui-monospace, "SF Mono", Menlo, monospace;
 
   --radius-sm: var(--radius-sm);
   --radius-md: var(--radius-md);
   --radius-lg: var(--radius-lg);
   --radius-xl: var(--radius-xl);
 
-  --ease-out: var(--ease-out);
+  /* No shadow utilities. */
+  --shadow-*: initial;
+  --inset-shadow-*: initial;
+  --drop-shadow-*: initial;
+
+  /* Type scale: major third (×1.25) from 16px, plus 14px for dense UI. */
+  --text-*: initial;
+  --text-xs: 0.8rem; /* 12.8 */
+  --text-xs--line-height: 1.5;
+  --text-sm: 0.875rem; /* 14 */
+  --text-sm--line-height: 1.5;
+  --text-base: 1rem; /* 16 */
+  --text-base--line-height: 1.6;
+  --text-lg: 1.25rem; /* 20 */
+  --text-lg--line-height: 1.45;
+  --text-xl: 1.5625rem; /* 25 */
+  --text-xl--line-height: 1.3;
+  --text-2xl: 1.953rem; /* 31.25 */
+  --text-2xl--line-height: 1.2;
+  --text-3xl: 2.441rem; /* 39 */
+  --text-3xl--line-height: 1.1;
+  --text-4xl: 3.052rem; /* 48.8 */
+  --text-4xl--line-height: 1.05;
+  --text-5xl: 3.815rem; /* 61 */
+  --text-5xl--line-height: 1;
+  --text-6xl: 4.768rem; /* 76.3 */
+  --text-6xl--line-height: 0.98;
 }
 
 html {
   background: var(--bg);
   color-scheme: dark;
-  transition: background-color 0.2s var(--ease-out);
   scroll-behavior: smooth;
 }
 
@@ -132,9 +156,22 @@ body {
   background: var(--bg);
   color: var(--fg);
   font-family: var(--font-sans);
-  font-size: 17px;
+  font-size: 1rem;
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
+}
+
+/* Keep running text under ~70 characters per line. */
+p,
+dd,
+blockquote,
+figcaption,
+h1,
+h2,
+h3,
+h4,
+legend {
+  max-width: 68ch;
 }
 
 ::selection {
@@ -143,22 +180,15 @@ body {
 }
 
 :focus-visible {
-  outline: 2px solid var(--lime);
+  outline: 2px solid var(--green);
   outline-offset: 3px;
   border-radius: 6px;
 }
 
-/* ── Glass surfaces ─────────────────────────────────────────── */
+/* Legacy surface names, now flat: solid fill and a hairline outline, no blur or shadow. */
 .glass {
-  background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.03)),
-    rgba(8, 10, 8, 0.66);
+  background: var(--bg-elevated);
   border: 1px solid var(--border-strong);
-  backdrop-filter: blur(18px) saturate(140%);
-  -webkit-backdrop-filter: blur(18px) saturate(140%);
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.12),
-    0 10px 40px -12px rgba(0, 0, 0, 0.7);
 }
 
 .card {
@@ -174,7 +204,6 @@ body {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
-    scroll-behavior: auto !important;
   }
 }
 
@@ -188,25 +217,54 @@ body {
   50% { transform: scale(1.08); }
 }
 
-/* ── Light-theme adjustments for effects tuned on black ── */
-[data-theme="light"] .glass {
-  background: rgba(255, 255, 255, 0.75);
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.9),
-    0 10px 30px -14px rgba(15, 30, 15, 0.25);
-}
-[data-theme="light"] .bg-lime {
-  /* lime fill is close to the light background; outline it */
-  box-shadow: inset 0 0 0 1px rgba(47, 125, 43, 0.45);
-}
-
-/* ── Marketing: chart & instrument details ───────────────────── */
-/* Small mono annotation used like labels on a sectional chart */
+/* Small uppercase mono label: nav, buttons, section names, readouts */
 .annot {
   font-family: var(--font-mono);
-  font-size: 11.5px;
-  letter-spacing: 0.08em;
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Wide-tracked accent tagline, as on a nameplate */
+.tagline {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  font-weight: 500;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: var(--accent-text);
+}
+
+/* Outline call to action marked only by corner brackets */
+.bracket {
+  position: relative;
+  isolation: isolate;
+}
+.bracket::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  border: 1px solid var(--fg-muted);
+  -webkit-mask:
+    linear-gradient(#000 0 0) top left / 10px 10px no-repeat,
+    linear-gradient(#000 0 0) top right / 10px 10px no-repeat,
+    linear-gradient(#000 0 0) bottom left / 10px 10px no-repeat,
+    linear-gradient(#000 0 0) bottom right / 10px 10px no-repeat;
+  mask:
+    linear-gradient(#000 0 0) top left / 10px 10px no-repeat,
+    linear-gradient(#000 0 0) top right / 10px 10px no-repeat,
+    linear-gradient(#000 0 0) bottom left / 10px 10px no-repeat,
+    linear-gradient(#000 0 0) bottom right / 10px 10px no-repeat;
+}
+/* The thin line under "Scroll" that keeps travelling down */
+@keyframes cue {
+  0% { transform: scaleY(0); transform-origin: top; }
+  45% { transform: scaleY(1); transform-origin: top; }
+  55% { transform: scaleY(1); transform-origin: bottom; }
+  100% { transform: scaleY(0); transform-origin: bottom; }
 }
 
 /* Runway surface for the closing section */

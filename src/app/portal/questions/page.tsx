@@ -1,9 +1,10 @@
-import { CaretLeft, CaretRight } from "@phosphor-icons/react/dist/ssr";
+import { CaretLeft, CaretRight, Funnel } from "@phosphor-icons/react/dist/ssr";
 import type { Metadata } from "next";
 import Link from "next/link";
 import clsx from "clsx";
 import { PageHeader } from "@/components/portal/PageHeader";
 import { QuestionCard } from "@/components/portal/QuestionCard";
+import { EmptyState } from "@/components/ui/EmptyState";
 import { areaById, areasFor } from "@/content/acs";
 import { PPL_BANK_TOPICS } from "@/content/banks/ppl-practice-bank";
 import { questionsFor } from "@/content/questions";
@@ -49,8 +50,8 @@ export default async function QuestionsPage({ searchParams }: PageProps<"/portal
 
   const chip = (active: boolean) =>
     clsx(
-      "inline-flex min-h-10 items-center whitespace-nowrap rounded-full border px-4 text-sm transition-colors",
-      active ? "border-green bg-green/12 text-accent" : "border-border text-fg-muted hover:border-border-strong hover:text-fg",
+      "inline-flex min-h-10 items-center whitespace-nowrap rounded-full border px-4 text-sm",
+      active ? "border-green bg-green/12 text-accent" : "border-border text-fg-muted",
     );
 
   return (
@@ -110,19 +111,16 @@ export default async function QuestionsPage({ searchParams }: PageProps<"/portal
           ))}
         </div>
       ) : (
-        <div className="card p-10 text-center">
-          <p className="font-display text-xl">No questions here yet</p>
-          <p className="mt-2 text-fg-muted">This section will fill in as more of the bank is added.</p>
-          <Link href={href({ topic: undefined, area: undefined, kind: undefined })} className="mt-5 inline-block text-accent hover:underline">
-            Show all questions
-          </Link>
-        </div>
+        <EmptyState icon={Funnel} title="No questions match these filters" action={{ href: href({ topic: undefined, area: undefined, kind: undefined }), label: "Show all questions" }}>
+          This combination of area, topic and question type doesn&rsquo;t have any questions yet. Clear a filter to widen the list; the bank
+          grows as more material is added.
+        </EmptyState>
       )}
 
       {pages > 1 && (
         <nav aria-label="Pages" className="mt-10 flex items-center justify-between gap-3">
           {page > 1 ? (
-            <Link href={href({ page: page - 1 })} className="inline-flex min-h-11 items-center gap-2 rounded-full border border-border px-5 text-[15px] text-fg-muted hover:text-fg">
+            <Link href={href({ page: page - 1 })} className="inline-flex min-h-11 items-center gap-2 rounded-full border border-border px-5 text-sm text-fg-muted">
               <CaretLeft size={14} aria-hidden /> Previous
             </Link>
           ) : (
@@ -132,7 +130,7 @@ export default async function QuestionsPage({ searchParams }: PageProps<"/portal
             Page {page} of {pages}
           </span>
           {page < pages ? (
-            <Link href={href({ page: page + 1 })} className="inline-flex min-h-11 items-center gap-2 rounded-full border border-border px-5 text-[15px] text-fg-muted hover:text-fg">
+            <Link href={href({ page: page + 1 })} className="inline-flex min-h-11 items-center gap-2 rounded-full border border-border px-5 text-sm text-fg-muted">
               Next <CaretRight size={14} aria-hidden />
             </Link>
           ) : (

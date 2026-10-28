@@ -20,8 +20,8 @@ export default async function StudyPage() {
           const area = areaById(l.areaId);
           return (
             <li key={l.slug}>
-              <Link href={`/portal/study/${l.slug}`} className="card group flex h-full flex-col p-7 transition-colors hover:border-green/40 hover:bg-surface-strong">
-                <p className="text-sm text-green">
+              <Link href={`/portal/study/${l.slug}`} className="card flex h-full flex-col p-7">
+                <p className="text-sm text-accent">
                   Area {area?.numeral} · {area?.name}
                 </p>
                 <h2 className="mt-3 font-display text-2xl">{l.title}</h2>
@@ -31,7 +31,7 @@ export default async function StudyPage() {
                     <Clock size={14} aria-hidden />
                     {l.minutes} min read
                   </span>
-                  <ArrowRight size={16} className="text-accent transition-transform group-hover:translate-x-1" aria-hidden />
+                  <ArrowRight size={16} className="text-accent" aria-hidden />
                 </p>
               </Link>
             </li>

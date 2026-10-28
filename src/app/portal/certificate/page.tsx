@@ -26,14 +26,14 @@ export default async function CertificatePage() {
       <>
         <PageHeader eyebrow="Aviant Ready" title="Not quite yet" description="Your certificate unlocks when your readiness and mock tests show you're ready for the written." />
         <div className="card max-w-xl p-7">
-          <ul className="space-y-3 text-[15px]">
+          <ul className="space-y-3 text-sm">
             {[
               { ok: r.overall >= 0.85, label: `Checkride readiness of 85% or more (now ${pct(r.overall)})` },
               { ok: fulls.length >= 1 && fulls[0].score / fulls[0].total >= 0.85, label: "A full mock knowledge test at 85%+" },
               { ok: fulls.length === 2 && fulls.every((a) => a.score / a.total >= 0.85), label: "Your last two full mock tests both at 85%+" },
             ].map((c) => (
               <li key={c.label} className="flex items-center gap-2">
-                {c.ok ? <CheckCircle size={20} weight="fill" className="text-green" aria-label="Done" /> : <Circle size={20} className="text-fg-subtle" aria-label="Not yet" />}
+                {c.ok ? <CheckCircle size={20} weight="fill" className="text-accent" aria-label="Done" /> : <Circle size={20} className="text-fg-subtle" aria-label="Not yet" />}
                 <span className={c.ok ? "text-fg" : "text-fg-muted"}>{c.label}</span>
               </li>
             ))}
@@ -61,16 +61,16 @@ export default async function CertificatePage() {
         <PrintButton />
       </div>
 
-      <article className="mx-auto max-w-3xl rounded-[28px] border-2 border-green/50 bg-card-solid p-8 sm:p-12 print:rounded-none print:border-[3px] print:border-black print:bg-white print:text-black">
+      <article className="max-w-3xl rounded-[28px] border-2 border-green/50 bg-card-solid p-8 sm:p-12 print:border-[3px] print:border-black print:bg-white print:text-black">
         <div className="flex items-center justify-between">
-          <span className="inline-flex items-center gap-2 font-sans text-xl text-green print:text-black">
+          <span className="inline-flex items-center gap-2 font-sans text-xl text-accent print:text-black">
             <PlaneMark className="h-5 w-auto" /> aviant
           </span>
-          <CertificateIcon size={36} weight="fill" className="text-green print:text-black" aria-hidden />
+          <CertificateIcon size={36} weight="fill" className="text-accent print:text-black" aria-hidden />
         </div>
 
-        <p className="mt-10 text-sm uppercase tracking-[0.2em] text-fg-subtle print:text-black">Certificate of readiness</p>
-        <h1 className="mt-2 font-display text-[clamp(2rem,5vw,3rem)] leading-tight">Aviant Ready</h1>
+        <p className="mt-10 annot text-fg-subtle print:text-black">Certificate of readiness</p>
+        <h1 className="mt-2 font-display text-2xl sm:text-3xl leading-tight">Aviant Ready</h1>
         <p className="mt-1 text-lg text-fg-muted print:text-black">Private Pilot, Airplane: FAA knowledge test (PAR)</p>
 
         <p className="mt-10 text-fg-muted print:text-black">This certifies that</p>
@@ -81,10 +81,10 @@ export default async function CertificatePage() {
           <strong className="text-fg print:text-black">{fulls.map((a) => pct(a.score / a.total)).join(" and ")}</strong>.
         </p>
 
-        <h2 className="mt-10 text-sm uppercase tracking-[0.14em] text-fg-subtle print:text-black">Mastery by topic</h2>
-        <ul className="mt-3 grid gap-x-8 gap-y-1.5 text-[15px] sm:grid-cols-2">
+        <h2 className="mt-10 annot text-fg-subtle print:text-black">Mastery by topic</h2>
+        <ul className="mt-3 grid gap-x-8 gap-y-1.5 text-sm sm:grid-cols-2">
           {r.groups.map((g) => (
-            <li key={g.id} className="flex justify-between gap-3 border-b border-border py-1 print:border-black/20">
+            <li key={g.id} className="flex justify-between gap-3 py-1">
               <span>{g.title.charAt(0).toUpperCase() + g.title.slice(1)}</span>
               <span className="tabular-nums">{pct(g.mastery)}</span>
             </li>
@@ -93,7 +93,7 @@ export default async function CertificatePage() {
 
         <div className="mt-10 flex flex-wrap items-end justify-between gap-4 text-sm text-fg-subtle print:text-black">
           <p>Earned {date}</p>
-          <p className="max-w-sm text-right text-xs">
+          <p className="max-w-sm text-xs">
             Aviant is a study aid and is not affiliated with the FAA. This certificate is not an endorsement; your authorized instructor makes that decision.
           </p>
         </div>

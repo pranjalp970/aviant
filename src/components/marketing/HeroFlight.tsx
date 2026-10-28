@@ -1,11 +1,11 @@
 "use client";
 
-import { ArrowDown, ArrowRight } from "@phosphor-icons/react";
+import { ArrowRight } from "@phosphor-icons/react";
 import { motion, useScroll, useSpring, useTransform, type MotionValue } from "motion/react";
 import Link from "next/link";
 import { useRef, type ReactNode } from "react";
-import { buttonClass } from "@/components/ui/button";
 import { useReducedMotionSafe } from "@/lib/use-reduced-motion";
+import { cta } from "./cta";
 import { HeroPlane } from "./HeroPlane";
 
 const STATEMENT =
@@ -17,7 +17,7 @@ function Readout({ label, value, unit }: { label: string; value: MotionValue<str
   return (
     <div className="flex items-baseline gap-2">
       <span className="text-fg-subtle">{label}</span>
-      <motion.span className="tabular-nums text-fg">{value}</motion.span>
+      <motion.span className="text-fg">{value}</motion.span>
       {unit && <span className="text-fg-subtle">{unit}</span>}
     </div>
   );
@@ -30,58 +30,54 @@ function Word({ children, progress, range }: { children: string; progress: Motio
 
 function HeroCopy() {
   return (
-    <>
-      <p className="annot flex items-center gap-3 text-accent">
-        <span className="h-px w-8 bg-current" aria-hidden />
-        AI flight instructor &amp; examiner
-      </p>
-      <h1 className="mt-6 font-display text-[clamp(3.1rem,8.6vw,7.6rem)] leading-[0.94] tracking-[-0.025em]">
+    <div className="flex flex-col items-center text-center">
+      <p className="tagline">AI flight instructor &amp; examiner</p>
+      <h1 className="mx-auto mt-6 font-display text-4xl tracking-[-0.025em] sm:text-5xl md:text-6xl">
         Train smarter.
         <br />
-        <span className="text-accent">Fly better.</span>
+        Fly better.
       </h1>
-      <p className="mt-8 max-w-[420px] text-[1.075rem] leading-relaxed text-fg-muted">
+      <p className="mx-auto mt-7 max-w-[46ch] text-lg text-fg-muted">
         Talk through your private pilot oral with a voice CFI, face a by-the-book examiner, and follow a study plan built around your test
         dates.
       </p>
-      <div className="mt-9 flex flex-wrap items-center gap-3">
-        <Link href="/signup" className={buttonClass("primary", "lg")}>
+      <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
+        <Link href="/signup" className={cta.primary()}>
           Start training free
-          <ArrowRight size={16} weight="bold" aria-hidden />
+          <ArrowRight size={14} weight="bold" aria-hidden />
         </Link>
-        <Link href="#demo" className={buttonClass("glass", "lg")}>
+        <Link href="#demo" className={cta.bracket()}>
           Try a sample question
         </Link>
       </div>
-    </>
+    </div>
   );
 }
 
 /**
- * Pinned opening. While it's pinned the plane climbs out of frame, the
- * instruments tick up, and the mission statement fills in word by word.
- * `backdrop` is server-rendered chart line-work (contours, compass rose).
+ * Pinned opening. While it's pinned the plane climbs out of frame, the compass
+ * rose turns, the instruments tick up, and the mission statement fills in word
+ * by word. The chart line-work comes in pre-rendered from the server.
  */
-export function HeroFlight({ rose, contours, border }: { rose: ReactNode; contours: ReactNode; border: ReactNode }) {
+export function HeroFlight({ rose, border }: { rose: ReactNode; border: ReactNode }) {
   const ref = useRef<HTMLElement>(null);
   const reduced = useReducedMotionSafe();
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end end"] });
   const p = useSpring(scrollYProgress, { stiffness: 120, damping: 28, mass: 0.35 });
 
-  const copyOpacity = useTransform(p, [0.1, 0.32], [1, 0]);
-  const copyY = useTransform(p, [0.05, 0.36], [0, -80]);
+  const copyOpacity = useTransform(p, [0.08, 0.28], [1, 0]);
+  const copyY = useTransform(p, [0.04, 0.32], [0, -70]);
   const roseRotate = useTransform(p, [0, 1], [0, -48]);
-  const roseScale = useTransform(p, [0, 0.6], [1, 1.25]);
-  const contourY = useTransform(p, [0, 1], ["0%", "-12%"]);
-  const statementOpacity = useTransform(p, [0.36, 0.46], [0, 1]);
-  const statementY = useTransform(p, [0.36, 0.5], [40, 0]);
+  const roseScale = useTransform(p, [0, 0.6], [1, 1.2]);
+  const statementOpacity = useTransform(p, [0.34, 0.44], [0, 1]);
+  const statementY = useTransform(p, [0.34, 0.48], [40, 0]);
   const cueOpacity = useTransform(p, [0, 0.06], [1, 0]);
 
-  const alt = useTransform(p, [0, 0.12, 0.6, 1], [0, 0, 4500, 5500], { clamp: true });
+  const alt = useTransform(p, [0, 0.1, 0.55, 1], [0, 0, 4500, 5500], { clamp: true });
   const altText = useTransform(alt, (v) => pad(v, 5));
   const hdgText = useTransform(p, (v) => pad(274 + Math.min(1, Math.max(0, (v - 0.04) / 0.2)) * 36, 3) + "°");
   const iasText = useTransform(p, (v) => pad(v < 0.03 ? 0 : Math.min(110, 62 + v * 140), 3));
-  const phaseText = useTransform(p, (v): string => (v < 0.04 ? "Preflight" : v < 0.18 ? "Takeoff" : v < 0.5 ? "Climb" : "Cruise"));
+  const phaseText = useTransform(p, (v): string => (v < 0.04 ? "Preflight" : v < 0.16 ? "Takeoff" : v < 0.45 ? "Climb" : "Cruise"));
 
   const words = STATEMENT.split(" ");
 
@@ -89,7 +85,6 @@ export function HeroFlight({ rose, contours, border }: { rose: ReactNode; contou
     return (
       <>
         <section className="relative isolate overflow-hidden">
-          <div className="pointer-events-none absolute inset-0 -z-10 text-fg/[0.07]">{contours}</div>
           <div className="relative mx-auto flex min-h-dvh max-w-[1320px] flex-col justify-end px-5 pb-20 pt-32 sm:px-8">
             <HeroPlane />
             <div className="relative">
@@ -97,40 +92,36 @@ export function HeroFlight({ rose, contours, border }: { rose: ReactNode; contou
             </div>
           </div>
         </section>
-        <section className="mx-auto max-w-[1320px] px-5 py-28 sm:px-8">
-          <p className="max-w-[920px] font-display text-[clamp(1.8rem,3.6vw,2.9rem)] leading-[1.18]">{STATEMENT}</p>
+        <section className="mx-auto max-w-[1320px] px-5 py-28 text-center sm:px-8">
+          <p className="mx-auto max-w-[34ch] font-display text-2xl md:text-3xl">{STATEMENT}</p>
         </section>
       </>
     );
   }
 
   return (
-    <section ref={ref} className="relative h-[290vh]">
+    <section ref={ref} className="relative h-[280vh]">
       <div className="sticky top-0 isolate h-dvh overflow-hidden">
-        {/* chart line-work */}
-        <motion.div style={{ y: contourY }} className="pointer-events-none absolute inset-x-0 -top-[5%] -z-20 h-[120%] text-fg/[0.075]">
-          {contours}
-        </motion.div>
         {/* compass rose centred on the plane's parking spot */}
-        <div className="pointer-events-none absolute left-[62%] top-[24%] -z-10 aspect-square w-[min(120vw,80vh)] -translate-x-1/2 -translate-y-1/2 md:left-[75%] md:top-[38%] md:w-[min(56vw,88vh)]">
-          <motion.div style={{ rotate: roseRotate, scale: roseScale }} className="size-full text-fg/[0.11]">
+        <div className="pointer-events-none absolute left-1/2 top-[18%] -z-10 aspect-square w-[min(110vw,60vh)] md:top-[23%] -translate-x-1/2 -translate-y-1/2 md:w-[min(52vw,78vh)]">
+          <motion.div style={{ rotate: roseRotate, scale: roseScale }} className="size-full text-fg/[0.1]">
             {rose}
           </motion.div>
         </div>
-        <div className="pointer-events-none absolute inset-3 -z-10 text-fg/20 sm:inset-5">{border}</div>
+        <div className="pointer-events-none absolute inset-3 -z-10 text-fg/15 sm:inset-5">{border}</div>
 
         <HeroPlane progress={p} />
 
         {/* opening copy */}
-        <motion.div style={{ opacity: copyOpacity, y: copyY }} className="relative mx-auto flex h-full max-w-[1320px] flex-col justify-end px-5 pb-[17vh] sm:px-8 md:pb-[15vh]">
+        <motion.div style={{ opacity: copyOpacity, y: copyY }} className="relative mx-auto flex h-full max-w-[1320px] flex-col justify-end px-5 pb-[15vh] sm:px-8">
           <HeroCopy />
         </motion.div>
 
         {/* mission statement, revealed while the plane climbs away */}
         <motion.div style={{ opacity: statementOpacity, y: statementY }} className="pointer-events-none absolute inset-0 flex items-center">
-          <div className="mx-auto w-full max-w-[1320px] px-5 sm:px-8">
-            <p className="annot mb-8 text-fg-subtle">Why Aviant</p>
-            <p className="max-w-[980px] font-display text-[clamp(1.75rem,3.7vw,3.1rem)] leading-[1.16] tracking-[-0.01em]">
+          <div className="mx-auto w-full max-w-[1320px] px-5 text-center sm:px-8">
+            <p className="annot mx-auto mb-8 text-fg-subtle">Why Aviant</p>
+            <p className="mx-auto max-w-[34ch] font-display text-2xl tracking-[-0.01em] md:text-3xl lg:text-4xl">
               <span className="sr-only">{STATEMENT}</span>
               <span aria-hidden>
                 {words.map((w, i) => (
@@ -143,23 +134,23 @@ export function HeroFlight({ rose, contours, border }: { rose: ReactNode; contou
           </div>
         </motion.div>
 
-        {/* instrument strip */}
+        {/* instrument strip + scroll cue */}
         <div className="annot pointer-events-none absolute inset-x-0 bottom-0">
-          <div className="mx-auto flex max-w-[1320px] items-center justify-between gap-6 px-5 pb-6 sm:px-8 sm:pb-8">
+          <div className="relative mx-auto flex max-w-[1320px] items-end justify-between gap-6 px-5 pb-6 sm:px-8 sm:pb-8">
             <div className="flex flex-wrap gap-x-6 gap-y-1" aria-hidden>
               <Readout label="Alt" value={altText} unit="ft" />
               <Readout label="Hdg" value={hdgText} />
               <span className="hidden sm:contents">
                 <Readout label="Ias" value={iasText} unit="kt" />
               </span>
-              <span className="hidden md:contents">
-                <Readout label="Phase" value={phaseText} />
-              </span>
             </div>
-            <motion.p style={{ opacity: cueOpacity }} className="hidden items-center gap-2 whitespace-nowrap text-fg-subtle sm:flex">
-              Scroll to depart
-              <ArrowDown size={13} aria-hidden className="animate-bounce" />
-            </motion.p>
+            <motion.div style={{ opacity: cueOpacity }} className="absolute bottom-6 left-1/2 hidden -translate-x-1/2 flex-col items-center gap-3 text-fg-subtle sm:flex sm:bottom-8">
+              Scroll
+              <span aria-hidden className="h-8 w-px animate-[cue_2.2s_ease-in-out_infinite] bg-fg-subtle" />
+            </motion.div>
+            <div className="hidden md:block" aria-hidden>
+              <Readout label="Phase" value={phaseText} />
+            </div>
           </div>
         </div>
       </div>

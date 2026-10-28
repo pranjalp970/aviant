@@ -68,8 +68,8 @@ function PlaneMesh({ reduced, light }: { reduced: boolean; light: boolean }) {
 }
 
 /**
- * Moves the plane with the page: it waits on the "ramp" to the right of the
- * headline, then climbs out along its nose (up and to the left) as you scroll.
+ * Moves the plane with the page: it waits above the headline, then climbs out
+ * along its nose (up and to the left) as you scroll.
  */
 function FlightRig({ progress, reduced, children }: { progress?: MotionValue<number>; reduced: boolean; children: React.ReactNode }) {
   const ref = useRef<THREE.Group>(null);
@@ -79,16 +79,17 @@ function FlightRig({ progress, reduced, children }: { progress?: MotionValue<num
     const g = ref.current;
     if (!g) return;
     const mobile = size.width < 768;
-    const base = mobile ? Math.min((viewport.width * 0.62) / 2.3, 1.05) : Math.min((viewport.width * 0.36) / 2.3, 1.45);
-    const home = mobile ? { x: 0.12 * viewport.width, y: 0.29 * viewport.height } : { x: 0.25 * viewport.width, y: 0.12 * viewport.height };
+    const base = mobile ? Math.min((viewport.width * 0.38) / 2.3, 0.75) : Math.min((viewport.width * 0.23) / 2.3, 1.0);
+    // parked centred above the headline
+    const home = mobile ? { x: 0.04 * viewport.width, y: 0.37 * viewport.height } : { x: 0.02 * viewport.width, y: 0.29 * viewport.height };
 
     const p = reduced ? 0 : (progress?.get() ?? 0);
-    const roll = smooth(0.02, 0.22, p); // rotate onto the climb heading
-    const climb = smooth(0.08, 0.5, p); // then leave along the nose
+    const roll = smooth(0.02, 0.16, p); // rotate onto the climb heading
+    const climb = smooth(0.05, 0.4, p); // then leave along the nose, before the statement arrives
     const e = climb * climb;
 
-    const tx = home.x - e * viewport.width * 0.55;
-    const ty = home.y + e * viewport.height * 0.95;
+    const tx = home.x - e * viewport.width * 0.5;
+    const ty = home.y + e * viewport.height * 0.9;
     // ease toward the target so wheel steps feel like flight, not jumps
     g.position.x = THREE.MathUtils.lerp(g.position.x, tx, 0.12);
     g.position.y = THREE.MathUtils.lerp(g.position.y, ty, 0.12);

@@ -1,9 +1,9 @@
 "use client";
 
-import { ArrowRight, ArrowsClockwise, CheckCircle, Circle } from "@phosphor-icons/react";
+import { ArrowRight, ArrowsClockwise, Check, X } from "@phosphor-icons/react";
 import Link from "next/link";
 import { useId, useState } from "react";
-import { buttonClass } from "@/components/ui/button";
+import { cta } from "./cta";
 import type { AssistantResponse } from "@/lib/ai/types";
 
 const DEMO_QUESTION_ID = "ppl-004";
@@ -52,13 +52,13 @@ export function DemoWidget() {
   const feedback = result?.reply.split(/Moving on\.|Next question\.|Let's shift gears\./)[0].trim();
 
   return (
-    <div className="overflow-hidden rounded-2xl border border-border-strong bg-bg-elevated shadow-[0_30px_80px_-40px_rgba(0,0,0,0.6)]">
-      <div className="annot flex items-center justify-between gap-4 border-b border-border px-5 py-3 text-fg-subtle">
+    <div className="overflow-hidden border border-border-strong bg-bg-elevated">
+      <div className="annot flex items-center justify-between gap-4 px-5 pt-5 text-fg-subtle sm:px-8 sm:pt-7">
         <span>AI examiner · Private Pilot</span>
         <span className="text-accent">PA.I.B</span>
       </div>
       <div className="p-5 sm:p-8">
-      <p className="font-display text-2xl leading-snug text-fg sm:text-[28px]">&ldquo;{DEMO_PROMPT}&rdquo;</p>
+      <p className="font-display text-xl text-fg sm:text-2xl">&ldquo;{DEMO_PROMPT}&rdquo;</p>
 
       {!result ? (
         <form onSubmit={submit} className="mt-6" noValidate>
@@ -73,7 +73,7 @@ export function DemoWidget() {
             placeholder="e.g. The airworthiness certificate, registration…"
             aria-invalid={!!error}
             aria-describedby={error ? `${id}-err` : undefined}
-            className="w-full resize-none rounded-xl border border-border-strong bg-inset px-4 py-3 text-base text-fg placeholder:text-fg-subtle focus:border-green focus:outline-none"
+            className="w-full resize-none border border-border-strong bg-inset px-4 py-3 text-base text-fg placeholder:text-fg-subtle focus:border-green focus:outline-none"
           />
           {error && (
             <p id={`${id}-err`} role="alert" className="mt-2 text-sm text-danger">
@@ -81,9 +81,9 @@ export function DemoWidget() {
             </p>
           )}
           <div className="mt-4 flex flex-wrap items-center gap-3">
-            <button type="submit" disabled={loading} className={buttonClass("primary")}>
+            <button type="submit" disabled={loading} className={cta.primary("cursor-pointer disabled:cursor-not-allowed disabled:opacity-45")}>
               {loading ? "Examiner is grading…" : "Submit to examiner"}
-              {!loading && <ArrowRight size={16} weight="bold" aria-hidden />}
+              {!loading && <ArrowRight size={14} weight="bold" aria-hidden />}
             </button>
             <span className="text-sm text-fg-subtle">Graded against the ACS key points</span>
           </div>
@@ -102,22 +102,22 @@ export function DemoWidget() {
           {grade && (
             <ul className="mt-4 grid gap-2 sm:grid-cols-2">
               {[...grade.hits.map((h) => ({ h, ok: true })), ...grade.misses.map((h) => ({ h, ok: false }))].map(({ h, ok }) => (
-                <li key={h} className="flex items-start gap-2 rounded-xl border border-border bg-inset px-3 py-2.5 text-[15px]">
+                <li key={h} className="flex items-start gap-2 bg-surface-strong px-3 py-2.5 text-sm">
                   {ok ? (
-                    <CheckCircle size={18} weight="fill" className="mt-0.5 shrink-0 text-green" aria-label="Covered" />
+                    <Check size={16} weight="bold" className="mt-1 shrink-0 text-accent" aria-label="Covered" />
                   ) : (
-                    <Circle size={18} className="mt-0.5 shrink-0 text-fg-subtle" aria-label="Missed" />
+                    <X size={16} className="mt-1 shrink-0 text-danger" aria-label="Missed" />
                   )}
                   <span className={ok ? "text-fg" : "text-fg-muted"}>{h}</span>
                 </li>
               ))}
             </ul>
           )}
-          {feedback && <p className="mt-4 text-[15px] leading-relaxed text-fg-muted">{feedback}</p>}
+          {feedback && <p className="mt-4 text-sm text-fg-muted">{feedback}</p>}
           <div className="mt-6 flex flex-wrap gap-3">
-            <Link href="/signup" className={buttonClass("primary")}>
+            <Link href="/signup" className={cta.primary()}>
               Keep going in the full oral
-              <ArrowRight size={16} weight="bold" aria-hidden />
+              <ArrowRight size={14} weight="bold" aria-hidden />
             </Link>
             <button
               type="button"
@@ -125,7 +125,7 @@ export function DemoWidget() {
                 setResult(null);
                 setAnswer("");
               }}
-              className={buttonClass("ghost")}
+              className={cta.bracket("cursor-pointer")}
             >
               <ArrowsClockwise size={16} aria-hidden />
               Try again

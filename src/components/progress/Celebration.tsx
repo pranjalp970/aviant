@@ -8,8 +8,8 @@ export function Celebration({ badges, challenges }: { badges: Badge[]; challenge
   if (!badges.length && !challenges.length) return null;
   const xp = badges.length * 100 + challenges.length * 200;
   return (
-    <div role="status" className="mb-6 flex items-start gap-4 rounded-[24px] border border-green/40 bg-gradient-to-r from-green/15 to-transparent p-5">
-      <span className="grid size-12 shrink-0 place-items-center rounded-full bg-lime text-on-accent">
+    <div role="status" className="mb-6 flex items-start gap-4 rounded-[24px] border border-green/40 bg-surface p-5">
+      <span className="grid size-12 shrink-0 place-items-center rounded-full bg-green text-on-accent">
         <Confetti size={24} weight="fill" aria-hidden />
       </span>
       <div className="min-w-0">
@@ -19,17 +19,17 @@ export function Celebration({ badges, challenges }: { badges: Badge[]; challenge
         <ul className="mt-1 flex flex-wrap gap-x-4 gap-y-1 text-sm text-fg-muted">
           {badges.map((b) => (
             <li key={b.id} className="flex items-center gap-1.5">
-              <Medal size={14} weight="fill" className="text-warning" aria-hidden /> {b.title}: {b.description.toLowerCase()}
+              <Medal size={14} weight="fill" className="text-accent" aria-hidden /> {b.title}: {b.description.toLowerCase()}
             </li>
           ))}
           {challenges.map((c) => (
             <li key={c.id} className="flex items-center gap-1.5">
-              <CheckCircle size={14} weight="fill" className="text-green" aria-hidden /> {c.title}
+              <CheckCircle size={14} weight="fill" className="text-accent" aria-hidden /> {c.title}
             </li>
           ))}
         </ul>
         {badges.length > 0 && (
-          <Link href="/portal/logbook" className="mt-2 inline-block text-sm text-accent hover:underline">
+          <Link href="/portal/logbook" className="mt-2 inline-block text-sm text-accent">
             See your logbook
           </Link>
         )}

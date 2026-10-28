@@ -38,7 +38,7 @@ export default async function SettingsPage() {
               ].map((o) => (
                 <label
                   key={o.v}
-                  className="flex min-h-12 cursor-pointer items-center gap-3 rounded-xl border border-border-strong bg-inset px-4 text-[15px] has-[:checked]:border-green has-[:checked]:bg-green/10"
+                  className="flex min-h-12 cursor-pointer items-center gap-3 rounded-xl border border-border-strong bg-inset px-4 text-sm has-[:checked]:border-green has-[:checked]:bg-green/10"
                 >
                   <input type="radio" name="written_status" value={o.v} defaultChecked={session.writtenStatus === o.v} className="accent-[var(--green)]" />
                   {o.label}
@@ -90,7 +90,7 @@ export default async function SettingsPage() {
             <button type="submit" className={buttonClass("primary")}>
               Save plan
             </button>
-            <Link href="/onboarding" className="text-sm text-fg-muted hover:text-accent">
+            <Link href="/onboarding" className="text-sm text-fg-muted">
               Redo setup (confidence + knowledge check)
             </Link>
           </div>

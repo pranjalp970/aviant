@@ -1,7 +1,9 @@
+import { AirplaneTakeoff } from "@phosphor-icons/react/dist/ssr";
 import type { Metadata } from "next";
 import { CheckrideList } from "@/components/portal/CheckrideList";
 import { CheckrideSetup } from "@/components/portal/CheckrideSetup";
 import { PageHeader } from "@/components/portal/PageHeader";
+import { EmptyState } from "@/components/ui/EmptyState";
 import { getSession } from "@/lib/auth/session";
 import { listCheckrides } from "@/lib/checkride/queries";
 
@@ -24,7 +26,10 @@ export default async function CheckridePage() {
       {enabled ? (
         <CheckrideSetup userId={session.id} />
       ) : (
-        <p className="card p-7 text-fg-muted">The AI examiner isn&rsquo;t switched on yet, so mock checkrides aren&rsquo;t available.</p>
+        <EmptyState icon={AirplaneTakeoff} title="Mock checkrides aren't available yet" secondary={{ href: "/portal/assistant?mode=examine", label: "Try a mock oral instead" }}>
+          A full mock checkride needs the AI examiner, and it isn&rsquo;t switched on for this site yet. Your uploads and past checkrides will
+          appear here once it is.
+        </EmptyState>
       )}
       <CheckrideList
         items={rows.map((r) => ({

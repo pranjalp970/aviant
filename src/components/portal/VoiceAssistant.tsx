@@ -405,9 +405,9 @@ export function VoiceAssistant({ rating, ratingLabel, initialMode, savedVoices, 
       {/* Conversation column */}
       <section aria-label="Conversation" className="card flex min-h-[560px] flex-col overflow-hidden">
         {/* Toolbar */}
-        <div className="flex flex-wrap items-center justify-between gap-3 border-b border-border p-4">
+        <div className="flex flex-wrap items-center justify-between gap-3 p-4">
           {checkride ? (
-            <span className="inline-flex h-11 items-center gap-2 rounded-full border border-green/40 bg-green/10 px-4 text-[15px] text-accent">
+            <span className="inline-flex h-11 items-center gap-2 rounded-full border border-green/40 bg-green/10 px-4 text-sm text-accent">
               Mock checkride · {checkride.label}
             </span>
           ) : (
@@ -425,8 +425,8 @@ export function VoiceAssistant({ rating, ratingLabel, initialMode, savedVoices, 
                   aria-checked={mode === o.v}
                   onClick={() => mode !== o.v && reset(o.v)}
                   className={clsx(
-                    "h-10 cursor-pointer rounded-full px-4 text-[15px] transition-colors",
-                    mode === o.v ? "bg-lime font-medium text-on-accent" : "text-fg-muted hover:text-fg",
+                    "h-10 cursor-pointer rounded-full px-4 text-sm",
+                    mode === o.v ? "bg-green font-medium text-on-accent" : "text-fg-muted",
                   )}
                 >
                   {o.label} <span className={mode === o.v ? "text-on-accent/70" : "text-fg-subtle"}>· {o.sub}</span>
@@ -443,7 +443,7 @@ export function VoiceAssistant({ rating, ratingLabel, initialMode, savedVoices, 
               }}
               aria-pressed={voiceOn}
               aria-label={voiceOn ? "Mute assistant voice" : "Unmute assistant voice"}
-              className="grid size-11 cursor-pointer place-items-center rounded-full text-fg-muted hover:bg-surface-strong hover:text-fg"
+              className="grid size-11 cursor-pointer place-items-center rounded-full text-fg-muted"
             >
               {voiceOn ? <SpeakerHigh size={20} aria-hidden /> : <SpeakerSlash size={20} aria-hidden />}
             </button>
@@ -452,7 +452,7 @@ export function VoiceAssistant({ rating, ratingLabel, initialMode, savedVoices, 
                 type="button"
                 onClick={() => reset(mode)}
                 aria-label="Start over"
-                className="grid size-11 cursor-pointer place-items-center rounded-full text-fg-muted hover:bg-surface-strong hover:text-fg"
+                className="grid size-11 cursor-pointer place-items-center rounded-full text-fg-muted"
               >
                 <ArrowCounterClockwise size={20} aria-hidden />
               </button>
@@ -463,7 +463,7 @@ export function VoiceAssistant({ rating, ratingLabel, initialMode, savedVoices, 
         {/* Transcript */}
         <div ref={scrollRef} className="flex-1 space-y-4 overflow-y-auto p-5 sm:p-6" aria-live="polite">
           {!started ? (
-            <div className="flex h-full flex-col items-center justify-center py-10 text-center">
+            <div className="flex h-full flex-col justify-end px-1 py-10 sm:px-3">
               <Orb status={status} />
               <h2 className="mt-8 font-display text-2xl">
                 {checkride ? "Your mock checkride" : mode === "teach" ? "Ask your CFI anything" : `${ratingLabel} oral exam`}
@@ -488,11 +488,11 @@ export function VoiceAssistant({ rating, ratingLabel, initialMode, savedVoices, 
                   <div
                     aria-busy={t.streaming || undefined}
                     className={clsx(
-                      "max-w-[85%] rounded-2xl px-4 py-3 text-[15px] leading-relaxed",
-                      t.role === "user" ? "rounded-br-md bg-lime text-on-accent" : "rounded-bl-md border border-border bg-inset text-fg",
+                      "max-w-[85%] rounded-2xl px-4 py-3 text-sm",
+                      t.role === "user" ? "rounded-br-md bg-green text-on-accent" : "rounded-bl-md bg-surface-strong text-fg",
                     )}
                   >
-                    {t.role === "assistant" && <p className="mb-1 text-xs uppercase tracking-[0.12em] text-green">{mode === "teach" ? "CFI" : "Examiner"}</p>}
+                    {t.role === "assistant" && <p className="mb-1 annot text-accent">{mode === "teach" ? "CFI" : "Examiner"}</p>}
                     {t.content}
                     {t.streaming && <span className="ml-0.5 inline-block h-4 w-[2px] translate-y-0.5 animate-pulse bg-green" aria-hidden />}
                     {t.references?.length ? <p className="mt-2 text-xs text-fg-subtle">Ref: {t.references.join(" · ")}</p> : null}
@@ -503,19 +503,18 @@ export function VoiceAssistant({ rating, ratingLabel, initialMode, savedVoices, 
           )}
           {interim && (
             <div className="flex justify-end">
-              <p className="max-w-[85%] rounded-2xl rounded-br-md border border-dashed border-lime/50 px-4 py-3 text-[15px] italic text-fg-muted">{interim}…</p>
+              <p className="max-w-[85%] rounded-2xl rounded-br-md border border-dashed border-green/50 px-4 py-3 text-sm italic text-fg-muted">{interim}…</p>
             </div>
           )}
           {phase === "thinking" && (
             <p className="flex items-center gap-2 text-sm text-fg-subtle">
-              <span className="size-2 animate-pulse rounded-full bg-green" aria-hidden />
               {mode === "teach" ? "CFI is thinking…" : "Examiner is evaluating…"}
             </p>
           )}
         </div>
 
         {/* Composer */}
-        <div className="border-t border-border p-4">
+        <div className="p-4">
           {micError && (
             <p role="alert" className="mb-3 text-sm text-danger">
               {micError}
@@ -535,8 +534,8 @@ export function VoiceAssistant({ rating, ratingLabel, initialMode, savedVoices, 
                 aria-label={listening ? "Done talking, send" : speaking ? "Interrupt and speak" : "Speak"}
                 aria-pressed={listening}
                 className={clsx(
-                  "grid size-12 shrink-0 cursor-pointer place-items-center rounded-full transition-colors disabled:cursor-not-allowed disabled:opacity-40",
-                  listening ? "bg-danger text-bg" : "bg-lime text-on-accent hover:bg-white",
+                  "grid size-12 shrink-0 cursor-pointer place-items-center rounded-full disabled:cursor-not-allowed disabled:opacity-40",
+                  listening ? "bg-danger text-bg" : "bg-green text-on-accent",
                 )}
               >
                 {listening ? <Stop size={20} weight="fill" aria-hidden /> : <Microphone size={20} weight="fill" aria-hidden />}
@@ -561,7 +560,7 @@ export function VoiceAssistant({ rating, ratingLabel, initialMode, savedVoices, 
               type="submit"
               disabled={!draft.trim() || awaitingFirstWords}
               aria-label="Send"
-              className="grid size-12 shrink-0 cursor-pointer place-items-center rounded-full border border-border-strong text-fg transition-colors hover:bg-surface-strong disabled:cursor-not-allowed disabled:opacity-40"
+              className="grid size-12 shrink-0 cursor-pointer place-items-center rounded-full border border-border-strong text-fg disabled:cursor-not-allowed disabled:opacity-40"
             >
               <PaperPlaneRight size={20} aria-hidden />
             </button>
@@ -577,7 +576,7 @@ export function VoiceAssistant({ rating, ratingLabel, initialMode, savedVoices, 
 
       {/* Side panel */}
       <aside className="space-y-4">
-        <div className="card flex flex-col items-center p-6 text-center">
+        <div className="card flex flex-col items-center p-6">
           <Orb status={status} small />
           <p className="mt-4 text-sm text-fg-muted" aria-live="polite">
             {{ idle: settings.handsFree && started ? "Ready (hands-free)" : "Ready", listening: "Listening…", thinking: "Thinking…", speaking: "Speaking…" }[status]}
@@ -615,20 +614,20 @@ export function VoiceAssistant({ rating, ratingLabel, initialMode, savedVoices, 
               {showDebrief ? "Hide debrief" : "View debrief"}
             </button>
             {showDebrief && (
-              <ol className="mt-5 space-y-4">
+              <ol className="mt-6 space-y-6">
                 {grades.map((g, i) => (
-                  <li key={i} className="border-t border-border pt-4">
+                  <li key={i}>
                     <p className="text-sm text-fg">{g.prompt}</p>
                     <p className="mt-1 text-xs text-fg-subtle">{Math.round(g.score * 100)}% of key points</p>
                     <ul className="mt-2 space-y-1">
                       {g.hits.map((h) => (
-                        <li key={h} className="flex items-start gap-2 text-[13px] text-fg-muted">
-                          <CheckCircle size={14} weight="fill" className="mt-0.5 shrink-0 text-green" aria-label="Covered" />
+                        <li key={h} className="flex items-start gap-2 text-xs text-fg-muted">
+                          <CheckCircle size={14} weight="fill" className="mt-0.5 shrink-0 text-accent" aria-label="Covered" />
                           {h}
                         </li>
                       ))}
                       {g.misses.map((h) => (
-                        <li key={h} className="flex items-start gap-2 text-[13px] text-fg-subtle">
+                        <li key={h} className="flex items-start gap-2 text-xs text-fg-subtle">
                           <Circle size={14} className="mt-0.5 shrink-0" aria-label="Missed" />
                           {h}
                         </li>
@@ -677,7 +676,7 @@ function Segmented<T extends number>({ label, options, value, onChange }: { labe
           role="radio"
           aria-checked={value === o.v}
           onClick={() => onChange(o.v)}
-          className={clsx("h-9 cursor-pointer rounded-lg text-sm transition-colors", value === o.v ? "bg-lime font-medium text-on-accent" : "text-fg-muted hover:text-fg")}
+          className={clsx("h-9 cursor-pointer rounded-lg text-sm", value === o.v ? "bg-green font-medium text-on-accent" : "text-fg-muted")}
         >
           {o.label}
         </button>
@@ -705,7 +704,7 @@ function ConversationSettings({ settings, update, micSupported }: { settings: Vo
           />
           <span
             aria-hidden
-            className="relative mt-0.5 h-6 w-11 shrink-0 rounded-full border border-border-strong bg-inset transition-colors peer-checked:border-green peer-checked:bg-green peer-focus-visible:ring-2 peer-focus-visible:ring-lime after:absolute after:left-0.5 after:top-0.5 after:size-[18px] after:rounded-full after:bg-fg-subtle after:transition-transform peer-checked:after:translate-x-5 peer-checked:after:bg-white"
+            className="relative mt-0.5 h-6 w-11 shrink-0 rounded-full border border-border-strong bg-inset peer-checked:border-green peer-checked:bg-green peer-focus-visible:ring-2 peer-focus-visible:ring-green after:absolute after:left-0.5 after:top-0.5 after:size-[18px] after:rounded-full after:bg-fg-subtle after:transition-transform peer-checked:after:translate-x-5 peer-checked:after:bg-white"
           />
         </label>
       )}
@@ -731,7 +730,7 @@ function Orb({ status, small }: { status: Status; small?: boolean }) {
     <div className={clsx("relative grid place-items-center", size)} aria-hidden>
       <span
         className={clsx(
-          "absolute inset-0 rounded-full bg-[radial-gradient(circle_at_35%_30%,var(--lime),var(--green)_45%,#1d3a1b_80%)] transition-transform duration-500",
+          "absolute inset-0 rounded-full bg-[radial-gradient(circle_at_35%_30%,var(--orb-highlight),var(--green)_45%,#1d3a1b_80%)] transition-transform duration-500",
           status === "listening" && "scale-110",
           status === "speaking" && "animate-[orb_1.2s_ease-in-out_infinite]",
           status === "thinking" && "animate-pulse",

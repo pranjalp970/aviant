@@ -26,7 +26,7 @@ export default async function PlanPage() {
         title="Your study plan"
         description={`${plan.phase === "written" ? "Written test" : "Checkride"} ${plan.dateSuggested ? "target (suggested)" : "on"} ${fmt(plan.targetDate, { weekday: "long", month: "long", day: "numeric" })} · ${plan.daysLeft} days · ${session.studyMinutesPerDay} min, ${session.studyDaysPerWeek} days a week`}
         action={
-          <Link href="/portal/settings#plan" className="inline-flex items-center gap-1.5 text-sm text-fg-muted hover:text-accent">
+          <Link href="/portal/settings#plan" className="inline-flex items-center gap-1.5 text-sm text-fg-muted">
             <PencilSimple size={14} aria-hidden /> Adjust plan
           </Link>
         }
@@ -36,10 +36,10 @@ export default async function PlanPage() {
       <section className="card mb-8 flex flex-col gap-4 p-6 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <StatusChip status={plan.status} />
-          <p className="mt-2 max-w-2xl text-[15px] text-fg">{plan.statusDetail}</p>
+          <p className="mt-2 max-w-2xl text-sm text-fg">{plan.statusDetail}</p>
           {plan.fix && <p className="mt-1 text-sm text-warning">{plan.fix}</p>}
         </div>
-        <dl className="grid shrink-0 grid-cols-2 gap-6 text-center">
+        <dl className="grid shrink-0 grid-cols-2 gap-6">
           <div>
             <dt className="text-xs text-fg-subtle">Study time needed</dt>
             <dd className="font-display text-2xl tabular-nums">{hours(plan.requiredMinutes)}</dd>
@@ -57,13 +57,9 @@ export default async function PlanPage() {
           <h2 id="roadmap" className="mb-4 font-display text-2xl">
             Week by week
           </h2>
-          <ol className="relative space-y-3 border-l border-border pl-6">
+          <ol className="space-y-3">
             {plan.weeks.map((w, i) => (
-              <li key={w.index} className="relative">
-                <span
-                  className={clsx("absolute -left-[31px] top-5 grid size-4 place-items-center rounded-full border-2", i === 0 ? "border-green bg-green" : "border-border-strong bg-bg")}
-                  aria-hidden
-                />
+              <li key={w.index}>
                 <div className={clsx("rounded-2xl border p-5", i === 0 ? "border-green/40 bg-green/8" : "border-border bg-surface")}>
                   <div className="flex flex-wrap items-baseline justify-between gap-2">
                     <p className="font-display text-lg">
@@ -92,8 +88,8 @@ export default async function PlanPage() {
                 </div>
               </li>
             ))}
-            <li className="relative">
-              <span className="absolute -left-[31px] top-1 grid size-4 place-items-center rounded-full border-2 border-green bg-bg" aria-hidden />
+            <li className="flex items-center gap-2 px-5 pt-3">
+              <Flag size={16} weight="fill" className="text-accent" aria-hidden />
               <p className="font-display text-lg text-accent">
                 {plan.phase === "written" ? "Written test" : "Checkride"} · {fmt(plan.targetDate)}
               </p>
@@ -119,13 +115,13 @@ export default async function PlanPage() {
             <ul className="space-y-3">
               {topics.map((t) => (
                 <li key={t.id}>
-                  <Link href={`/portal/review?mode=new&topic=${t.id}`} className="group block">
-                    <div className="flex items-baseline justify-between gap-3 text-[15px]">
-                      <span className="text-fg group-hover:text-accent">{t.title}</span>
+                  <Link href={`/portal/review?mode=new&topic=${t.id}`} className="block">
+                    <div className="flex items-baseline justify-between gap-3 text-sm">
+                      <span className="text-fg">{t.title}</span>
                       <span className="shrink-0 tabular-nums text-fg-subtle">{t.minutes >= 1 ? hours(t.minutes) : "done"}</span>
                     </div>
                     <div className="mt-1.5 h-1.5 overflow-hidden rounded-full bg-surface-strong" aria-hidden>
-                      <div className={clsx("h-full rounded-full", t.missedOnTest || t.knowledge < 0.4 ? "bg-warning" : "bg-green")} style={{ width: `${(t.minutes / maxMinutes) * 100}%` }} />
+                      <div className="h-full rounded-full bg-green" style={{ width: `${(t.minutes / maxMinutes) * 100}%` }} />
                     </div>
                     <p className="mt-1 text-xs text-fg-subtle">
                       {t.reason} · {Math.round(t.mastery * 100)}% mastered
@@ -136,7 +132,7 @@ export default async function PlanPage() {
             </ul>
           </section>
 
-          <Link href="/onboarding?step=diagnostic" className="flex items-center justify-between rounded-2xl border border-border px-5 py-4 text-[15px] text-fg-muted transition-colors hover:border-green/40 hover:text-fg">
+          <Link href="/onboarding?step=diagnostic" className="flex items-center justify-between rounded-2xl border border-border px-5 py-4 text-sm text-fg-muted">
             Retake the knowledge check to recalibrate
             <ArrowRight size={16} aria-hidden />
           </Link>

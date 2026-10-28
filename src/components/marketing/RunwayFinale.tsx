@@ -4,8 +4,8 @@ import { ArrowRight } from "@phosphor-icons/react";
 import { motion, useScroll, useTransform } from "motion/react";
 import Link from "next/link";
 import { useRef } from "react";
-import { buttonClass } from "@/components/ui/button";
 import { useReducedMotionSafe } from "@/lib/use-reduced-motion";
+import { cta } from "./cta";
 
 /** Closing call to action on a runway whose centerline rushes past as you scroll. */
 export function RunwayFinale() {
@@ -17,16 +17,16 @@ export function RunwayFinale() {
   const lift = useTransform(scrollYProgress, [0.1, 0.55], [60, 0]);
 
   return (
-    <section ref={ref} className="relative isolate overflow-hidden px-5 pt-28 sm:px-8 sm:pt-36">
+    <section ref={ref} className="relative isolate overflow-hidden border-t border-border px-5 pt-28 sm:px-8 sm:pt-36">
       <motion.div style={reduced ? undefined : { y: lift }} className="relative z-10 mx-auto max-w-[1320px] text-center">
-        <p className="annot text-fg-subtle">Rwy 27 · wind 270 at 8 · cleared</p>
-        <h2 className="mx-auto mt-6 max-w-3xl font-display text-[clamp(2.6rem,7vw,5.6rem)] leading-[0.98] tracking-[-0.02em]">
+        <p className="tagline mx-auto">Rwy 27 · wind 270 at 8 · cleared</p>
+        <h2 className="mx-auto mt-6 max-w-3xl font-display text-4xl tracking-[-0.02em] sm:text-5xl md:text-6xl">
           Cleared for takeoff.
         </h2>
         <p className="mx-auto mt-6 max-w-md text-fg-muted">Start talking to your AI CFI in under a minute. Free while Aviant is in beta.</p>
-        <Link href="/signup" className={buttonClass("primary", "lg", "mt-9")}>
+        <Link href="/signup" className={cta.primary("mt-10")}>
           Create your free account
-          <ArrowRight size={16} weight="bold" aria-hidden />
+          <ArrowRight size={14} weight="bold" aria-hidden />
         </Link>
       </motion.div>
 

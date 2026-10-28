@@ -17,7 +17,7 @@ export default async function QuizPage({ params }: PageProps<"/portal/quizzes/[i
 
   return (
     <>
-      <Link href="/portal/quizzes" className="mb-6 inline-flex min-h-10 items-center gap-2 text-sm text-fg-muted hover:text-accent">
+      <Link href="/portal/quizzes" className="mb-6 inline-flex min-h-10 items-center gap-2 text-sm text-fg-muted">
         <ArrowLeft size={14} aria-hidden />
         All quizzes
       </Link>

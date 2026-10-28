@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowRight, Question } from "@phosphor-icons/react";
+import { ArrowRight, Question, SpinnerGap } from "@phosphor-icons/react";
 import clsx from "clsx";
 import { useEffect, useRef, useState } from "react";
 import { buttonClass } from "@/components/ui/button";
@@ -54,8 +54,8 @@ export function Diagnostic({ questions, onDone }: { questions: McQuestion[]; onD
 
   if (saving) {
     return (
-      <div className="py-16 text-center" role="status">
-        <div className="mx-auto size-10 animate-spin rounded-full border-2 border-border-strong border-t-green" aria-hidden />
+      <div className="py-16" role="status">
+        <SpinnerGap size={32} className="animate-spin text-accent" aria-hidden />
         <p className="mt-5 font-display text-xl">Building your plan…</p>
       </div>
     );
@@ -70,7 +70,7 @@ export function Diagnostic({ questions, onDone }: { questions: McQuestion[]; onD
         <span>No feedback until the end. Just answer honestly.</span>
       </div>
       <div className="h-1 overflow-hidden rounded-full bg-surface-strong" aria-hidden>
-        <div className="h-full bg-green transition-[width] duration-300" style={{ width: `${(i / questions.length) * 100}%` }} />
+        <div className="h-full bg-green" style={{ width: `${(i / questions.length) * 100}%` }} />
       </div>
       <h2 className="mt-8 text-xl leading-snug text-fg">{q.prompt}</h2>
       <div className="mt-6 grid gap-2">
@@ -79,7 +79,7 @@ export function Diagnostic({ questions, onDone }: { questions: McQuestion[]; onD
             key={`${q.id}-${k}`}
             type="button"
             onClick={() => void choose(k)}
-            className="flex min-h-13 cursor-pointer items-center gap-3 rounded-xl border border-border-strong bg-inset px-4 py-3 text-left text-[15px] text-fg transition-colors hover:border-green/60"
+            className="flex min-h-13 cursor-pointer items-center gap-3 rounded-xl border border-border-strong bg-inset px-4 py-3 text-left text-sm text-fg"
           >
             <span className="grid size-7 shrink-0 place-items-center rounded-full border border-current text-xs text-fg-muted">{String.fromCharCode(65 + k)}</span>
             {c}
@@ -88,7 +88,7 @@ export function Diagnostic({ questions, onDone }: { questions: McQuestion[]; onD
         <button
           type="button"
           onClick={() => void choose(UNSURE)}
-          className={clsx("flex min-h-12 cursor-pointer items-center justify-center gap-2 rounded-xl border border-dashed border-border-strong px-4 text-[15px] text-fg-muted transition-colors hover:text-fg")}
+          className={clsx("flex min-h-12 cursor-pointer items-center gap-2 rounded-xl border border-dashed border-border-strong px-4 text-sm text-fg-muted")}
         >
           <Question size={18} aria-hidden /> I&rsquo;m not sure
         </button>
@@ -102,14 +102,14 @@ export function Diagnostic({ questions, onDone }: { questions: McQuestion[]; onD
 
 export function DiagnosticIntro({ count, onStart, onSkip, skipping }: { count: number; onStart: () => void; onSkip: () => void; skipping?: boolean }) {
   return (
-    <div className="text-center">
-      <p className="text-sm uppercase tracking-[0.14em] text-green">Almost done</p>
+    <div>
+      <p className="annot text-accent">Almost done</p>
       <h2 className="mt-3 font-display text-3xl">A quick knowledge check</h2>
-      <p className="mx-auto mt-3 max-w-md text-fg-muted">
+      <p className="mt-3 max-w-md text-fg-muted">
         {count} questions, about 10 minutes, two from every topic. It shows what you already know, so your plan skips ahead where you&rsquo;re strong and slows down
         where you&rsquo;re not.
       </p>
-      <div className="mt-8 flex flex-wrap justify-center gap-3">
+      <div className="mt-8 flex flex-wrap gap-3">
         <button type="button" onClick={onStart} className={buttonClass("primary", "lg")}>
           Start the check
         </button>

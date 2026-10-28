@@ -18,7 +18,7 @@ export default async function QuizzesPage() {
         title="Quizzes"
         description="Written-test style practice with instant scoring and explanations for every question."
         action={
-          <Link href="/portal/questions" className="text-sm text-fg-muted hover:text-accent">
+          <Link href="/portal/questions" className="text-sm text-fg-muted">
             Browse the question bank
           </Link>
         }
@@ -29,13 +29,13 @@ export default async function QuizzesPage() {
           const pool = quizPool(q).length;
           return (
             <li key={q.id}>
-              <Link href={`/portal/quizzes/${q.id}`} className="card group flex h-full flex-col p-7 transition-colors hover:border-green/40 hover:bg-surface-strong">
+              <Link href={`/portal/quizzes/${q.id}`} className="card flex h-full flex-col p-7">
                 <div className="flex items-center gap-3 text-sm text-fg-subtle">
                   <span>
                     {n} questions{pool > n ? ` · drawn from ${pool}` : ""}
                   </span>
                   {q.timeLimitMin && (
-                    <span className="inline-flex items-center gap-1 rounded-full bg-green/12 px-2.5 py-0.5 text-green">
+                    <span className="inline-flex items-center gap-1 rounded-full bg-green/12 px-2.5 py-0.5 text-accent">
                       <Timer size={14} aria-hidden />
                       {q.timeLimitMin} min
                     </span>
@@ -43,9 +43,9 @@ export default async function QuizzesPage() {
                 </div>
                 <h2 className="mt-4 font-display text-2xl">{q.title}</h2>
                 <p className="mt-2 flex-1 text-fg-muted">{q.description}</p>
-                <span className="mt-6 inline-flex items-center gap-2 text-[15px] text-accent">
+                <span className="mt-6 inline-flex items-center gap-2 text-sm text-accent">
                   Start quiz
-                  <ArrowRight size={16} className="transition-transform group-hover:translate-x-1" aria-hidden />
+                  <ArrowRight size={16} className="transition-transform" aria-hidden />
                 </span>
               </Link>
             </li>

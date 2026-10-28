@@ -1,8 +1,8 @@
 import { CheckCircle, Circle, Microphone, Timer, XCircle } from "@phosphor-icons/react/dist/ssr";
 import clsx from "clsx";
 import type { Metadata } from "next";
-import Link from "next/link";
 import { PageHeader } from "@/components/portal/PageHeader";
+import { EmptyState } from "@/components/ui/EmptyState";
 import { questionById } from "@/content/questions";
 import { getSession } from "@/lib/auth/session";
 import { recentOralSessions, recentQuizAttempts } from "@/lib/data/queries";
@@ -23,7 +23,7 @@ export default async function HistoryPage() {
 
       <section aria-labelledby="quiz-history">
         <h2 id="quiz-history" className="mb-4 flex items-center gap-2 font-display text-2xl">
-          <Timer size={22} className="text-green" aria-hidden /> Quizzes
+          <Timer size={22} className="text-accent" aria-hidden /> Quizzes
         </h2>
         {attempts.length ? (
           <ul className="space-y-3">
@@ -34,7 +34,7 @@ export default async function HistoryPage() {
                 <li key={a.id}>
                   <details className="card group p-5">
                     <summary className="flex cursor-pointer list-none items-center gap-4 [&::-webkit-details-marker]:hidden">
-                      <span className={clsx("w-14 shrink-0 font-display text-2xl tabular-nums", p >= 70 ? "text-green" : "text-warning")}>{p}%</span>
+                      <span className={clsx("w-14 shrink-0 font-display text-2xl tabular-nums", p >= 70 ? "text-accent" : "text-warning")}>{p}%</span>
                       <span className="min-w-0 flex-1">
                         <span className="block truncate text-fg">{a.quiz_title}</span>
                         <span className="block text-sm text-fg-subtle">
@@ -44,14 +44,14 @@ export default async function HistoryPage() {
                       <span className="text-sm text-fg-muted group-open:hidden">{missed.length ? `Review ${missed.length} missed` : "Perfect"}</span>
                     </summary>
                     {missed.length > 0 && (
-                      <ol className="mt-5 space-y-4 border-t border-border pt-5">
+                      <ol className="mt-8 space-y-5">
                         {missed.map((m) => {
                           const q = questionById(m.questionId);
                           if (!q || q.kind !== "mc") return null;
                           return (
                             <li key={m.questionId} className="flex gap-3">
                               <XCircle size={18} weight="fill" className="mt-0.5 shrink-0 text-danger" aria-label="Missed" />
-                              <div className="text-[15px]">
+                              <div className="text-sm">
                                 <p className="text-fg">{q.prompt}</p>
                                 <p className="mt-1 text-sm text-fg-subtle">Your answer: {m.chosen ?? "No answer"}</p>
                                 <p className="text-sm text-accent">Correct: {q.choices[q.answerIndex]}</p>
@@ -68,19 +68,16 @@ export default async function HistoryPage() {
             })}
           </ul>
         ) : (
-          <p className="card p-6 text-fg-muted">
-            No quizzes yet.{" "}
-            <Link href="/portal/quizzes" className="text-accent hover:underline">
-              Take your first one
-            </Link>
-            .
-          </p>
+          <EmptyState level={3} icon={Timer} title="No quizzes yet" action={{ href: "/portal/quizzes/ppl-quick-20", label: "Take a Quick 20" }} secondary={{ href: "/portal/quizzes", label: "See all tests" }}>
+            Finished practice tests land here with your score, time and every question you missed, explained. A Quick 20 takes about
+            fifteen minutes.
+          </EmptyState>
         )}
       </section>
 
       <section aria-labelledby="oral-history" className="mt-12">
         <h2 id="oral-history" className="mb-4 flex items-center gap-2 font-display text-2xl">
-          <Microphone size={22} className="text-green" aria-hidden /> Oral sessions
+          <Microphone size={22} className="text-accent" aria-hidden /> Oral sessions
         </h2>
         {orals.length ? (
           <ul className="space-y-3">
@@ -88,7 +85,7 @@ export default async function HistoryPage() {
               <li key={o.id}>
                 <details className="card group p-5">
                   <summary className="flex cursor-pointer list-none items-center gap-4 [&::-webkit-details-marker]:hidden">
-                    <span className="w-14 shrink-0 font-display text-2xl tabular-nums text-green">{o.avg_score != null ? `${Math.round(Number(o.avg_score) * 100)}%` : "—"}</span>
+                    <span className="w-14 shrink-0 font-display text-2xl tabular-nums text-accent">{o.avg_score != null ? `${Math.round(Number(o.avg_score) * 100)}%` : "—"}</span>
                     <span className="min-w-0 flex-1">
                       <span className="block text-fg">{o.mode === "examine" ? "Mock oral exam (DPE)" : "Teach session (CFI)"}</span>
                       <span className="block text-sm text-fg-subtle">
@@ -97,14 +94,14 @@ export default async function HistoryPage() {
                     </span>
                     <span className="text-sm text-fg-muted group-open:hidden">View</span>
                   </summary>
-                  <div className="mt-5 space-y-4 border-t border-border pt-5">
+                  <div className="mt-8 space-y-5">
                     {o.grades.map((g, i) => (
-                      <div key={i} className="text-[15px]">
+                      <div key={i} className="text-sm">
                         <p className="text-fg">{g.prompt}</p>
                         <ul className="mt-1.5 flex flex-wrap gap-x-4 gap-y-1">
                           {g.hits.map((h) => (
                             <li key={h} className="flex items-center gap-1.5 text-sm text-fg-muted">
-                              <CheckCircle size={14} weight="fill" className="text-green" aria-label="Covered" /> {h}
+                              <CheckCircle size={14} weight="fill" className="text-accent" aria-label="Covered" /> {h}
                             </li>
                           ))}
                           {g.misses.map((h) => (
@@ -119,7 +116,7 @@ export default async function HistoryPage() {
                       <ol className="space-y-2 text-sm">
                         {o.transcript.map((t, i) => (
                           <li key={i} className={t.role === "user" ? "text-fg" : "text-fg-muted"}>
-                            <span className="text-xs uppercase tracking-wider text-fg-subtle">{t.role === "user" ? "You" : "CFI"}: </span>
+                            <span className="annot text-fg-subtle">{t.role === "user" ? "You" : "CFI"}: </span>
                             {t.content}
                           </li>
                         ))}
@@ -131,13 +128,10 @@ export default async function HistoryPage() {
             ))}
           </ul>
         ) : (
-          <p className="card p-6 text-fg-muted">
-            No oral sessions yet.{" "}
-            <Link href="/portal/assistant?mode=examine" className="text-accent hover:underline">
-              Try a mock oral
-            </Link>
-            .
-          </p>
+          <EmptyState level={3} icon={Microphone} title="No oral sessions yet" action={{ href: "/portal/assistant?mode=examine", label: "Start a mock oral" }} secondary={{ href: "/portal/assistant", label: "Talk to your CFI" }}>
+            Every conversation with your voice CFI or examiner is saved here, with graded answers showing which ACS key points you
+            covered and which you missed.
+          </EmptyState>
         )}
       </section>
     </>

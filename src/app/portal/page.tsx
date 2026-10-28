@@ -3,6 +3,7 @@ import clsx from "clsx";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { PageHeader } from "@/components/portal/PageHeader";
+import { ProgressRing } from "@/components/ui/ProgressRing";
 import { StatusChip } from "@/components/plan/StatusChip";
 import { Celebration } from "@/components/progress/Celebration";
 import { ChallengeList } from "@/components/progress/ChallengeList";
@@ -26,9 +27,9 @@ const daysUntil = (date: string, today: string) => Math.round((Date.parse(date) 
 function Countdown({ label, date, today }: { label: string; date: string; today: string }) {
   const d = daysUntil(date, today);
   return (
-    <div className="flex items-baseline justify-between gap-3 text-[15px]">
+    <div className="flex items-baseline justify-between gap-3 text-sm">
       <span className="flex items-center gap-2 text-fg-muted">
-        <CalendarBlank size={16} className="text-green" aria-hidden /> {label}
+        <CalendarBlank size={16} className="text-accent" aria-hidden /> {label}
       </span>
       <span className="text-fg">
         {d > 1 ? (
@@ -65,7 +66,7 @@ export default async function PortalHome() {
 
       <div className="grid gap-4 lg:grid-cols-[1.6fr_1fr]">
         {/* Today's session */}
-        <section aria-labelledby="today" className="rounded-[28px] border border-green/30 bg-gradient-to-br from-green/12 via-panel to-panel p-6 sm:p-8">
+        <section aria-labelledby="today" className="rounded-[28px] border border-green/40 bg-surface p-6 sm:p-8">
           <div className="flex flex-wrap items-center justify-between gap-3">
             <h2 id="today" className="font-display text-2xl">
               Today&rsquo;s session
@@ -77,12 +78,12 @@ export default async function PortalHome() {
           <div className="mt-5">
             <TodaySession items={plan.today.items} />
           </div>
-          <div className="mt-6 flex flex-col gap-3 border-t border-border pt-5 sm:flex-row sm:items-center sm:justify-between">
+          <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
             <div className="min-w-0">
               <StatusChip status={plan.status} />
               <p className="mt-2 text-sm text-fg-muted">{plan.fix ?? plan.statusDetail}</p>
             </div>
-            <Link href="/portal/plan" className="inline-flex shrink-0 items-center gap-1.5 text-sm text-accent hover:underline">
+            <Link href="/portal/plan" className="inline-flex shrink-0 items-center gap-1.5 text-sm text-accent">
               View full plan <ArrowRight size={14} aria-hidden />
             </Link>
           </div>
@@ -94,15 +95,9 @@ export default async function PortalHome() {
             Checkride readiness
           </h2>
           <div className="mt-5 flex items-center gap-5">
-            <div
-              className="relative grid size-28 shrink-0 place-items-center rounded-full"
-              style={{ background: `conic-gradient(var(--green) 0 ${r.overall * 100}%, var(--track) ${r.overall * 100}% 100%)` }}
-              role="img"
-              aria-label={`Readiness ${pct(r.overall)}: ${r.label}`}
-            >
-              <div className="absolute inset-[8px] rounded-full bg-card-solid" />
-              <span className="relative font-display text-3xl tabular-nums">{Math.round(r.overall * 100)}</span>
-            </div>
+            <ProgressRing value={r.overall} label={`Readiness ${pct(r.overall)}: ${r.label}`}>
+              <span className="font-display text-2xl tabular-nums">{Math.round(r.overall * 100)}</span>
+            </ProgressRing>
             <div>
               <p className="font-display text-lg text-accent">{r.label}</p>
               <p className="mt-1 text-sm text-fg-subtle">Written {pct(r.written)}</p>
@@ -110,9 +105,9 @@ export default async function PortalHome() {
             </div>
           </div>
 
-          <div className="mt-5 rounded-2xl border border-border bg-inset px-4 py-3">
+          <div className="mt-6 rounded-2xl bg-inset px-4 py-3">
             <p className="flex items-center gap-2 text-sm text-fg-muted">
-              <Target size={16} className="text-green" aria-hidden /> Predicted written score
+              <Target size={16} className="text-accent" aria-hidden /> Predicted written score
             </p>
             {plan.predicted ? (
               <>
@@ -124,7 +119,7 @@ export default async function PortalHome() {
               </>
             ) : (
               <p className="mt-1 text-sm text-fg-subtle">
-                <Link href="/portal/quizzes/ppl-quick-20" className="text-accent hover:underline">
+                <Link href="/portal/quizzes/ppl-quick-20" className="text-accent">
                   Take a Quick 20
                 </Link>{" "}
                 to unlock your prediction.
@@ -132,19 +127,19 @@ export default async function PortalHome() {
             )}
           </div>
 
-          <div className="mt-5 space-y-2 border-t border-border pt-4">
+          <div className="mt-6 space-y-2">
             {session.writtenStatus !== "passed" &&
               (session.writtenDate ? (
                 <Countdown label="Written test" date={session.writtenDate} today={today} />
               ) : (
-                <Link href="/portal/settings#plan" className="block text-sm text-fg-muted hover:text-accent">
+                <Link href="/portal/settings#plan" className="block text-sm text-fg-muted">
                   Set your written test date →
                 </Link>
               ))}
             {session.checkrideDate ? (
               <Countdown label="Checkride" date={session.checkrideDate} today={today} />
             ) : (
-              <Link href="/portal/settings#plan" className="block text-sm text-fg-muted hover:text-accent">
+              <Link href="/portal/settings#plan" className="block text-sm text-fg-muted">
                 Set your checkride date →
               </Link>
             )}
@@ -168,28 +163,28 @@ export default async function PortalHome() {
 
         <section aria-labelledby="ready" className="card flex flex-col p-6 sm:p-7">
           <h2 id="ready" className="flex items-center gap-2 font-display text-xl">
-            <Certificate size={22} weight="fill" className="text-green" aria-hidden /> Aviant Ready
+            <Certificate size={22} weight="fill" className="text-accent" aria-hidden /> Aviant Ready
           </h2>
           <p className="mt-1 text-sm text-fg-subtle">Earn your certificate to show your CFI you&rsquo;re ready for the written.</p>
-          <ul className="mt-4 space-y-2 text-[15px]">
+          <ul className="mt-4 space-y-2 text-sm">
             {[
               { ok: r.overall >= 0.85, label: `Readiness 85%+ (now ${pct(r.overall)})` },
               { ok: fulls.length >= 1 && fulls[0].score / fulls[0].total >= 0.85, label: "Full mock test at 85%+" },
               { ok: fulls.length === 2 && fulls.every((a) => a.score / a.total >= 0.85), label: "Second full mock test at 85%+" },
             ].map((c) => (
               <li key={c.label} className="flex items-center gap-2">
-                {c.ok ? <CheckCircle size={18} weight="fill" className="text-green" aria-label="Done" /> : <Circle size={18} className="text-fg-subtle" aria-label="Not yet" />}
+                {c.ok ? <CheckCircle size={18} weight="fill" className="text-accent" aria-label="Done" /> : <Circle size={18} className="text-fg-subtle" aria-label="Not yet" />}
                 <span className={c.ok ? "text-fg" : "text-fg-muted"}>{c.label}</span>
               </li>
             ))}
           </ul>
           <div className="mt-auto pt-5">
             {progress.aviantReady ? (
-              <Link href="/portal/certificate" className="inline-flex items-center gap-1.5 text-[15px] font-medium text-accent hover:underline">
+              <Link href="/portal/certificate" className="inline-flex items-center gap-1.5 text-sm font-medium text-accent">
                 View your certificate <ArrowRight size={14} aria-hidden />
               </Link>
             ) : (
-              <Link href="/portal/quizzes/ppl-mock-knowledge" className="text-sm text-fg-muted hover:text-accent">
+              <Link href="/portal/quizzes/ppl-mock-knowledge" className="text-sm text-fg-muted">
                 Take a full mock test →
               </Link>
             )}
@@ -203,7 +198,7 @@ export default async function PortalHome() {
           <h2 id="mastery" className="font-display text-2xl">
             Mastery by topic
           </h2>
-          <Link href="/portal/history" className="text-sm text-fg-muted hover:text-accent">
+          <Link href="/portal/history" className="text-sm text-fg-muted">
             View history
           </Link>
         </div>
@@ -215,14 +210,14 @@ export default async function PortalHome() {
               <li key={g.id}>
                 <Link
                   href={`/portal/review?mode=new&topic=${g.id}`}
-                  className="block rounded-2xl border border-border px-4 py-3 transition-colors hover:border-green/40 hover:bg-surface"
+                  className="block rounded-2xl border border-border px-4 py-3"
                 >
                   <div className="flex items-baseline justify-between gap-3">
-                    <span className="text-[15px]">{g.title.charAt(0).toUpperCase() + g.title.slice(1)}</span>
-                    <span className={clsx("font-display tabular-nums", g.mastery >= 0.7 ? "text-green" : g.seen ? "text-warning" : "text-fg-subtle")}>{pct(g.mastery)}</span>
+                    <span className="text-sm">{g.title.charAt(0).toUpperCase() + g.title.slice(1)}</span>
+                    <span className={clsx("font-display tabular-nums", g.mastery >= 0.7 ? "text-accent" : g.seen ? "text-fg" : "text-fg-subtle")}>{pct(g.mastery)}</span>
                   </div>
                   <div className="mt-2 h-1.5 overflow-hidden rounded-full bg-surface-strong" aria-hidden>
-                    <div className={clsx("h-full rounded-full", g.mastery >= 0.7 ? "bg-green" : "bg-warning")} style={{ width: pct(g.mastery) }} />
+                    <div className="h-full rounded-full bg-green" style={{ width: pct(g.mastery) }} />
                   </div>
                   <p className="mt-1.5 text-xs text-fg-subtle">
                     {g.seen} of {g.total} questions seen

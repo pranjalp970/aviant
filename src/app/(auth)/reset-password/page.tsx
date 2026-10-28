@@ -14,8 +14,8 @@ export default async function ResetPasswordPage() {
       <h1 className="font-display text-4xl">Set a new password</h1>
       <p className="mb-8 mt-2 text-fg-muted">Choose a new password for your account.</p>
       <ResetPasswordForm />
-      <p className="mt-8 text-center text-[15px] text-fg-muted">
-        <Link href="/portal" className="text-accent hover:underline">
+      <p className="mt-8 text-sm text-fg-muted">
+        <Link href="/portal" className="text-accent">
           Skip for now
         </Link>
       </p>

@@ -36,7 +36,7 @@ export function OAuthButtons({ providers }: { providers: OAuthProvider[] }) {
             <input type="hidden" name="provider" value={p} />
             <button
               type="submit"
-              className="flex h-12 w-full cursor-pointer items-center justify-center gap-3 rounded-full border border-border-strong bg-white text-[15px] font-medium text-black transition-colors hover:bg-white/90"
+              className="flex h-12 w-full cursor-pointer items-center justify-center gap-3 rounded-full border border-border-strong bg-white text-sm font-medium text-black"
             >
               {p === "google" ? <GoogleMark /> : <AppleMark />}
               {LABELS[p]}

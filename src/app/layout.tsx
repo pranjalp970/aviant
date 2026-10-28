@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Afacad_Flux, IBM_Plex_Mono, Tenor_Sans } from "next/font/google";
+import { Afacad_Flux, JetBrains_Mono, Tenor_Sans } from "next/font/google";
 import { THEME_SCRIPT } from "@/lib/theme";
 import "./globals.css";
 
@@ -8,8 +8,8 @@ const afacad = Afacad_Flux({
   subsets: ["latin"],
 });
 
-const plexMono = IBM_Plex_Mono({
-  variable: "--font-plex-mono",
+const jbmono = JetBrains_Mono({
+  variable: "--font-jbmono",
   weight: ["400", "500"],
   subsets: ["latin"],
 });
@@ -33,7 +33,7 @@ export const metadata: Metadata = {
 export const viewport: Viewport = {
   themeColor: [
     { media: "(prefers-color-scheme: light)", color: "#f3f5f0" },
-    { media: "(prefers-color-scheme: dark)", color: "#000000" },
+    { media: "(prefers-color-scheme: dark)", color: "#050506" },
   ],
   colorScheme: "dark light",
 };
@@ -42,7 +42,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     // suppressHydrationWarning: the theme script and browser extensions change <html> attributes
     // before React loads. It only covers this element's own attributes, not its children.
-    <html lang="en" data-theme="dark" className={`${afacad.variable} ${tenor.variable} ${plexMono.variable} h-full antialiased`} suppressHydrationWarning>
+    <html lang="en" data-theme="dark" className={`${afacad.variable} ${tenor.variable} ${jbmono.variable} h-full antialiased`} suppressHydrationWarning>
       <head>
         {/* Applies the saved theme before first paint (no flash). */}
         <script dangerouslySetInnerHTML={{ __html: THEME_SCRIPT }} />

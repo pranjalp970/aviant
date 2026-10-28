@@ -8,11 +8,10 @@ export function StatusChip({ status }: { status: PlanStatus }) {
   return (
     <span
       className={clsx(
-        "inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-medium",
+        "inline-flex items-center rounded-full px-3 py-1 text-xs font-medium",
         good ? "bg-green/12 text-accent" : "bg-warning/12 text-warning",
       )}
     >
-      <span className={clsx("size-1.5 rounded-full", good ? "bg-green" : "bg-warning")} aria-hidden />
       {LABEL[status]}
     </span>
   );

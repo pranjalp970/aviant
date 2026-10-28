@@ -28,12 +28,12 @@ export default async function OnboardingPage({ searchParams }: PageProps<"/onboa
           <Logo />
         </Link>
         {session.onboarded ? (
-          <Link href="/portal" className="text-sm text-fg-muted hover:text-accent">
+          <Link href="/portal" className="text-sm text-fg-muted">
             Back to dashboard
           </Link>
         ) : (
           <form action={skipOnboarding}>
-            <button type="submit" className="cursor-pointer text-sm text-fg-muted hover:text-accent">
+            <button type="submit" className="cursor-pointer text-sm text-fg-muted">
               Skip setup
             </button>
           </form>

@@ -20,7 +20,7 @@ function Submit({ pending, idle, busy }: { pending: boolean; idle: string; busy:
 function FormError({ error }: { error?: string }) {
   if (!error) return null;
   return (
-    <p role="alert" className="rounded-xl border border-danger/40 bg-danger/10 px-4 py-3 text-[15px] text-fg">
+    <p role="alert" className="rounded-xl border border-danger/40 bg-danger/10 px-4 py-3 text-sm text-fg">
       {error}
     </p>
   );
@@ -28,7 +28,7 @@ function FormError({ error }: { error?: string }) {
 
 function Notice({ children, action }: { children: React.ReactNode; action?: React.ReactNode }) {
   return (
-    <div role="status" className="rounded-2xl border border-green/40 bg-green/10 p-5 text-[15px] leading-relaxed text-fg">
+    <div role="status" className="rounded-2xl border border-green/40 bg-green/10 p-5 text-sm leading-relaxed text-fg">
       {children}
       {action}
     </div>
@@ -52,7 +52,7 @@ export function LoginForm({ linkError, oauthError }: { linkError?: boolean; oaut
       <Field label="Email" name="email" type="email" autoComplete="email" required error={state.fieldErrors?.email} />
       <div>
         <Field label="Password" name="password" type="password" autoComplete="current-password" required error={state.fieldErrors?.password} />
-        <Link href="/forgot-password" className="mt-2 inline-block text-sm text-fg-muted hover:text-accent">
+        <Link href="/forgot-password" className="mt-2 inline-block text-sm text-fg-muted">
           Forgot password?
         </Link>
       </div>
@@ -67,7 +67,7 @@ export function SignupForm() {
     return (
       <Notice
         action={
-          <Link href="/login" className="mt-4 block text-accent hover:underline">
+          <Link href="/login" className="mt-4 block text-accent">
             Go to log in
           </Link>
         }
@@ -103,7 +103,7 @@ export function ForgotForm() {
     return (
       <Notice
         action={
-          <Link href="/login" className="mt-4 block text-accent hover:underline">
+          <Link href="/login" className="mt-4 block text-accent">
             Back to log in
           </Link>
         }
