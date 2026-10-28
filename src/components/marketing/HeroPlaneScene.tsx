@@ -54,14 +54,14 @@ function PlaneMesh({ reduced, light }: { reduced: boolean; light: boolean }) {
     <mesh ref={ref} geometry={geometry} rotation={[0.35, -0.5, -0.25]}>
       {/* Dark chrome on the dark theme; sage chrome on light, deep enough to hold its shape on a pale page. */}
       <meshPhysicalMaterial
-        color={light ? "#b7c4b3" : "#151d14"}
+        color={light ? "#b7c4b3" : "#34452f"}
         metalness={light ? 0.9 : 0.85}
         roughness={light ? 0.28 : 0.38}
         clearcoat={1}
         clearcoatRoughness={0.1}
         iridescence={0.7}
         iridescenceIOR={1.4}
-        envMapIntensity={light ? 1.2 : 2.2}
+        envMapIntensity={light ? 1.2 : 2.6}
       />
     </mesh>
   );
