@@ -55,7 +55,7 @@ export function DemoWidget() {
     <div className="overflow-hidden border border-border-strong bg-bg-elevated">
       <div className="annot flex items-center justify-between gap-4 px-5 pt-5 text-fg-subtle sm:px-8 sm:pt-7">
         <span>AI examiner · Private Pilot</span>
-        <span className="text-accent">PA.I.B</span>
+        <span>PA.I.B</span>
       </div>
       <div className="p-5 sm:p-8">
       <p className="font-display text-xl text-fg sm:text-2xl">&ldquo;{DEMO_PROMPT}&rdquo;</p>
@@ -73,7 +73,7 @@ export function DemoWidget() {
             placeholder="e.g. The airworthiness certificate, registration…"
             aria-invalid={!!error}
             aria-describedby={error ? `${id}-err` : undefined}
-            className="w-full resize-none border border-border-strong bg-inset px-4 py-3 text-base text-fg placeholder:text-fg-subtle focus:border-green focus:outline-none"
+            className="w-full resize-none border border-border-strong bg-inset px-4 py-3 text-base text-fg placeholder:text-fg-subtle focus:border-green focus:outline-none focus:ring-1 focus:ring-green"
           />
           {error && (
             <p id={`${id}-err`} role="alert" className="mt-2 text-sm text-danger">
@@ -100,7 +100,7 @@ export function DemoWidget() {
             )}
           </div>
           {grade && (
-            <ul className="mt-4 grid gap-2 sm:grid-cols-2">
+            <ul className="mt-4 grid grid-cols-1 gap-2 sm:grid-cols-2">
               {[...grade.hits.map((h) => ({ h, ok: true })), ...grade.misses.map((h) => ({ h, ok: false }))].map(({ h, ok }) => (
                 <li key={h} className="flex items-start gap-2 bg-surface-strong px-3 py-2.5 text-sm">
                   {ok ? (

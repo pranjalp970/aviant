@@ -20,7 +20,7 @@ function Submit({ pending, idle, busy }: { pending: boolean; idle: string; busy:
 function FormError({ error }: { error?: string }) {
   if (!error) return null;
   return (
-    <p role="alert" className="rounded-xl border border-danger/40 bg-danger/10 px-4 py-3 text-sm text-fg">
+    <p role="alert" className="rounded-ui border border-danger/40 bg-danger/10 px-4 py-3 text-sm text-fg">
       {error}
     </p>
   );
@@ -28,7 +28,7 @@ function FormError({ error }: { error?: string }) {
 
 function Notice({ children, action }: { children: React.ReactNode; action?: React.ReactNode }) {
   return (
-    <div role="status" className="rounded-2xl border border-green/40 bg-green/10 p-5 text-sm leading-relaxed text-fg">
+    <div role="status" className="rounded-ui border border-green/40 bg-green/10 p-5 text-sm leading-relaxed text-fg">
       {children}
       {action}
     </div>

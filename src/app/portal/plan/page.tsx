@@ -3,6 +3,7 @@ import clsx from "clsx";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { PageHeader } from "@/components/portal/PageHeader";
+import { buttonClass } from "@/components/ui/button";
 import { StatusChip } from "@/components/plan/StatusChip";
 import { TodaySession } from "@/components/plan/TodaySession";
 import { getSession } from "@/lib/auth/session";
@@ -23,10 +24,10 @@ export default async function PlanPage() {
     <>
       <PageHeader
         eyebrow={plan.phase === "written" ? "Written test prep" : "Checkride prep"}
-        title="Your study plan"
+        title="Study plan"
         description={`${plan.phase === "written" ? "Written test" : "Checkride"} ${plan.dateSuggested ? "target (suggested)" : "on"} ${fmt(plan.targetDate, { weekday: "long", month: "long", day: "numeric" })} · ${plan.daysLeft} days · ${session.studyMinutesPerDay} min, ${session.studyDaysPerWeek} days a week`}
         action={
-          <Link href="/portal/settings#plan" className="inline-flex items-center gap-1.5 text-sm text-fg-muted">
+          <Link href="/portal/settings#plan" className={buttonClass("glass")}>
             <PencilSimple size={14} aria-hidden /> Adjust plan
           </Link>
         }
@@ -41,26 +42,26 @@ export default async function PlanPage() {
         </div>
         <dl className="grid shrink-0 grid-cols-2 gap-6">
           <div>
-            <dt className="text-xs text-fg-subtle">Study time needed</dt>
-            <dd className="font-display text-2xl tabular-nums">{hours(plan.requiredMinutes)}</dd>
+            <dt className="annot text-fg-subtle">Study time needed</dt>
+            <dd className="mt-1 font-display text-2xl tabular-nums">{hours(plan.requiredMinutes)}</dd>
           </div>
           <div>
-            <dt className="text-xs text-fg-subtle">Time you have</dt>
-            <dd className={clsx("font-display text-2xl tabular-nums", plan.capacityMinutes < plan.requiredMinutes && "text-warning")}>{hours(plan.capacityMinutes)}</dd>
+            <dt className="annot text-fg-subtle">Time you have</dt>
+            <dd className={clsx("mt-1 font-display text-2xl tabular-nums", plan.capacityMinutes < plan.requiredMinutes && "text-warning")}>{hours(plan.capacityMinutes)}</dd>
           </div>
         </dl>
       </section>
 
-      <div className="grid gap-8 lg:grid-cols-[1.3fr_1fr]">
+      <div className="grid grid-cols-1 gap-10 lg:grid-cols-[minmax(0,1.3fr)_minmax(0,1fr)]">
         {/* Roadmap */}
         <section aria-labelledby="roadmap">
-          <h2 id="roadmap" className="mb-4 font-display text-2xl">
+          <h2 id="roadmap" className="mb-5 font-display text-xl sm:text-2xl">
             Week by week
           </h2>
           <ol className="space-y-3">
             {plan.weeks.map((w, i) => (
               <li key={w.index}>
-                <div className={clsx("rounded-2xl border p-5", i === 0 ? "border-green/40 bg-green/8" : "border-border bg-surface")}>
+                <div className={clsx("rounded-ui border p-5", i === 0 ? "border-green/40 bg-green/8" : "border-border bg-bg-elevated")}>
                   <div className="flex flex-wrap items-baseline justify-between gap-2">
                     <p className="font-display text-lg">
                       {i === 0 ? "This week" : w.kind === "review" ? "Final review" : `Week ${i + 1}`}
@@ -68,12 +69,12 @@ export default async function PlanPage() {
                         {fmt(w.start)} – {fmt(w.end)}
                       </span>
                     </p>
-                    <span className="text-sm text-fg-subtle">~{hours(w.minutes)}</span>
+                    <span className="annot text-fg-subtle">About {hours(w.minutes)}</span>
                   </div>
                   {w.topics.length > 0 && (
                     <ul className="mt-3 flex flex-wrap gap-2">
                       {w.topics.map((t) => (
-                        <li key={t.id} className="rounded-full border border-border-strong bg-inset px-3 py-1 text-sm text-fg-muted">
+                        <li key={t.id} className="rounded-ui border border-border-strong px-3 py-1 text-sm text-fg-muted">
                           {t.title}
                           {t.newQuestions > 0 && <span className="ml-1.5 text-fg-subtle">· {t.newQuestions} new</span>}
                         </li>
@@ -100,7 +101,7 @@ export default async function PlanPage() {
         <div className="space-y-8">
           {/* Today */}
           <section aria-labelledby="today">
-            <h2 id="today" className="mb-4 font-display text-2xl">
+            <h2 id="today" className="mb-5 font-display text-xl sm:text-2xl">
               Today
             </h2>
             <TodaySession items={plan.today.items} />
@@ -108,20 +109,20 @@ export default async function PlanPage() {
 
           {/* Where the time goes */}
           <section aria-labelledby="topics">
-            <h2 id="topics" className="font-display text-2xl">
+            <h2 id="topics" className="font-display text-xl sm:text-2xl">
               Where your time goes
             </h2>
             <p className="mb-4 mt-1 text-sm text-fg-subtle">More time where you&rsquo;re weaker or the test leans harder, less where you&rsquo;re strong.</p>
-            <ul className="space-y-3">
+            <ul className="divide-y divide-border border-y border-border">
               {topics.map((t) => (
                 <li key={t.id}>
-                  <Link href={`/portal/review?mode=new&topic=${t.id}`} className="block">
+                  <Link href={`/portal/review?mode=new&topic=${t.id}`} className="-mx-2 block rounded-ui px-2 py-3.5 transition-colors hover:bg-surface-strong">
                     <div className="flex items-baseline justify-between gap-3 text-sm">
                       <span className="text-fg">{t.title}</span>
-                      <span className="shrink-0 tabular-nums text-fg-subtle">{t.minutes >= 1 ? hours(t.minutes) : "done"}</span>
+                      <span className="annot shrink-0 text-fg-subtle">{t.minutes >= 1 ? hours(t.minutes) : "done"}</span>
                     </div>
-                    <div className="mt-1.5 h-1.5 overflow-hidden rounded-full bg-surface-strong" aria-hidden>
-                      <div className="h-full rounded-full bg-green" style={{ width: `${(t.minutes / maxMinutes) * 100}%` }} />
+                    <div className="mt-2 h-1 overflow-hidden bg-surface-strong" aria-hidden>
+                      <div className="h-full bg-green" style={{ width: `${(t.minutes / maxMinutes) * 100}%` }} />
                     </div>
                     <p className="mt-1 text-xs text-fg-subtle">
                       {t.reason} · {Math.round(t.mastery * 100)}% mastered
@@ -132,7 +133,7 @@ export default async function PlanPage() {
             </ul>
           </section>
 
-          <Link href="/onboarding?step=diagnostic" className="flex items-center justify-between rounded-2xl border border-border px-5 py-4 text-sm text-fg-muted">
+          <Link href="/onboarding?step=diagnostic" className="card card-link flex items-center justify-between px-5 py-4 text-sm text-fg-muted">
             Retake the knowledge check to recalibrate
             <ArrowRight size={16} aria-hidden />
           </Link>

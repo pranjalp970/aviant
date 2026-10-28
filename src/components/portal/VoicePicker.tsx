@@ -101,7 +101,7 @@ export function VoicePicker({ provider, selected, onChange, onBeforePreview }: V
                         if (previewing?.role === role) stopPreview();
                         onChange(role, e.target.value);
                       }}
-                      className="h-11 w-full cursor-pointer appearance-none rounded-xl border border-border-strong bg-inset pl-3 pr-9 text-sm text-fg focus:border-green focus:outline-none"
+           className="h-11 w-full cursor-pointer transition-colors hover:border-fg/35 appearance-none rounded-ui border border-border-strong bg-inset pl-3 pr-9 text-sm text-fg focus:border-green focus:outline-none focus:ring-1 focus:ring-green"
                     >
                       {VOICES[provider].map((v) => (
                         <option key={v.id} value={v.id}>
@@ -115,7 +115,7 @@ export function VoicePicker({ provider, selected, onChange, onBeforePreview }: V
                     type="button"
                     onClick={() => void preview(role)}
                     aria-label={p === "playing" ? `Stop ${label} preview` : `Preview ${label}`}
-                    className="grid size-11 shrink-0 cursor-pointer place-items-center rounded-xl border border-border-strong text-accent"
+          className="grid size-11 shrink-0 cursor-pointer transition-colors hover:border-fg/35 place-items-center rounded-ui border border-border-strong text-accent"
                   >
                     {p === "loading" ? (
                       <SpinnerGap size={18} className="animate-spin" aria-hidden />

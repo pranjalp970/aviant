@@ -85,7 +85,7 @@ function TeachVignette() {
     <Panel title="Voice CFI · Teach mode" meta={<span className="text-accent">Live</span>}>
       <div className="space-y-4 text-sm">
         <motion.div variants={item}>
-          <p className="annot mb-1 text-accent">CFI</p>
+          <p className="annot mb-1 text-fg-muted">CFI</p>
           <p className="text-fg">Before you enter Class B airspace, what do you need from ATC?</p>
         </motion.div>
         <motion.div variants={item} className="ml-auto max-w-[85%] bg-surface-strong px-4 py-3">
@@ -93,7 +93,7 @@ function TeachVignette() {
           <p className="text-fg">Two-way radio contact?</p>
         </motion.div>
         <motion.div variants={item}>
-          <p className="annot mb-1 text-accent">CFI</p>
+          <p className="annot mb-1 text-fg-muted">CFI</p>
           <p className="text-fg">
             That&rsquo;s enough for Class C and D. Bravo needs an explicit clearance: you have to hear &ldquo;cleared into the Class Bravo.&rdquo;
             Hearing your callsign isn&rsquo;t enough.
@@ -167,7 +167,7 @@ function ExamVignette() {
           75<span className="text-base text-fg-subtle">%</span>
         </p>
       </motion.div>
-      <ul className="mt-3 grid gap-2 text-sm sm:grid-cols-2">
+      <ul className="mt-3 grid grid-cols-1 gap-2 text-sm sm:grid-cols-2">
         {[
           ["Airworthiness certificate", true],
           ["Registration", true],
@@ -314,7 +314,7 @@ export function FlightRoute() {
               viewport={{ amount: 0.55 }}
               className="flex flex-col justify-center border-l border-border py-14 pl-6 sm:pl-10 lg:min-h-[92vh] lg:border-0 lg:py-20 lg:pl-0"
             >
-              <p className="annot flex items-center gap-3 text-accent">
+              <p className="annot flex items-center gap-3 text-fg-subtle">
                 <span>{String(i + 1).padStart(2, "0")}</span>
                 <span className="h-px w-6 bg-current" aria-hidden />
                 <span>{p.phase}</span>

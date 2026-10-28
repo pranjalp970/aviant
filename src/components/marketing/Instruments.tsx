@@ -57,7 +57,7 @@ function Dial({ g, index }: { g: Gauge; index: number }) {
               return <line key={t} x1={x1} y1={y1} x2={x2} y2={y2} strokeWidth={isMajor ? 2 : 1} opacity={isMajor ? 1 : 0.6} />;
             })}
           </g>
-          <g fill="#e9eee6" fontFamily="var(--font-mono)" fontSize="13" textAnchor="middle" dominantBaseline="central">
+          <g fill="#e9eee6" fontFamily="var(--font-jbmono)" fontSize="13" textAnchor="middle" dominantBaseline="central">
             {ticks
               .filter((t) => t % g.major === 0)
               .map((t) => {
@@ -69,10 +69,10 @@ function Dial({ g, index }: { g: Gauge; index: number }) {
                 );
               })}
           </g>
-          <text y="30" fill="#e9eee6" fontFamily="var(--font-mono)" fontSize="9.5" letterSpacing="1.5" textAnchor="middle">
+          <text y="30" fill="#e9eee6" fontFamily="var(--font-jbmono)" fontSize="9.5" letterSpacing="1.5" textAnchor="middle">
             {g.label.toUpperCase()}
           </text>
-          <text y="44" fill="#87da81" fontFamily="var(--font-mono)" fontSize="8.5" letterSpacing="1" textAnchor="middle">
+          <text y="44" fill="#87da81" fontFamily="var(--font-jbmono)" fontSize="8.5" letterSpacing="1" textAnchor="middle">
             {g.unit.toUpperCase()}
           </text>
           <GaugeNeedle angle={angleOf(g.value, g.max)} delay={0.15 + index * 0.12} />
@@ -92,9 +92,9 @@ export function Instruments() {
   return (
     <section id="instruments" className="scroll-mt-16 px-3 py-24 sm:px-5 sm:py-32">
       <div className="mx-auto max-w-[1320px] overflow-hidden border border-white/10 bg-[#0b0d0b] text-[#f4f7f2]">
-        <div className="grid gap-8 border-b border-white/10 px-6 py-12 sm:px-10 md:grid-cols-[1fr_1fr] md:items-end md:py-16">
+        <div className="grid grid-cols-1 gap-8 border-b border-white/10 px-6 py-12 sm:px-10 md:grid-cols-[1fr_1fr] md:items-end md:py-16">
           <div>
-            <p className="annot text-[#87da81]">Your instrument panel</p>
+            <p className="annot text-[#a3aba0]">Instrument panel</p>
             <h2 className="mt-5 max-w-lg font-display text-3xl tracking-[-0.015em] md:text-4xl">
               Know you&rsquo;re ready. Don&rsquo;t guess.
             </h2>

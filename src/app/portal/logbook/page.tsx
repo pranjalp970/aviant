@@ -37,47 +37,47 @@ export default async function LogbookPage() {
 
   return (
     <>
-      <PageHeader eyebrow="Your progress" title="Logbook" description="Every minute you study counts, like hours in a pilot's logbook." />
+      <PageHeader eyebrow="Progress" title="Logbook" description="Every minute you study counts, like hours in a pilot's logbook." />
 
-      {progress.totals.studyDays === 0 ? (
-        <EmptyState icon={Notebook} title="Your logbook is empty" action={{ href: "/portal", label: "Start today's session" }} secondary={{ href: "/portal/review?mode=quiz", label: "Answer a few questions" }}>
-          Study time, questions answered, your streak and rank appear here after your first session. Ten minutes or twenty questions counts
+      {progress.totals.minutes === 0 && progress.totals.questions === 0 ? (
+        <EmptyState icon={Notebook} title="Nothing logged yet" action={{ href: "/portal", label: "Start today's session" }} secondary={{ href: "/portal/review?mode=quiz", label: "Answer a few questions" }}>
+          Study time, questions answered, streak and rank appear here after your first session. Ten minutes or twenty questions counts
           as a logged day.
         </EmptyState>
       ) : (
       <>
       {/* Totals */}
-      <dl className="grid grid-cols-2 gap-3 lg:grid-cols-4">
-        <div className="card p-5">
-          <dt className="text-sm text-fg-subtle">Total study time</dt>
-          <dd className="mt-1 font-display text-3xl tabular-nums">
+      <dl className="card grid grid-cols-2 divide-border lg:grid-cols-4 lg:divide-x [&>div]:border-border [&>div:nth-child(-n+2)]:border-b lg:[&>div:nth-child(-n+2)]:border-b-0 [&>div:nth-child(odd)]:border-r lg:[&>div:nth-child(odd)]:border-r-0">
+        <div className="p-5">
+          <dt className="annot text-fg-subtle">Total study time</dt>
+          <dd className="mt-2 font-display text-3xl tabular-nums">
             {hours}
             <span className="text-base text-fg-subtle">h</span> {mins}
             <span className="text-base text-fg-subtle">m</span>
           </dd>
         </div>
-        <div className="card p-5">
-          <dt className="text-sm text-fg-subtle">Questions answered</dt>
-          <dd className="mt-1 font-display text-3xl tabular-nums">{progress.totals.questions.toLocaleString()}</dd>
+        <div className="p-5">
+          <dt className="annot text-fg-subtle">Questions answered</dt>
+          <dd className="mt-2 font-display text-3xl tabular-nums">{progress.totals.questions.toLocaleString()}</dd>
         </div>
-        <div className="card p-5">
-          <dt className="flex items-center gap-1.5 text-sm text-fg-subtle">
+        <div className="p-5">
+          <dt className="annot flex items-center gap-1.5 text-fg-subtle">
             <Fire size={14} weight="fill" className="text-accent" aria-hidden /> Streak
           </dt>
-          <dd className="mt-1 font-display text-3xl tabular-nums">
+          <dd className="mt-2 font-display text-3xl tabular-nums">
             {progress.streak.current} <span className="text-base text-fg-subtle">best {progress.streak.best}</span>
           </dd>
         </div>
-        <div className="card p-5">
-          <dt className="flex items-center gap-1.5 text-sm text-fg-subtle">
+        <div className="p-5">
+          <dt className="annot flex items-center gap-1.5 text-fg-subtle">
             <Trophy size={14} weight="fill" className="text-accent" aria-hidden /> {progress.xp.toLocaleString()} XP
           </dt>
-          <dd className="mt-1 truncate font-display text-2xl">{progress.rank.title}</dd>
+          <dd className="mt-2 truncate font-display text-2xl">{progress.rank.title}</dd>
         </div>
       </dl>
 
       {/* Heatmap */}
-      <section aria-labelledby="activity" className="card mt-6 p-6">
+      <section aria-labelledby="activity" className="card mt-4 p-6">
         <div className="mb-4 flex items-baseline justify-between">
           <h2 id="activity" className="font-display text-xl">
             Last 12 weeks
@@ -90,30 +90,30 @@ export default async function LogbookPage() {
               <div key={w} className="grid gap-1.5">
                 {week.map((d) => {
                   const m = byDay.get(d)?.minutes ?? 0;
-                  return <span key={d} title={`${d}: ${Math.round(m)} min`} className={clsx("size-4 rounded-[4px] sm:size-5", d > ctx.today ? "opacity-0" : shades[level(m)], d === ctx.today && "ring-1 ring-green")} />;
+                  return <span key={d} title={`${d}: ${Math.round(m)} min`} className={clsx("size-4 rounded-ui sm:size-5", d > ctx.today ? "opacity-0" : shades[level(m)], d === ctx.today && "ring-1 ring-green")} />;
                 })}
               </div>
             ))}
           </div>
         </div>
         <div className="mt-3 flex items-center gap-1.5 text-xs text-fg-subtle">
-          Less {shades.map((s) => <span key={s} className={clsx("size-4 rounded-[3px]", s)} aria-hidden />)} More
+          Less {shades.map((s) => <span key={s} className={clsx("size-4 rounded-ui", s)} aria-hidden />)} More
         </div>
       </section>
       </>
       )}
 
-      <div className="mt-12 grid gap-10 lg:grid-cols-[1.4fr_1fr]">
+      <div className="mt-12 grid grid-cols-1 gap-10 lg:grid-cols-[1.4fr_1fr]">
         {/* Badges */}
         <section aria-labelledby="badges">
-          <h2 id="badges" className="mb-4 font-display text-2xl">
+          <h2 id="badges" className="mb-5 font-display text-xl sm:text-2xl">
             Badges <span className="text-base text-fg-subtle">{earned.length}/{progress.badges.length}</span>
           </h2>
-          <ul className="grid gap-3 sm:grid-cols-2">
+          <ul className="grid grid-cols-1 gap-3 sm:grid-cols-2">
             {[...earned, ...locked].map((b) => (
-              <li key={b.id} className={clsx("rounded-2xl border p-4", b.earned ? "border-green/40 bg-green/8" : "border-border")}>
+              <li key={b.id} className={clsx("rounded-ui border p-4", b.earned ? "border-green/40 bg-green/8" : "border-border")}>
                 <div className="flex items-start gap-3">
-                  <span className={clsx("grid size-10 shrink-0 place-items-center rounded-full", b.earned ? "bg-green/12 text-accent" : "bg-surface-strong text-fg-subtle")}>
+                  <span className={clsx("grid size-10 shrink-0 place-items-center rounded-ui", b.earned ? "bg-green/12 text-accent" : "bg-surface-strong text-fg-subtle")}>
                     {b.earned ? <Medal size={20} weight="fill" aria-hidden /> : <Lock size={18} aria-hidden />}
                   </span>
                   <div className="min-w-0 flex-1">
@@ -122,8 +122,8 @@ export default async function LogbookPage() {
                     {b.earned ? (
                       <p className="mt-1 text-xs text-accent">{b.earnedAt ? `Earned ${fmtDate(b.earnedAt)}` : "Earned"}</p>
                     ) : (
-                      <div className="mt-2 h-1 overflow-hidden rounded-full bg-surface-strong" aria-hidden>
-                        <div className="h-full rounded-full bg-green/60" style={{ width: `${b.progress * 100}%` }} />
+                      <div className="mt-2 h-1 overflow-hidden bg-surface-strong" aria-hidden>
+                        <div className="h-full bg-green/60" style={{ width: `${b.progress * 100}%` }} />
                       </div>
                     )}
                   </div>
@@ -144,7 +144,7 @@ export default async function LogbookPage() {
                 const reached = progress.xp >= r.min;
                 const current = r.title === progress.rank.title;
                 return (
-                  <li key={r.title} className={clsx("flex items-center justify-between rounded-xl px-3 py-2 text-sm", current && "bg-green/10")}>
+                  <li key={r.title} className={clsx("flex items-center justify-between rounded-ui px-3 py-2 text-sm", current && "bg-green/10")}>
                     <span className={reached ? "text-fg" : "text-fg-subtle"}>
                       {r.title} {current && <span className="ml-1 text-xs text-accent">you</span>}
                     </span>

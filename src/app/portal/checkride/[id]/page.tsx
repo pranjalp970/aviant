@@ -25,7 +25,7 @@ export default async function CheckrideSessionPage({ params }: PageProps<"/porta
       {row.documents.length > 0 && (
         <ul className="-mt-6 mb-8 flex flex-wrap gap-2">
           {row.documents.map((d) => (
-            <li key={d.fileId} className="inline-flex items-center gap-1.5 rounded-full border border-border px-3 py-1 text-sm text-fg-muted">
+            <li key={d.fileId} className="inline-flex items-center gap-1.5 rounded-ui border border-border px-3 py-1 text-sm text-fg-muted">
               <FilePdf size={14} className="text-accent" aria-hidden /> {d.name}
             </li>
           ))}

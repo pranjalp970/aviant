@@ -57,7 +57,7 @@ export function CheckrideList({ items }: { items: Item[] }) {
                 });
               }}
               aria-label={`Delete ${c.departure} to ${c.destination} checkride`}
-              className="grid size-10 shrink-0 cursor-pointer place-items-center rounded-lg text-fg-subtle disabled:opacity-50"
+       className="grid size-10 shrink-0 cursor-pointer transition-colors hover:bg-surface-strong hover:text-fg place-items-center rounded-ui text-fg-subtle disabled:opacity-50"
             >
               <Trash size={18} aria-hidden />
             </button>

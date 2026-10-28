@@ -59,7 +59,7 @@ function HeroCopy() {
  * rose turns, the instruments tick up, and the mission statement fills in word
  * by word. The chart line-work comes in pre-rendered from the server.
  */
-export function HeroFlight({ rose, border }: { rose: ReactNode; border: ReactNode }) {
+export function HeroFlight({ rose }: { rose: ReactNode }) {
   const ref = useRef<HTMLElement>(null);
   const reduced = useReducedMotionSafe();
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end end"] });
@@ -108,7 +108,6 @@ export function HeroFlight({ rose, border }: { rose: ReactNode; border: ReactNod
             {rose}
           </motion.div>
         </div>
-        <div className="pointer-events-none absolute inset-3 -z-10 text-fg/15 sm:inset-5">{border}</div>
 
         <HeroPlane progress={p} />
 

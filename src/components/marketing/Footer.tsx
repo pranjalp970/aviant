@@ -20,7 +20,7 @@ export function Footer() {
             <ul className="flex flex-wrap gap-x-8 gap-y-3">
               {NAV.map((l) => (
                 <li key={l.label}>
-                  <Link href={l.href} className="annot text-fg-muted">
+                  <Link href={l.href} className="annot inline-block py-1.5 text-fg-muted transition-colors hover:text-fg">
                     {l.label}
                   </Link>
                 </li>
@@ -29,12 +29,12 @@ export function Footer() {
           </nav>
           <div className="annot flex flex-col gap-2 md:items-end">
             <span className="text-fg-muted">Made for student pilots</span>
-            <a href={`mailto:${SITE.supportEmail}`} className="normal-case tracking-normal text-fg-muted">
+            <a href={`mailto:${SITE.supportEmail}`} className="normal-case tracking-normal text-fg-muted transition-colors hover:text-fg">
               {SITE.supportEmail}
             </a>
             <span className="flex gap-4 text-fg-subtle">
-              <Link href="/privacy">Privacy</Link>
-              <Link href="/terms">Terms</Link>
+              <Link href="/privacy" className="transition-colors hover:text-fg">Privacy</Link>
+              <Link href="/terms" className="transition-colors hover:text-fg">Terms</Link>
             </span>
           </div>
         </div>

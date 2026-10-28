@@ -13,14 +13,14 @@ import { saveStudyPlanForm } from "@/lib/plan/actions";
 export const metadata: Metadata = { title: "Settings" };
 
 const selectClass =
-  "h-12 w-full cursor-pointer rounded-xl border border-border-strong bg-inset px-4 text-base text-fg focus:border-green focus:outline-none";
+ "h-12 w-full cursor-pointer transition-colors hover:border-fg/35 rounded-ui border border-border-strong bg-inset px-4 text-base text-fg focus:border-green focus:outline-none focus:ring-1 focus:ring-green";
 
 export default async function SettingsPage() {
   const session = (await getSession())!;
 
   return (
     <>
-      <PageHeader title="Settings" description="Your profile, your study plan, and how Aviant looks." />
+      <PageHeader title="Settings" description="Your study plan, profile, and how Aviant looks." />
       <div className="max-w-2xl space-y-6">
         {/* Study plan */}
         <form id="plan" action={saveStudyPlanForm} className="card scroll-mt-24 space-y-6 p-7">
@@ -31,14 +31,14 @@ export default async function SettingsPage() {
 
           <fieldset>
             <legend className="mb-2 text-sm text-fg-muted">Written (knowledge) test</legend>
-            <div className="grid gap-2 sm:grid-cols-2">
+            <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
               {[
                 { v: "not_taken", label: "Not taken yet" },
                 { v: "passed", label: "Passed" },
               ].map((o) => (
                 <label
                   key={o.v}
-                  className="flex min-h-12 cursor-pointer items-center gap-3 rounded-xl border border-border-strong bg-inset px-4 text-sm has-[:checked]:border-green has-[:checked]:bg-green/10"
+         className="flex min-h-12 cursor-pointer transition-colors hover:border-fg/35 items-center gap-3 rounded-ui border border-border-strong bg-inset px-4 text-sm has-[:checked]:border-green has-[:checked]:bg-green/10"
                 >
                   <input type="radio" name="written_status" value={o.v} defaultChecked={session.writtenStatus === o.v} className="accent-[var(--green)]" />
                   {o.label}
@@ -47,12 +47,12 @@ export default async function SettingsPage() {
             </div>
           </fieldset>
 
-          <div className="grid gap-4 sm:grid-cols-2">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <Field label="Written test date" name="written_date" type="date" defaultValue={session.writtenDate ?? ""} hint="Leave blank if not scheduled." />
             <Field label="Checkride date" name="checkride_date" type="date" defaultValue={session.checkrideDate ?? ""} hint="Leave blank if not scheduled." />
           </div>
 
-          <div className="grid gap-4 sm:grid-cols-[140px_1fr]">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-[140px_1fr]">
             <Field label="Written score (%)" name="written_score" type="number" min={0} max={100} inputMode="numeric" defaultValue={session.writtenScore ?? ""} />
             <Field
               label="Missed ACS codes (from your test report)"
@@ -63,7 +63,7 @@ export default async function SettingsPage() {
             />
           </div>
 
-          <div className="grid gap-4 sm:grid-cols-2">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <label className="block">
               <span className="mb-1.5 block text-sm text-fg-muted">Study days per week</span>
               <select name="study_days_per_week" defaultValue={session.studyDaysPerWeek} className={selectClass}>

@@ -34,25 +34,21 @@
   --on-green: var(--on-accent);
   --orb-highlight: #e5ffbb; /* voice orb only */
 
-  --radius-sm: 10px;
-  --radius-md: 16px;
-  --radius-lg: 24px;
-  --radius-xl: 36px;
 }
 
 /* Light theme: a deeper green so the accent stays readable on white
    (all text tokens ≥ 4.5:1 on --bg and on cards). */
 [data-theme="light"] {
-  --bg: #f3f5f0;
+  --bg: #f5f5f2; /* neutral paper, the light twin of the charcoal */
   --bg-elevated: #ffffff;
   --surface: #ffffff;
-  --surface-strong: #eaeee6;
-  --border: rgba(15, 30, 15, 0.1);
-  --border-strong: rgba(15, 30, 15, 0.18);
+  --surface-strong: #ecece8;
+  --border: rgba(20, 20, 18, 0.1);
+  --border-strong: rgba(20, 20, 18, 0.18);
 
-  --fg: #0e1a0d;
-  --fg-muted: #4b5649;
-  --fg-subtle: #646e61;
+  --fg: #151514; /* 16.7:1 */
+  --fg-muted: #52524d; /* 7.2:1 */
+  --fg-subtle: #6a6a64; /* 5.0:1 on --bg, 5.4:1 on cards */
 
   --green: #2f7d2b;
   --green-deep: #2f7d2b;
@@ -61,9 +57,9 @@
   --danger: #c0392b;
   --warning: #9a5b00;
 
-  --panel: #e9ede5;
+  --panel: #efefec;
   --card-solid: #ffffff;
-  --inset: #f7f9f5;
+  --inset: #f9f9f7;
   --track: rgba(15, 30, 15, 0.1);
   --accent-text: #2b6a27;
   --orb-highlight: #c8ef80;
@@ -96,10 +92,18 @@
   --font-sans: var(--font-afacad), ui-sans-serif, system-ui, sans-serif;
   --font-mono: var(--font-jbmono), ui-monospace, "SF Mono", Menlo, monospace;
 
-  --radius-sm: var(--radius-sm);
-  --radius-md: var(--radius-md);
-  --radius-lg: var(--radius-lg);
-  --radius-xl: var(--radius-xl);
+  /* One corner radius for every UI shape: change --radius-ui to round the whole site at once.
+     rounded-full stays for things that are truly round (switches, the voice orb, dials). */
+  --radius-ui: 0px;
+  --radius: 0px;
+  --radius-xs: 0px;
+  --radius-sm: 0px;
+  --radius-md: 0px;
+  --radius-lg: 0px;
+  --radius-xl: 0px;
+  --radius-2xl: 0px;
+  --radius-3xl: 0px;
+  --radius-4xl: 0px;
 
   /* No shadow utilities. */
   --shadow-*: initial;
@@ -182,19 +186,29 @@ legend {
 :focus-visible {
   outline: 2px solid var(--green);
   outline-offset: 3px;
-  border-radius: 6px;
 }
 
-/* Legacy surface names, now flat: solid fill and a hairline outline, no blur or shadow. */
+/* Surfaces: flat fill and a hairline outline, no blur or shadow. */
 .glass {
   background: var(--bg-elevated);
   border: 1px solid var(--border-strong);
 }
 
 .card {
-  background: var(--surface);
+  background: var(--bg-elevated);
   border: 1px solid var(--border);
-  border-radius: var(--radius-lg);
+}
+
+/* Interactive card: brightens its outline on hover, dims slightly on press */
+.card-link {
+  transition: border-color 150ms, background-color 150ms;
+}
+.card-link:hover {
+  border-color: var(--border-strong);
+  background: var(--surface-strong);
+}
+.card-link:active {
+  opacity: 0.85;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -234,7 +248,7 @@ legend {
   font-weight: 500;
   letter-spacing: 0.32em;
   text-transform: uppercase;
-  color: var(--accent-text);
+  color: var(--fg-muted);
 }
 
 /* Outline call to action marked only by corner brackets */

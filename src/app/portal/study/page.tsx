@@ -14,24 +14,24 @@ export default async function StudyPage() {
 
   return (
     <>
-      <PageHeader eyebrow="Study guides" title="Learn it, then prove it" description="Short lessons with tables, memory aids, and the regulations behind them." />
-      <ul className="grid gap-4 md:grid-cols-2">
+      <PageHeader eyebrow="Study guides" title="Learn it, then prove it" description="Ten-minute lessons with tables, memory aids, and the regulations behind them." />
+      <ul className="grid grid-cols-1 gap-4 md:grid-cols-2">
         {lessons.map((l) => {
           const area = areaById(l.areaId);
           return (
             <li key={l.slug}>
-              <Link href={`/portal/study/${l.slug}`} className="card flex h-full flex-col p-7">
-                <p className="text-sm text-accent">
+              <Link href={`/portal/study/${l.slug}`} className="card card-link group flex h-full flex-col p-7">
+                <p className="annot text-fg-subtle">
                   Area {area?.numeral} · {area?.name}
                 </p>
-                <h2 className="mt-3 font-display text-2xl">{l.title}</h2>
+                <h2 className="mt-4 font-display text-xl sm:text-2xl">{l.title}</h2>
                 <p className="mt-2 flex-1 text-fg-muted">{l.summary}</p>
-                <p className="mt-6 flex items-center justify-between text-sm text-fg-subtle">
-                  <span className="inline-flex items-center gap-1.5">
-                    <Clock size={14} aria-hidden />
+                <p className="mt-7 flex items-center justify-between">
+                  <span className="annot inline-flex items-center gap-1.5 text-fg-subtle">
+                    <Clock size={13} aria-hidden />
                     {l.minutes} min read
                   </span>
-                  <ArrowRight size={16} className="text-accent" aria-hidden />
+                  <ArrowRight size={16} className="text-fg-subtle transition-colors group-hover:text-accent" aria-hidden />
                 </p>
               </Link>
             </li>

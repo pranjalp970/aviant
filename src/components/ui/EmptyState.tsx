@@ -24,7 +24,7 @@ export function EmptyState({
 }) {
   const Heading = level === 2 ? "h2" : "h3";
   return (
-    <div className="rounded-lg border border-dashed border-border-strong px-6 py-10 sm:px-10 sm:py-12">
+    <div className="rounded-ui border border-dashed border-border-strong px-6 py-10 sm:px-10 sm:py-12">
       <Glyph size={28} className="text-accent" aria-hidden />
       <Heading className="mt-5 font-display text-xl">{title}</Heading>
       <div className="mt-2 max-w-[52ch] text-fg-muted">{children}</div>

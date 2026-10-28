@@ -8,8 +8,8 @@ export function Celebration({ badges, challenges }: { badges: Badge[]; challenge
   if (!badges.length && !challenges.length) return null;
   const xp = badges.length * 100 + challenges.length * 200;
   return (
-    <div role="status" className="mb-6 flex items-start gap-4 rounded-[24px] border border-green/40 bg-surface p-5">
-      <span className="grid size-12 shrink-0 place-items-center rounded-full bg-green text-on-accent">
+    <div role="status" className="mb-6 flex items-start gap-4 rounded-ui border border-green/40 bg-surface p-5">
+      <span className="grid size-12 shrink-0 place-items-center rounded-ui bg-green text-on-accent">
         <Confetti size={24} weight="fill" aria-hidden />
       </span>
       <div className="min-w-0">

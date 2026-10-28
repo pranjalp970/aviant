@@ -37,7 +37,7 @@ function Choice({ selected, onClick, title, detail }: { selected: boolean; onCli
       aria-checked={selected}
       onClick={onClick}
       className={clsx(
-        "w-full cursor-pointer rounded-2xl border px-5 py-4 text-left",
+    "w-full cursor-pointer transition-colors hover:border-fg/35 rounded-ui border px-5 py-4 text-left",
         selected ? "border-green bg-green/10" : "border-border-strong bg-inset",
       )}
     >
@@ -120,7 +120,7 @@ export function OnboardingWizard({ defaults, topics, diagnostic, startAt }: { de
       {step !== "summary" && (
         <div className="mb-10 flex gap-1.5" aria-label={`Step ${index + 1} of ${STEPS.length}`}>
           {STEPS.map((s, i) => (
-            <span key={s} className={clsx("h-1.5 flex-1 rounded-full", i <= index ? "bg-green" : "bg-surface-strong")} />
+            <span key={s} className={clsx("h-1.5 flex-1 rounded-ui", i <= index ? "bg-green" : "bg-surface-strong")} />
           ))}
         </div>
       )}
@@ -146,7 +146,7 @@ export function OnboardingWizard({ defaults, topics, diagnostic, startAt }: { de
               <DateField label="Written (knowledge) test date" value={writtenDate} onChange={setWrittenDate} min={today} />
             )}
             {passed && (
-              <div className="grid gap-4 sm:grid-cols-[160px_1fr]">
+              <div className="grid grid-cols-1 gap-4 sm:grid-cols-[160px_1fr]">
                 <label className="block">
                   <span className="mb-1.5 block text-sm text-fg-muted">Your written score (%)</span>
                   <input
@@ -156,7 +156,7 @@ export function OnboardingWizard({ defaults, topics, diagnostic, startAt }: { de
                     inputMode="numeric"
                     value={writtenScore}
                     onChange={(e) => setWrittenScore(e.target.value)}
-                    className="h-12 w-full rounded-xl border border-border-strong bg-inset px-4 text-base text-fg focus:border-green focus:outline-none"
+                    className="h-12 w-full rounded-ui border border-border-strong bg-inset px-4 text-base text-fg focus:border-green focus:outline-none focus:ring-1 focus:ring-green"
                   />
                 </label>
                 <label className="block">
@@ -165,7 +165,7 @@ export function OnboardingWizard({ defaults, topics, diagnostic, startAt }: { de
                     value={codes}
                     onChange={(e) => setCodes(e.target.value)}
                     placeholder="e.g. PA.I.E.K1, PA.IX.A.K3"
-                    className="h-12 w-full rounded-xl border border-border-strong bg-inset px-4 text-base text-fg placeholder:text-fg-subtle focus:border-green focus:outline-none"
+                    className="h-12 w-full rounded-ui border border-border-strong bg-inset px-4 text-base text-fg placeholder:text-fg-subtle focus:border-green focus:outline-none focus:ring-1 focus:ring-green"
                   />
                   <span className="mt-1.5 block text-xs text-fg-subtle">Examiners probe these on the oral, so your plan and mock orals will too.</span>
                 </label>
@@ -189,7 +189,7 @@ export function OnboardingWizard({ defaults, topics, diagnostic, startAt }: { de
                   type="button"
                   aria-pressed={days === d}
                   onClick={() => setDays(d)}
-                  className={clsx("h-12 cursor-pointer rounded-xl border text-lg", days === d ? "border-green bg-green/10 text-fg" : "border-border-strong bg-inset text-fg-muted")}
+         className={clsx("h-12 cursor-pointer transition-colors hover:border-fg/35 rounded-ui border text-lg", days === d ? "border-green bg-green/10 text-fg" : "border-border-strong bg-inset text-fg-muted")}
                 >
                   {d}
                 </button>
@@ -205,7 +205,7 @@ export function OnboardingWizard({ defaults, topics, diagnostic, startAt }: { de
                   type="button"
                   aria-pressed={minutes === m}
                   onClick={() => setMinutes(m)}
-                  className={clsx("h-12 cursor-pointer rounded-xl border", minutes === m ? "border-green bg-green/10 text-fg" : "border-border-strong bg-inset text-fg-muted")}
+         className={clsx("h-12 cursor-pointer transition-colors hover:border-fg/35 rounded-ui border", minutes === m ? "border-green bg-green/10 text-fg" : "border-border-strong bg-inset text-fg-muted")}
                 >
                   {m} min
                 </button>
@@ -222,11 +222,11 @@ export function OnboardingWizard({ defaults, topics, diagnostic, startAt }: { de
         <section>
           <h1 className="font-display text-2xl sm:text-3xl leading-tight">How do you feel about each topic?</h1>
           <p className="mt-2 text-fg-muted">A gut check is fine. Confident topics get a quicker pass; new ones get more time.</p>
-          <ul className="mt-8 rounded-2xl border border-border">
+          <ul className="mt-8 rounded-ui border border-border">
             {topics.map((t) => (
               <li key={t.id} className="flex flex-col gap-2 px-4 py-3 sm:flex-row sm:items-center sm:justify-between">
                 <span className="text-sm text-fg">{t.title}</span>
-                <div role="radiogroup" aria-label={t.title} className="grid grid-cols-3 gap-1 rounded-xl border border-border-strong bg-inset p-1 sm:w-[300px]">
+                <div role="radiogroup" aria-label={t.title} className="grid grid-cols-3 gap-1 rounded-ui border border-border-strong bg-inset p-1 sm:w-[300px]">
                   {([1, 2, 3] as Confidence[]).map((c) => (
                     <button
                       key={c}
@@ -234,7 +234,7 @@ export function OnboardingWizard({ defaults, topics, diagnostic, startAt }: { de
                       role="radio"
                       aria-checked={confidence[t.id] === c}
                       onClick={() => setConfidence((prev) => ({ ...prev, [t.id]: c }))}
-                      className={clsx("h-9 cursor-pointer rounded-lg text-sm", confidence[t.id] === c ? "bg-green font-medium text-on-accent" : "text-fg-muted")}
+                      className={clsx("h-9 cursor-pointer rounded-ui text-sm", confidence[t.id] === c ? "bg-green font-medium text-on-accent" : "text-fg-muted hover:text-fg")}
                     >
                       {CONF_LABELS[c]}
                     </button>
@@ -251,7 +251,7 @@ export function OnboardingWizard({ defaults, topics, diagnostic, startAt }: { de
       {step === "summary" && <Summary summary={summary} />}
 
       {error && (
-        <p role="alert" className="mt-6 flex items-start gap-2 rounded-xl border border-danger/40 bg-danger/10 px-4 py-3 text-sm text-fg">
+        <p role="alert" className="mt-6 flex items-start gap-2 rounded-ui border border-danger/40 bg-danger/10 px-4 py-3 text-sm text-fg">
           <Warning size={18} className="mt-0.5 shrink-0 text-danger" aria-hidden /> {error}
         </p>
       )}
@@ -284,7 +284,7 @@ function DateField({ label, value, onChange, min }: { label: string; value: stri
           value={value}
           min={min}
           onChange={(e) => onChange(e.target.value)}
-          className="h-12 rounded-xl border border-border-strong bg-inset px-4 text-base text-fg focus:border-green focus:outline-none"
+          className="h-12 rounded-ui border border-border-strong bg-inset px-4 text-base text-fg focus:border-green focus:outline-none focus:ring-1 focus:ring-green"
         />
         {value ? (
           <button type="button" onClick={() => onChange("")} className="text-sm text-fg-muted">
@@ -321,7 +321,7 @@ function Summary({ summary }: { summary: PlanSummary | null }) {
         week.
       </p>
 
-      <div className="mt-8 grid gap-3 sm:grid-cols-2">
+      <div className="mt-8 grid grid-cols-1 gap-3 sm:grid-cols-2">
         <div className="card p-5">
           <p className="flex items-center gap-2 text-sm text-fg-subtle">
             <Target size={16} className="text-accent" aria-hidden /> Most of your time goes to

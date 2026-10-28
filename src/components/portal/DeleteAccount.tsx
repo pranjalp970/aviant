@@ -10,7 +10,7 @@ export function DeleteAccount() {
   const [state, action, pending] = useActionState(deleteAccount, {} as AuthState);
 
   return (
-    <section aria-labelledby="danger" className="rounded-[24px] border border-danger/30 p-7">
+    <section aria-labelledby="danger" className="rounded-ui border border-danger/30 p-7">
       <h2 id="danger" className="flex items-center gap-2 font-display text-xl text-fg">
         <Warning size={20} className="text-danger" aria-hidden /> Delete account
       </h2>
@@ -21,14 +21,14 @@ export function DeleteAccount() {
         <button
           type="button"
           onClick={() => setOpen(true)}
-          className="mt-5 inline-flex h-11 cursor-pointer items-center rounded-full border border-danger/50 px-5 text-sm text-danger"
+     className="mt-5 inline-flex h-11 cursor-pointer transition-colors hover:bg-danger/10 items-center rounded-ui border border-danger/50 px-5 text-sm text-danger"
         >
           Delete my account…
         </button>
       ) : (
         <form action={action} className="mt-5 space-y-4" noValidate>
           {state.error && (
-            <p role="alert" className="rounded-xl border border-danger/40 bg-danger/10 px-4 py-3 text-sm text-fg">
+            <p role="alert" className="rounded-ui border border-danger/40 bg-danger/10 px-4 py-3 text-sm text-fg">
               {state.error}
             </p>
           )}
@@ -37,11 +37,11 @@ export function DeleteAccount() {
             <button
               type="submit"
               disabled={pending}
-              className="inline-flex h-11 cursor-pointer items-center rounded-full bg-danger px-5 text-sm font-medium text-bg transition-opacity disabled:opacity-50"
+       className="inline-flex h-11 cursor-pointer hover:opacity-90 items-center rounded-ui bg-danger px-5 text-sm font-medium text-bg transition-opacity disabled:opacity-50"
             >
               {pending ? "Deleting…" : "Permanently delete"}
             </button>
-            <button type="button" onClick={() => setOpen(false)} className="inline-flex h-11 cursor-pointer items-center rounded-full px-5 text-sm text-fg-muted">
+      <button type="button" onClick={() => setOpen(false)} className="inline-flex h-11 cursor-pointer transition-colors hover:bg-surface-strong hover:text-fg items-center rounded-ui px-5 text-sm text-fg-muted">
               Cancel
             </button>
           </div>

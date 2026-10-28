@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import clsx from "clsx";
 import { PageHeader } from "@/components/portal/PageHeader";
+import { buttonClass } from "@/components/ui/button";
 import { QuestionCard } from "@/components/portal/QuestionCard";
 import { EmptyState } from "@/components/ui/EmptyState";
 import { areaById, areasFor } from "@/content/acs";
@@ -50,8 +51,8 @@ export default async function QuestionsPage({ searchParams }: PageProps<"/portal
 
   const chip = (active: boolean) =>
     clsx(
-      "inline-flex min-h-10 items-center whitespace-nowrap rounded-full border px-4 text-sm",
-      active ? "border-green bg-green/12 text-accent" : "border-border text-fg-muted",
+      "inline-flex min-h-10 items-center whitespace-nowrap rounded-ui border px-4 text-sm transition-colors",
+      active ? "border-green/60 bg-green/10 text-fg" : "border-border text-fg-muted hover:border-border-strong hover:text-fg",
     );
 
   return (
@@ -74,7 +75,7 @@ export default async function QuestionsPage({ searchParams }: PageProps<"/portal
                 <li key={t.id}>
                   <Link href={href({ topic: t.id, area: undefined })} className={chip(topic === t.id)} aria-current={topic === t.id ? "page" : undefined}>
                     {t.title.replace(/^./, (c) => c.toUpperCase())}
-                    <span className="ml-2 text-xs text-fg-subtle">{t.count}</span>
+                    <span className="annot ml-2 text-fg-subtle">{t.count}</span>
                   </Link>
                 </li>
               ))
@@ -99,13 +100,13 @@ export default async function QuestionsPage({ searchParams }: PageProps<"/portal
         ))}
       </nav>
 
-      <p className="mb-4 text-sm text-fg-subtle" aria-live="polite">
+      <p className="annot mb-4 text-fg-subtle" aria-live="polite">
         {all.length} question{all.length === 1 ? "" : "s"}
         {pages > 1 && ` · page ${page} of ${pages}`}
       </p>
 
       {shown.length ? (
-        <div className="grid gap-4">
+        <div className="grid grid-cols-1 gap-4">
           {shown.map((q, i) => (
             <QuestionCard key={q.id} q={q} index={(page - 1) * PAGE_SIZE + i} />
           ))}
@@ -120,7 +121,7 @@ export default async function QuestionsPage({ searchParams }: PageProps<"/portal
       {pages > 1 && (
         <nav aria-label="Pages" className="mt-10 flex items-center justify-between gap-3">
           {page > 1 ? (
-            <Link href={href({ page: page - 1 })} className="inline-flex min-h-11 items-center gap-2 rounded-full border border-border px-5 text-sm text-fg-muted">
+            <Link href={href({ page: page - 1 })} className={buttonClass("glass")}>
               <CaretLeft size={14} aria-hidden /> Previous
             </Link>
           ) : (
@@ -130,7 +131,7 @@ export default async function QuestionsPage({ searchParams }: PageProps<"/portal
             Page {page} of {pages}
           </span>
           {page < pages ? (
-            <Link href={href({ page: page + 1 })} className="inline-flex min-h-11 items-center gap-2 rounded-full border border-border px-5 text-sm text-fg-muted">
+            <Link href={href({ page: page + 1 })} className={buttonClass("glass")}>
               Next <CaretRight size={14} aria-hidden />
             </Link>
           ) : (

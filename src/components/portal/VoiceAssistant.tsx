@@ -401,17 +401,17 @@ export function VoiceAssistant({ rating, ratingLabel, initialMode, savedVoices, 
   const avg = grades.length ? Math.round((grades.reduce((n, g) => n + g.score, 0) / grades.length) * 100) : null;
 
   return (
-    <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_320px]">
+    <div className="grid grid-cols-1 gap-6 lg:grid-cols-[minmax(0,1fr)_320px]">
       {/* Conversation column */}
       <section aria-label="Conversation" className="card flex min-h-[560px] flex-col overflow-hidden">
         {/* Toolbar */}
         <div className="flex flex-wrap items-center justify-between gap-3 p-4">
           {checkride ? (
-            <span className="inline-flex h-11 items-center gap-2 rounded-full border border-green/40 bg-green/10 px-4 text-sm text-accent">
+            <span className="inline-flex h-11 items-center gap-2 rounded-ui border border-green/40 bg-green/10 px-4 text-sm text-accent">
               Mock checkride · {checkride.label}
             </span>
           ) : (
-            <div role="radiogroup" aria-label="Assistant mode" className="inline-flex rounded-full border border-border-strong bg-inset p-1">
+            <div role="radiogroup" aria-label="Assistant mode" className="inline-flex rounded-ui border border-border-strong bg-inset p-1">
               {(
                 [
                   { v: "teach", label: "Teach", sub: "CFI" },
@@ -425,8 +425,8 @@ export function VoiceAssistant({ rating, ratingLabel, initialMode, savedVoices, 
                   aria-checked={mode === o.v}
                   onClick={() => mode !== o.v && reset(o.v)}
                   className={clsx(
-                    "h-10 cursor-pointer rounded-full px-4 text-sm",
-                    mode === o.v ? "bg-green font-medium text-on-accent" : "text-fg-muted",
+                    "h-10 cursor-pointer rounded-ui px-4 text-sm",
+                    mode === o.v ? "bg-green font-medium text-on-accent" : "text-fg-muted transition-colors hover:text-fg",
                   )}
                 >
                   {o.label} <span className={mode === o.v ? "text-on-accent/70" : "text-fg-subtle"}>· {o.sub}</span>
@@ -443,7 +443,7 @@ export function VoiceAssistant({ rating, ratingLabel, initialMode, savedVoices, 
               }}
               aria-pressed={voiceOn}
               aria-label={voiceOn ? "Mute assistant voice" : "Unmute assistant voice"}
-              className="grid size-11 cursor-pointer place-items-center rounded-full text-fg-muted"
+       className="grid size-11 cursor-pointer transition-colors hover:bg-surface-strong hover:text-fg place-items-center rounded-ui text-fg-muted"
             >
               {voiceOn ? <SpeakerHigh size={20} aria-hidden /> : <SpeakerSlash size={20} aria-hidden />}
             </button>
@@ -452,7 +452,7 @@ export function VoiceAssistant({ rating, ratingLabel, initialMode, savedVoices, 
                 type="button"
                 onClick={() => reset(mode)}
                 aria-label="Start over"
-                className="grid size-11 cursor-pointer place-items-center rounded-full text-fg-muted"
+        className="grid size-11 cursor-pointer transition-colors hover:bg-surface-strong hover:text-fg place-items-center rounded-ui text-fg-muted"
               >
                 <ArrowCounterClockwise size={20} aria-hidden />
               </button>
@@ -488,11 +488,11 @@ export function VoiceAssistant({ rating, ratingLabel, initialMode, savedVoices, 
                   <div
                     aria-busy={t.streaming || undefined}
                     className={clsx(
-                      "max-w-[85%] rounded-2xl px-4 py-3 text-sm",
-                      t.role === "user" ? "rounded-br-md bg-green text-on-accent" : "rounded-bl-md bg-surface-strong text-fg",
+                      "max-w-[85%] rounded-ui px-4 py-3 text-sm",
+                      t.role === "user" ? " bg-green text-on-accent" : " bg-surface-strong text-fg",
                     )}
                   >
-                    {t.role === "assistant" && <p className="mb-1 annot text-accent">{mode === "teach" ? "CFI" : "Examiner"}</p>}
+                    {t.role === "assistant" && <p className="mb-1 annot text-fg-subtle">{mode === "teach" ? "CFI" : "Examiner"}</p>}
                     {t.content}
                     {t.streaming && <span className="ml-0.5 inline-block h-4 w-[2px] translate-y-0.5 animate-pulse bg-green" aria-hidden />}
                     {t.references?.length ? <p className="mt-2 text-xs text-fg-subtle">Ref: {t.references.join(" · ")}</p> : null}
@@ -503,7 +503,7 @@ export function VoiceAssistant({ rating, ratingLabel, initialMode, savedVoices, 
           )}
           {interim && (
             <div className="flex justify-end">
-              <p className="max-w-[85%] rounded-2xl rounded-br-md border border-dashed border-green/50 px-4 py-3 text-sm italic text-fg-muted">{interim}…</p>
+              <p className="max-w-[85%] rounded-ui border border-dashed border-green/50 px-4 py-3 text-sm italic text-fg-muted">{interim}…</p>
             </div>
           )}
           {phase === "thinking" && (
@@ -534,14 +534,14 @@ export function VoiceAssistant({ rating, ratingLabel, initialMode, savedVoices, 
                 aria-label={listening ? "Done talking, send" : speaking ? "Interrupt and speak" : "Speak"}
                 aria-pressed={listening}
                 className={clsx(
-                  "grid size-12 shrink-0 cursor-pointer place-items-center rounded-full disabled:cursor-not-allowed disabled:opacity-40",
+                  "grid size-12 shrink-0 cursor-pointer place-items-center rounded-ui transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-40",
                   listening ? "bg-danger text-bg" : "bg-green text-on-accent",
                 )}
               >
                 {listening ? <Stop size={20} weight="fill" aria-hidden /> : <Microphone size={20} weight="fill" aria-hidden />}
               </button>
             ) : (
-              <span className="grid size-12 shrink-0 place-items-center rounded-full border border-border text-fg-subtle" title="Voice input isn't supported in this browser">
+              <span className="grid size-12 shrink-0 place-items-center rounded-ui border border-border text-fg-subtle" title="Voice input isn't supported in this browser">
                 <MicrophoneSlash size={20} aria-label="Voice input unavailable" />
               </span>
             )}
@@ -554,20 +554,20 @@ export function VoiceAssistant({ rating, ratingLabel, initialMode, savedVoices, 
               onChange={(e) => setDraft(e.target.value)}
               disabled={examNotStarted}
               placeholder={examNotStarted ? "Begin the exam to answer" : listening ? "Listening… pause to send" : "Or type your answer…"}
-              className="h-12 min-w-0 flex-1 rounded-full border border-border-strong bg-inset px-5 text-base text-fg placeholder:text-fg-subtle focus:border-green focus:outline-none disabled:opacity-50"
+              className="h-12 min-w-0 flex-1 rounded-ui border border-border-strong bg-inset px-5 text-base text-fg placeholder:text-fg-subtle focus:border-green focus:outline-none focus:ring-1 focus:ring-green disabled:opacity-50"
             />
             <button
               type="submit"
               disabled={!draft.trim() || awaitingFirstWords}
               aria-label="Send"
-              className="grid size-12 shrink-0 cursor-pointer place-items-center rounded-full border border-border-strong text-fg disabled:cursor-not-allowed disabled:opacity-40"
+       className="grid size-12 shrink-0 cursor-pointer transition-colors hover:border-fg/35 place-items-center rounded-ui border border-border-strong text-fg disabled:cursor-not-allowed disabled:opacity-40"
             >
               <PaperPlaneRight size={20} aria-hidden />
             </button>
           </form>
           {micSupported && (
             <p className="mt-2 hidden text-xs text-fg-subtle sm:block">
-              Press <kbd className="rounded border border-border-strong px-1.5 py-0.5 font-sans">Space</kbd> to talk. Tap the mic while the{" "}
+              Press <kbd className="rounded-ui border border-border-strong px-1.5 py-0.5 font-sans">Space</kbd> to talk. Tap the mic while the{" "}
               {mode === "teach" ? "CFI" : "examiner"} is speaking to interrupt.
             </p>
           )}
@@ -668,7 +668,7 @@ const PAUSES = [
 
 function Segmented<T extends number>({ label, options, value, onChange }: { label: string; options: { v: T; label: string }[]; value: T; onChange: (v: T) => void }) {
   return (
-    <div role="radiogroup" aria-label={label} className="grid rounded-xl border border-border-strong bg-inset p-1" style={{ gridTemplateColumns: `repeat(${options.length}, 1fr)` }}>
+    <div role="radiogroup" aria-label={label} className="grid rounded-ui border border-border-strong bg-inset p-1" style={{ gridTemplateColumns: `repeat(${options.length}, 1fr)` }}>
       {options.map((o) => (
         <button
           key={o.v}
@@ -676,7 +676,7 @@ function Segmented<T extends number>({ label, options, value, onChange }: { labe
           role="radio"
           aria-checked={value === o.v}
           onClick={() => onChange(o.v)}
-          className={clsx("h-9 cursor-pointer rounded-lg text-sm", value === o.v ? "bg-green font-medium text-on-accent" : "text-fg-muted")}
+          className={clsx("h-9 cursor-pointer rounded-ui text-sm", value === o.v ? "bg-green font-medium text-on-accent" : "text-fg-muted hover:text-fg")}
         >
           {o.label}
         </button>

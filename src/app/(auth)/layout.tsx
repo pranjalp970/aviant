@@ -4,7 +4,7 @@ import { ChartBorder } from "@/components/marketing/ChartMarks";
 
 export default function AuthLayout({ children }: LayoutProps<"/">) {
   return (
-    <div className="relative grid min-h-dvh lg:grid-cols-2">
+    <div className="relative grid grid-cols-1 min-h-dvh lg:grid-cols-2">
       {/* Brand panel */}
       <aside className="relative hidden overflow-hidden bg-panel lg:flex lg:flex-col lg:justify-between lg:p-12">
         <ChartBorder className="pointer-events-none absolute inset-5 text-fg/15" />

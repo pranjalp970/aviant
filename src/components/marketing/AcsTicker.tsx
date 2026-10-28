@@ -45,7 +45,7 @@ export function AcsTicker() {
 
   const row = AREAS.map(([n, name]) => (
     <span key={n} className="flex shrink-0 items-center gap-6 pr-6">
-      <span className="annot text-accent">PA.{n}</span>
+      <span className="annot text-fg-subtle">PA.{n}</span>
       <span className="whitespace-nowrap font-display text-xl text-fg/80 md:text-2xl">{name}</span>
       <PlaneMark className="h-3 w-auto text-fg-subtle/60" />
     </span>

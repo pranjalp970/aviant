@@ -91,16 +91,16 @@ export default async function ReviewPage({ searchParams }: PageProps<"/portal/re
           { label: "Mastered", value: stats.mastered },
           { label: "Seen so far", value: stats.seen },
         ].map((s) => (
-          <div key={s.label} className={s.accent ? "rounded-[24px] border border-green/40 bg-green/10 p-5" : "card p-5"}>
-            <dt className="text-sm text-fg-subtle">{s.label}</dt>
-            <dd className={`mt-1 font-display text-4xl tabular-nums ${s.accent ? "text-accent" : "text-fg"}`}>{s.value}</dd>
+          <div key={s.label} className={s.accent ? "rounded-ui border border-green/40 bg-green/10 p-5" : "card p-5"}>
+            <dt className="annot text-fg-subtle">{s.label}</dt>
+            <dd className={`mt-2 font-display text-3xl tabular-nums sm:text-4xl ${s.accent ? "text-accent" : "text-fg"}`}>{s.value}</dd>
           </div>
         ))}
       </dl>
 
       {!stats.seen ? (
         <div className="mt-10">
-          <EmptyState icon={Cards} title="Your review deck is empty" action={{ href: "/portal/quizzes/ppl-quick-20", label: "Take a Quick 20" }} secondary={{ href: "/portal/review?mode=new", label: "Learn new questions" }}>
+          <EmptyState icon={Cards} title="The review deck is empty" action={{ href: "/portal/quizzes/ppl-quick-20", label: "Take a Quick 20" }} secondary={{ href: "/portal/review?mode=new", label: "Learn new questions" }}>
             The deck builds itself from your practice tests. Every question you answer is scheduled here, and the ones you miss come back
             first.
           </EmptyState>
@@ -113,19 +113,19 @@ export default async function ReviewPage({ searchParams }: PageProps<"/portal/re
           </EmptyState>
         </div>
       ) : (
-      <div className="mt-10 grid gap-4 md:grid-cols-2">
-        <Link href="/portal/review?mode=quiz" className="card p-7">
-          <span className="grid size-11 place-items-center rounded-full bg-green/12 text-accent">
+      <div className="mt-10 grid grid-cols-1 gap-4 md:grid-cols-2">
+        <Link href="/portal/review?mode=quiz" className="card card-link group p-7">
+          <span className="grid size-11 place-items-center rounded-ui bg-green/12 text-accent">
             <Timer size={22} weight="fill" aria-hidden />
           </span>
-          <h2 className="mt-5 font-display text-2xl">Review quiz</h2>
+          <h2 className="mt-5 font-display text-xl sm:text-2xl">Review quiz</h2>
           <p className="mt-2 text-fg-muted">Up to 20 due questions, multiple choice, scored like a regular quiz.</p>
         </Link>
-        <Link href="/portal/review?mode=cards" className="card p-7">
-          <span className="grid size-11 place-items-center rounded-full bg-green/12 text-accent">
+        <Link href="/portal/review?mode=cards" className="card card-link group p-7">
+          <span className="grid size-11 place-items-center rounded-ui bg-green/12 text-accent">
             <Cards size={22} weight="fill" aria-hidden />
           </span>
-          <h2 className="mt-5 font-display text-2xl">Flashcards</h2>
+          <h2 className="mt-5 font-display text-xl sm:text-2xl">Flashcards</h2>
           <p className="mt-2 text-fg-muted">Recall the answer yourself, flip, and rate. Faster, and great on your phone.</p>
         </Link>
       </div>

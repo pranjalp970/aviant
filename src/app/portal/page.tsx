@@ -1,14 +1,14 @@
-import { ArrowRight, CalendarBlank, Certificate, CheckCircle, Circle, Target } from "@phosphor-icons/react/dist/ssr";
+import { ArrowRight, CheckCircle, Circle } from "@phosphor-icons/react/dist/ssr";
 import clsx from "clsx";
 import type { Metadata } from "next";
 import Link from "next/link";
-import { PageHeader } from "@/components/portal/PageHeader";
-import { ProgressRing } from "@/components/ui/ProgressRing";
 import { StatusChip } from "@/components/plan/StatusChip";
+import { TodaySession } from "@/components/plan/TodaySession";
+import { PageHeader } from "@/components/portal/PageHeader";
 import { Celebration } from "@/components/progress/Celebration";
 import { ChallengeList } from "@/components/progress/ChallengeList";
 import { ProgressStrip } from "@/components/progress/ProgressStrip";
-import { TodaySession } from "@/components/plan/TodaySession";
+import { ReadinessGauge } from "@/components/progress/ReadinessGauge";
 import { ratingById } from "@/content/acs";
 import { getSession } from "@/lib/auth/session";
 import { loadPlan } from "@/lib/plan/load";
@@ -23,29 +23,44 @@ const greeting = () => {
 };
 const pct = (n: number) => `${Math.round(n * 100)}%`;
 const daysUntil = (date: string, today: string) => Math.round((Date.parse(date) - Date.parse(today)) / 86_400_000);
+const capitalize = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
 
-function Countdown({ label, date, today }: { label: string; date: string; today: string }) {
-  const d = daysUntil(date, today);
+/** A titled panel. Panels sit side by side; nothing inside them is boxed again. */
+function Panel({ title, meta, children, className, id }: { title: string; meta?: React.ReactNode; children: React.ReactNode; className?: string; id: string }) {
   return (
-    <div className="flex items-baseline justify-between gap-3 text-sm">
-      <span className="flex items-center gap-2 text-fg-muted">
-        <CalendarBlank size={16} className="text-accent" aria-hidden /> {label}
-      </span>
-      <span className="text-fg">
-        {d > 1 ? (
-          <>
-            <span className="font-display text-xl tabular-nums">{d}</span> days
-          </>
-        ) : d === 1 ? (
-          "Tomorrow"
-        ) : d === 0 ? (
-          "Today!"
-        ) : (
-          <span className="text-fg-subtle">Passed</span>
-        )}
-      </span>
+    <section aria-labelledby={id} className={clsx("card p-6 sm:p-7", className)}>
+      <div className="mb-5 flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
+        <h2 id={id} className="font-display text-xl">
+          {title}
+        </h2>
+        {meta && <span className="annot text-fg-subtle">{meta}</span>}
+      </div>
+      {children}
+    </section>
+  );
+}
+
+/** One label / value line inside a panel. */
+function Row({ label, children }: { label: string; children: React.ReactNode }) {
+  return (
+    <div className="flex items-baseline justify-between gap-4 py-3">
+      <dt className="text-sm text-fg-muted">{label}</dt>
+      <dd className="text-right text-sm text-fg">{children}</dd>
     </div>
   );
+}
+
+function Countdown({ date, today }: { date: string; today: string }) {
+  const d = daysUntil(date, today);
+  if (d > 1)
+    return (
+      <>
+        <span className="font-display text-lg tabular-nums">{d}</span> <span className="text-fg-subtle">days</span>
+      </>
+    );
+  if (d === 1) return <>Tomorrow</>;
+  if (d === 0) return <span className="text-accent">Today</span>;
+  return <span className="text-fg-subtle">Passed</span>;
 }
 
 export default async function PortalHome() {
@@ -56,7 +71,14 @@ export default async function PortalHome() {
   const r = computeReadiness({ rating: session.rating, reviews, orals });
   const progress = await loadProgress(session, ctx, r);
   const fulls = attempts.filter((a) => a.total >= 60).slice(0, 2);
-  const doneCount = plan.today.items.filter((i) => i.done).length;
+  const doneCount = plan.today.items.length ? plan.today.items.filter((i) => i.done).length : 0;
+  const allDone = plan.today.items.length > 0 && doneCount === plan.today.items.length;
+
+  const readyChecks = [
+    { ok: r.overall >= 0.85, label: "Readiness at 85% or higher", detail: `Now ${pct(r.overall)}` },
+    { ok: fulls.length >= 1 && fulls[0].score / fulls[0].total >= 0.85, label: "A full mock test at 85% or higher" },
+    { ok: fulls.length === 2 && fulls.every((a) => a.score / a.total >= 0.85), label: "A second full mock test at 85% or higher" },
+  ];
 
   return (
     <>
@@ -64,162 +86,136 @@ export default async function PortalHome() {
       <Celebration badges={progress.newBadges} challenges={progress.newChallenges} />
       <ProgressStrip progress={progress} />
 
-      <div className="grid gap-4 lg:grid-cols-[1.6fr_1fr]">
-        {/* Today's session */}
-        <section aria-labelledby="today" className="rounded-[28px] border border-green/40 bg-surface p-6 sm:p-8">
-          <div className="flex flex-wrap items-center justify-between gap-3">
-            <h2 id="today" className="font-display text-2xl">
-              Today&rsquo;s session
-            </h2>
-            <span className="text-sm text-fg-subtle">
-              {doneCount === plan.today.items.length ? "All done for today" : `~${plan.today.minutes} min · ${doneCount} of ${plan.today.items.length} done`}
-            </span>
-          </div>
-          <div className="mt-5">
+      <div className="mt-4 grid grid-cols-1 items-start gap-4 lg:grid-cols-[minmax(0,1.6fr)_minmax(0,1fr)]">
+        {/* ── Main column ── */}
+        <div className="min-w-0 space-y-4">
+          <Panel
+            id="today"
+            title="Today's session"
+            meta={allDone ? "All done for today" : `About ${plan.today.minutes} min · ${doneCount} of ${plan.today.items.length} done`}
+          >
             <TodaySession items={plan.today.items} />
-          </div>
-          <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-            <div className="min-w-0">
-              <StatusChip status={plan.status} />
-              <p className="mt-2 text-sm text-fg-muted">{plan.fix ?? plan.statusDetail}</p>
+            <div className="mt-5 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+              <div className="min-w-0">
+                <StatusChip status={plan.status} />
+                <p className="mt-2 text-sm text-fg-muted">{plan.fix ?? plan.statusDetail}</p>
+              </div>
+              <Link href="/portal/plan" className="annot inline-flex shrink-0 items-center gap-2 text-accent transition-opacity hover:opacity-80">
+                View full plan <ArrowRight size={12} weight="bold" aria-hidden />
+              </Link>
             </div>
-            <Link href="/portal/plan" className="inline-flex shrink-0 items-center gap-1.5 text-sm text-accent">
-              View full plan <ArrowRight size={14} aria-hidden />
-            </Link>
-          </div>
-        </section>
+          </Panel>
 
-        {/* Readiness + countdowns */}
-        <section aria-labelledby="readiness" className="card flex flex-col p-6 sm:p-7">
-          <h2 id="readiness" className="font-display text-xl">
-            Checkride readiness
-          </h2>
-          <div className="mt-5 flex items-center gap-5">
-            <ProgressRing value={r.overall} label={`Readiness ${pct(r.overall)}: ${r.label}`}>
-              <span className="font-display text-2xl tabular-nums">{Math.round(r.overall * 100)}</span>
-            </ProgressRing>
-            <div>
-              <p className="font-display text-lg text-accent">{r.label}</p>
-              <p className="mt-1 text-sm text-fg-subtle">Written {pct(r.written)}</p>
-              <p className="text-sm text-fg-subtle">{r.oral != null ? `Oral ${pct(r.oral)}` : "Oral: try a mock oral"}</p>
-            </div>
-          </div>
+          <Panel
+            id="challenges"
+            title="This week's challenges"
+            meta={`${progress.challenges.filter((c) => c.done).length} of ${progress.challenges.length} done · resets Monday`}
+          >
+            <ChallengeList challenges={progress.challenges} />
+          </Panel>
+        </div>
 
-          <div className="mt-6 rounded-2xl bg-inset px-4 py-3">
-            <p className="flex items-center gap-2 text-sm text-fg-muted">
-              <Target size={16} className="text-accent" aria-hidden /> Predicted written score
-            </p>
-            {plan.predicted ? (
-              <>
-                <p className={clsx("mt-1 font-display text-3xl tabular-nums", plan.predicted.score >= 70 ? "text-accent" : "text-warning")}>
-                  {plan.predicted.score}%{" "}
-                  <span className="text-sm text-fg-subtle">{plan.predicted.score >= 80 ? "likely pass" : plan.predicted.score >= 70 ? "borderline" : "keep going"}</span>
-                </p>
-                <p className="text-xs text-fg-subtle">{plan.predicted.basis}</p>
-              </>
-            ) : (
-              <p className="mt-1 text-sm text-fg-subtle">
-                <Link href="/portal/quizzes/ppl-quick-20" className="text-accent">
-                  Take a Quick 20
-                </Link>{" "}
-                to unlock your prediction.
-              </p>
-            )}
-          </div>
+        {/* ── Side column ── */}
+        <div className="min-w-0 space-y-4">
+          <Panel id="readiness" title="Checkride readiness">
+            <ReadinessGauge value={r.overall} label={r.label} />
+            <p className="mt-1 text-center text-sm text-fg">{r.label}</p>
+            <dl className="mt-5 divide-y divide-border border-y border-border">
+              <Row label="Written knowledge">{pct(r.written)}</Row>
+              <Row label="Oral">{r.oral != null ? pct(r.oral) : <Link href="/portal/assistant?mode=examine" className="text-accent hover:opacity-80">Try a mock oral</Link>}</Row>
+              <Row label="Predicted written score">
+                {plan.predicted ? (
+                  <span className={clsx("font-display text-lg tabular-nums", plan.predicted.score < 70 && "text-warning")}>
+                    {plan.predicted.score}%{" "}
+                    <span className="font-sans text-xs text-fg-subtle">
+                      {plan.predicted.score >= 80 ? "likely pass" : plan.predicted.score >= 70 ? "borderline" : "below passing"}
+                    </span>
+                  </span>
+                ) : (
+                  <Link href="/portal/quizzes/ppl-quick-20" className="text-accent hover:opacity-80">
+                    Take a Quick 20
+                  </Link>
+                )}
+              </Row>
+              {session.writtenStatus !== "passed" && (
+                <Row label="Written test">
+                  {session.writtenDate ? (
+                    <Countdown date={session.writtenDate} today={today} />
+                  ) : (
+                    <Link href="/portal/settings#plan" className="text-accent hover:opacity-80">
+                      Set a date
+                    </Link>
+                  )}
+                </Row>
+              )}
+              <Row label="Checkride">
+                {session.checkrideDate ? (
+                  <Countdown date={session.checkrideDate} today={today} />
+                ) : (
+                  <Link href="/portal/settings#plan" className="text-accent hover:opacity-80">
+                    Set a date
+                  </Link>
+                )}
+              </Row>
+            </dl>
+            {plan.predicted && <p className="mt-3 text-xs text-fg-subtle">{plan.predicted.basis}</p>}
+          </Panel>
 
-          <div className="mt-6 space-y-2">
-            {session.writtenStatus !== "passed" &&
-              (session.writtenDate ? (
-                <Countdown label="Written test" date={session.writtenDate} today={today} />
-              ) : (
-                <Link href="/portal/settings#plan" className="block text-sm text-fg-muted">
-                  Set your written test date →
-                </Link>
+          <Panel id="ready" title="Aviant Ready" meta={`${readyChecks.filter((c) => c.ok).length} of 3`}>
+            <p className="text-sm text-fg-muted">A certificate to show your CFI you&rsquo;re ready for the written.</p>
+            <ul className="mt-4 space-y-2.5 text-sm">
+              {readyChecks.map((c) => (
+                <li key={c.label} className="flex items-start gap-2.5">
+                  {c.ok ? (
+                    <CheckCircle size={18} weight="fill" className="mt-0.5 shrink-0 text-accent" aria-label="Done" />
+                  ) : (
+                    <Circle size={18} className="mt-0.5 shrink-0 text-fg-subtle" aria-label="Not yet" />
+                  )}
+                  <span className={c.ok ? "text-fg" : "text-fg-muted"}>
+                    {c.label}
+                    {c.detail && <span className="text-fg-subtle"> · {c.detail}</span>}
+                  </span>
+                </li>
               ))}
-            {session.checkrideDate ? (
-              <Countdown label="Checkride" date={session.checkrideDate} today={today} />
-            ) : (
-              <Link href="/portal/settings#plan" className="block text-sm text-fg-muted">
-                Set your checkride date →
-              </Link>
-            )}
-          </div>
-        </section>
+            </ul>
+            <Link
+              href={progress.aviantReady ? "/portal/certificate" : "/portal/quizzes/ppl-mock-knowledge"}
+              className="annot mt-6 inline-flex items-center gap-2 text-accent transition-opacity hover:opacity-80"
+            >
+              {progress.aviantReady ? "View your certificate" : "Take a full mock test"} <ArrowRight size={12} weight="bold" aria-hidden />
+            </Link>
+          </Panel>
+        </div>
       </div>
 
-      {/* This week + Aviant Ready */}
-      <div className="mt-4 grid gap-4 lg:grid-cols-[1.6fr_1fr]">
-        <section aria-labelledby="challenges" className="card p-6 sm:p-7">
-          <div className="mb-4 flex items-baseline justify-between">
-            <h2 id="challenges" className="font-display text-xl">
-              This week&rsquo;s challenges
+      {/* ── Mastery by topic ── */}
+      <section aria-labelledby="mastery" className="mt-16">
+        <div className="flex flex-wrap items-baseline justify-between gap-4">
+          <div>
+            <p className="annot text-fg-subtle">Question bank</p>
+            <h2 id="mastery" className="mt-2 font-display text-2xl">
+              Mastery by topic
             </h2>
-            <span className="text-sm text-fg-subtle">
-              {progress.challenges.filter((c) => c.done).length}/{progress.challenges.length} done · resets Monday
-            </span>
           </div>
-          <ChallengeList challenges={progress.challenges} />
-        </section>
-
-        <section aria-labelledby="ready" className="card flex flex-col p-6 sm:p-7">
-          <h2 id="ready" className="flex items-center gap-2 font-display text-xl">
-            <Certificate size={22} weight="fill" className="text-accent" aria-hidden /> Aviant Ready
-          </h2>
-          <p className="mt-1 text-sm text-fg-subtle">Earn your certificate to show your CFI you&rsquo;re ready for the written.</p>
-          <ul className="mt-4 space-y-2 text-sm">
-            {[
-              { ok: r.overall >= 0.85, label: `Readiness 85%+ (now ${pct(r.overall)})` },
-              { ok: fulls.length >= 1 && fulls[0].score / fulls[0].total >= 0.85, label: "Full mock test at 85%+" },
-              { ok: fulls.length === 2 && fulls.every((a) => a.score / a.total >= 0.85), label: "Second full mock test at 85%+" },
-            ].map((c) => (
-              <li key={c.label} className="flex items-center gap-2">
-                {c.ok ? <CheckCircle size={18} weight="fill" className="text-accent" aria-label="Done" /> : <Circle size={18} className="text-fg-subtle" aria-label="Not yet" />}
-                <span className={c.ok ? "text-fg" : "text-fg-muted"}>{c.label}</span>
-              </li>
-            ))}
-          </ul>
-          <div className="mt-auto pt-5">
-            {progress.aviantReady ? (
-              <Link href="/portal/certificate" className="inline-flex items-center gap-1.5 text-sm font-medium text-accent">
-                View your certificate <ArrowRight size={14} aria-hidden />
-              </Link>
-            ) : (
-              <Link href="/portal/quizzes/ppl-mock-knowledge" className="text-sm text-fg-muted">
-                Take a full mock test →
-              </Link>
-            )}
-          </div>
-        </section>
-      </div>
-
-      {/* Mastery by topic */}
-      <section aria-labelledby="mastery" className="mt-12">
-        <div className="mb-1 flex items-baseline justify-between">
-          <h2 id="mastery" className="font-display text-2xl">
-            Mastery by topic
-          </h2>
-          <Link href="/portal/history" className="text-sm text-fg-muted">
+          <Link href="/portal/history" className="annot text-fg-muted transition-colors hover:text-fg">
             View history
           </Link>
         </div>
-        <p className="mb-4 text-sm text-fg-subtle">A question counts as mastered after you&rsquo;ve recalled it correctly several times, spaced out.</p>
-        <ul className="grid gap-2 sm:grid-cols-2">
+        <p className="mt-2 text-sm text-fg-subtle">A question counts as mastered once you&rsquo;ve recalled it correctly several times, spaced out.</p>
+        <ul className="mt-6 grid grid-cols-1 gap-x-10 border-t border-border md:grid-cols-2">
           {[...r.groups]
             .sort((a, b) => a.mastery - b.mastery)
             .map((g) => (
-              <li key={g.id}>
-                <Link
-                  href={`/portal/review?mode=new&topic=${g.id}`}
-                  className="block rounded-2xl border border-border px-4 py-3"
-                >
-                  <div className="flex items-baseline justify-between gap-3">
-                    <span className="text-sm">{g.title.charAt(0).toUpperCase() + g.title.slice(1)}</span>
-                    <span className={clsx("font-display tabular-nums", g.mastery >= 0.7 ? "text-accent" : g.seen ? "text-fg" : "text-fg-subtle")}>{pct(g.mastery)}</span>
+              <li key={g.id} className="border-b border-border">
+                <Link href={`/portal/review?mode=new&topic=${g.id}`} className="group -mx-2 block rounded-ui px-2 py-4 transition-colors hover:bg-surface-strong">
+                  <div className="flex items-baseline justify-between gap-4">
+                    <span className="min-w-0 text-sm text-fg">{capitalize(g.title)}</span>
+                    <span className={clsx("annot shrink-0", g.mastery >= 0.7 ? "text-accent" : "text-fg-muted")}>{pct(g.mastery)}</span>
                   </div>
-                  <div className="mt-2 h-1.5 overflow-hidden rounded-full bg-surface-strong" aria-hidden>
-                    <div className="h-full rounded-full bg-green" style={{ width: pct(g.mastery) }} />
+                  <div className="mt-2.5 h-1 overflow-hidden bg-surface-strong" aria-hidden>
+                    <div className="h-full bg-green" style={{ width: pct(g.mastery) }} />
                   </div>
-                  <p className="mt-1.5 text-xs text-fg-subtle">
+                  <p className="mt-2 text-xs text-fg-subtle">
                     {g.seen} of {g.total} questions seen
                   </p>
                 </Link>

@@ -39,7 +39,7 @@ export function SiteHeader() {
           <ul className="flex items-center gap-8">
             {LINKS.map((l) => (
               <li key={l.href}>
-                <Link href={l.href} className="annot text-fg-muted">
+                <Link href={l.href} className="annot inline-block py-2 text-fg-muted transition-colors hover:text-fg">
                   {l.label}
                 </Link>
               </li>
@@ -48,11 +48,11 @@ export function SiteHeader() {
         </nav>
 
         <div className="flex items-center gap-4">
-          <Link href="/login" className="annot hidden text-fg-muted sm:block">
+          <Link href="/login" className="annot hidden py-2 text-fg-muted transition-colors hover:text-fg sm:block">
             Log in
           </Link>
           <span className="hidden sm:block">
-            <Link href="/signup" className={cta.primary("h-10 whitespace-nowrap px-4")}>
+            <Link href="/signup" className={cta.outline("h-10 whitespace-nowrap px-4")}>
               Start training
             </Link>
           </span>
@@ -77,7 +77,7 @@ export function SiteHeader() {
         <ul className="mx-auto flex max-w-[1320px] flex-col px-5 pb-6 pt-3 sm:px-8">
           {[...LINKS, { href: "/login", label: "Log in" }].map((l) => (
             <li key={l.href}>
-              <Link href={l.href} onClick={() => setOpen(false)} className="annot flex min-h-12 items-center text-fg-muted">
+              <Link href={l.href} onClick={() => setOpen(false)} className="annot flex min-h-12 items-center text-fg-muted transition-colors hover:text-fg">
                 {l.label}
               </Link>
             </li>

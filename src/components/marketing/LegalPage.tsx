@@ -4,7 +4,7 @@ import { SITE } from "@/lib/site";
 export function LegalPage({ title, intro, children }: { title: string; intro: string; children: ReactNode }) {
   return (
     <article className="mx-auto max-w-[760px] px-5 pb-24 pt-32 sm:px-8 sm:pt-40">
-      <p className="annot text-accent">Legal</p>
+      <p className="annot text-fg-subtle">Legal</p>
       <h1 className="mt-3 font-display text-3xl sm:text-4xl leading-tight">{title}</h1>
       <p className="mt-3 text-sm text-fg-subtle">Last updated {SITE.legalUpdated}</p>
       <p className="mt-6 text-lg leading-relaxed text-fg-muted">{intro}</p>

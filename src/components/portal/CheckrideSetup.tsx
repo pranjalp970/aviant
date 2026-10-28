@@ -96,7 +96,7 @@ export function CheckrideSetup({ userId }: { userId: string }) {
         <p className="mt-1 text-fg-muted">Tell the examiner about your planned cross-country, and upload your plan and your aircraft&rsquo;s POH.</p>
       </div>
 
-      <div className="grid gap-4 sm:grid-cols-3">
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
         <Field label="Aircraft" name="aircraft" placeholder="e.g. Cessna 172S, N12345" required disabled={busy} />
         <Field label="Departure" name="departure" placeholder="e.g. KPAO" required disabled={busy} />
         <Field label="Destination" name="destination" placeholder="e.g. KSNS" required disabled={busy} />
@@ -112,7 +112,7 @@ export function CheckrideSetup({ userId }: { userId: string }) {
           rows={3}
           disabled={busy}
           placeholder="Planned date and time, passengers and bags, cruise altitude, anything else on your plan…"
-          className="w-full resize-y rounded-xl border border-border-strong bg-inset px-4 py-3 text-base text-fg placeholder:text-fg-subtle focus:border-green focus:outline-none"
+          className="w-full resize-y rounded-ui border border-border-strong bg-inset px-4 py-3 text-base text-fg placeholder:text-fg-subtle focus:border-green focus:outline-none focus:ring-1 focus:ring-green"
         />
       </div>
 
@@ -126,7 +126,7 @@ export function CheckrideSetup({ userId }: { userId: string }) {
             id={`${inputId}-kind`}
             value={kindForNext}
             onChange={(e) => setKindForNext(e.target.value as Kind)}
-            className="h-11 cursor-pointer rounded-xl border border-border-strong bg-inset px-3 text-sm text-fg focus:border-green focus:outline-none"
+      className="h-11 cursor-pointer transition-colors hover:border-fg/35 rounded-ui border border-border-strong bg-inset px-3 text-sm text-fg focus:border-green focus:outline-none focus:ring-1 focus:ring-green"
           >
             <option value="plan">Cross-country plan / nav log</option>
             <option value="poh">Aircraft POH / AFM</option>
@@ -140,7 +140,7 @@ export function CheckrideSetup({ userId }: { userId: string }) {
         {files.length > 0 && (
           <ul className="mt-4 space-y-2">
             {files.map((p, i) => (
-              <li key={i} className="flex items-center gap-3 rounded-xl border border-border bg-inset px-4 py-3">
+              <li key={i} className="flex items-center gap-3 rounded-ui border border-border bg-inset px-4 py-3">
                 <FileIcon mime={p.file.type} />
                 <span className="min-w-0 flex-1">
                   <span className="block truncate text-sm text-fg">{p.file.name}</span>
@@ -152,7 +152,7 @@ export function CheckrideSetup({ userId }: { userId: string }) {
                   type="button"
                   onClick={() => setFiles((prev) => prev.filter((_, j) => j !== i))}
                   aria-label={`Remove ${p.file.name}`}
-                  className="grid size-10 cursor-pointer place-items-center rounded-lg text-fg-subtle"
+         className="grid size-10 cursor-pointer transition-colors hover:bg-surface-strong hover:text-fg place-items-center rounded-ui text-fg-subtle"
                 >
                   <Trash size={18} aria-hidden />
                 </button>
@@ -167,7 +167,7 @@ export function CheckrideSetup({ userId }: { userId: string }) {
       </fieldset>
 
       {error && (
-        <p role="alert" className="rounded-xl border border-danger/40 bg-danger/10 px-4 py-3 text-sm text-fg">
+        <p role="alert" className="rounded-ui border border-danger/40 bg-danger/10 px-4 py-3 text-sm text-fg">
           {error}
         </p>
       )}

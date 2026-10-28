@@ -1,7 +1,7 @@
 import { ArrowRight, Check, Plus } from "@phosphor-icons/react/dist/ssr";
 import Link from "next/link";
 import { AcsTicker } from "@/components/marketing/AcsTicker";
-import { ChartBorder, CompassRose } from "@/components/marketing/ChartMarks";
+import { CompassRose } from "@/components/marketing/ChartMarks";
 import { cta } from "@/components/marketing/cta";
 import { DemoWidget } from "@/components/marketing/DemoWidget";
 import { FlightRoute } from "@/components/marketing/FlightRoute";
@@ -86,7 +86,7 @@ const FAQ = [
 /** Panoptical-style section opening: the label sits in its own column, the heading beside it. */
 function SectionHead({ label, title, children }: { label: string; title: React.ReactNode; children?: React.ReactNode }) {
   return (
-    <div className="grid gap-5 md:grid-cols-[180px_minmax(0,1fr)] md:gap-10">
+    <div className="grid grid-cols-1 gap-5 md:grid-cols-[180px_minmax(0,1fr)] md:gap-10">
       <p className="annot pt-2 text-fg-subtle">{label}</p>
       <div>
         <h2 className="max-w-2xl font-display text-3xl tracking-[-0.015em] md:text-4xl">{title}</h2>
@@ -99,7 +99,7 @@ function SectionHead({ label, title, children }: { label: string; title: React.R
 export default function Home() {
   return (
     <>
-      <HeroFlight border={<ChartBorder className="absolute inset-0" />} rose={<CompassRose className="size-full" />} />
+      <HeroFlight rose={<CompassRose className="size-full" />} />
 
       <AcsTicker />
 
@@ -111,14 +111,14 @@ export default function Home() {
             Where are you in training?
           </h2>
         </Reveal>
-        <ul className="mt-14 grid gap-4 md:grid-cols-3">
+        <ul className="mt-14 grid grid-cols-1 gap-4 md:grid-cols-3">
           {PATHS.map((p, i) => (
             <Reveal as="li" key={p.title} delay={i * 0.06}>
-              <Link href={p.href} className="flex h-full flex-col border border-border-strong bg-bg-elevated p-7">
+              <Link href={p.href} className="card-link group flex h-full flex-col border border-border-strong bg-bg-elevated p-7">
                 <h3 className="font-display text-xl">{p.title}</h3>
                 <p className="mt-3 flex-1 text-fg-muted">{p.body}</p>
                 <span className="annot mt-8 inline-flex items-center gap-2 text-accent">
-                  <ArrowRight size={12} weight="bold" aria-hidden /> {p.link}
+                  <ArrowRight size={12} weight="bold" className="transition-transform group-hover:translate-x-0.5 motion-reduce:transition-none" aria-hidden /> {p.link}
                 </span>
               </Link>
             </Reveal>
@@ -134,7 +134,7 @@ export default function Home() {
 
       {/* ── What we do / what we don't ───────────────────────── */}
       <section className="border-t border-border">
-        <Reveal className="mx-auto grid max-w-[1320px] gap-5 px-5 py-24 sm:px-8 md:grid-cols-[180px_minmax(0,1fr)] md:gap-10 md:py-32">
+        <Reveal className="mx-auto grid grid-cols-1 max-w-[1320px] gap-5 px-5 py-24 sm:px-8 md:grid-cols-[180px_minmax(0,1fr)] md:gap-10 md:py-32">
           <p className="annot pt-1.5 text-fg-subtle">What Aviant does</p>
           <p className="max-w-[60ch] text-lg text-fg-muted md:text-xl">
             Student pilots study alone most of the week, and the oral is the part nobody can cram from a book. Aviant gives you a CFI who
@@ -196,7 +196,7 @@ export default function Home() {
               <Reveal
                 key={p.name}
                 delay={i * 0.06}
-                className="grid gap-6 border-b border-border py-9 md:grid-cols-[180px_minmax(0,4fr)_minmax(0,6fr)_auto] md:gap-10"
+                className="grid grid-cols-1 gap-6 border-b border-border py-9 md:grid-cols-[180px_minmax(0,4fr)_minmax(0,6fr)_auto] md:gap-10"
               >
                 <p className={`annot pt-1.5 ${p.cta ? "text-accent" : "text-fg-subtle"}`}>{p.status}</p>
                 <div>
@@ -206,7 +206,7 @@ export default function Home() {
                     <span className="text-fg-subtle">{p.note}</span>
                   </p>
                 </div>
-                <ul className="grid content-start gap-x-8 gap-y-2.5 sm:grid-cols-2">
+                <ul className="grid grid-cols-1 content-start gap-x-8 gap-y-2.5 sm:grid-cols-2">
                   {p.features.map((f) => (
                     <li key={f} className={`flex items-start gap-3 text-sm ${p.cta ? "text-fg" : "text-fg-muted"}`}>
                       <Check size={14} weight="bold" className={`mt-1 shrink-0 ${p.cta ? "text-accent" : "text-fg-subtle"}`} aria-hidden />
@@ -238,14 +238,13 @@ export default function Home() {
             <h2 className="mt-5 font-display text-3xl tracking-[-0.015em] md:text-4xl">Questions, answered.</h2>
           </div>
           <div className="border-t border-border-strong">
-            {FAQ.map((f, i) => (
+            {FAQ.map((f) => (
               <details key={f.q} className="group border-b border-border">
-                <summary className="flex min-h-16 cursor-pointer list-none items-baseline gap-5 py-6 text-lg text-fg [&::-webkit-details-marker]:hidden">
-                  <span className="annot w-8 shrink-0 text-fg-subtle">{String(i + 1).padStart(2, "0")}</span>
+                <summary className="flex min-h-16 cursor-pointer list-none items-baseline gap-5 py-6 text-lg text-fg transition-colors hover:text-fg-muted [&::-webkit-details-marker]:hidden">
                   <span className="flex-1">{f.q}</span>
                   <Plus size={16} className="shrink-0 self-center text-fg-subtle transition-transform duration-300 group-open:rotate-45" aria-hidden />
                 </summary>
-                <p className="pb-7 pl-[52px] text-fg-muted">{f.a}</p>
+                <p className="pb-7 text-fg-muted">{f.a}</p>
               </details>
             ))}
           </div>

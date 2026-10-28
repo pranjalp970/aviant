@@ -61,7 +61,7 @@ export default async function CertificatePage() {
         <PrintButton />
       </div>
 
-      <article className="max-w-3xl rounded-[28px] border-2 border-green/50 bg-card-solid p-8 sm:p-12 print:border-[3px] print:border-black print:bg-white print:text-black">
+      <article className="max-w-3xl rounded-ui border-2 border-green/50 bg-card-solid p-8 sm:p-12 print:border-[3px] print:border-black print:bg-white print:text-black">
         <div className="flex items-center justify-between">
           <span className="inline-flex items-center gap-2 font-sans text-xl text-accent print:text-black">
             <PlaneMark className="h-5 w-auto" /> aviant
@@ -82,7 +82,7 @@ export default async function CertificatePage() {
         </p>
 
         <h2 className="mt-10 annot text-fg-subtle print:text-black">Mastery by topic</h2>
-        <ul className="mt-3 grid gap-x-8 gap-y-1.5 text-sm sm:grid-cols-2">
+        <ul className="mt-3 grid grid-cols-1 gap-x-8 gap-y-1.5 text-sm sm:grid-cols-2">
           {r.groups.map((g) => (
             <li key={g.id} className="flex justify-between gap-3 py-1">
               <span>{g.title.charAt(0).toUpperCase() + g.title.slice(1)}</span>

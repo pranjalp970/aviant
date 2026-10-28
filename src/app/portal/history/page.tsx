@@ -19,11 +19,11 @@ export default async function HistoryPage() {
 
   return (
     <>
-      <PageHeader eyebrow="Your progress" title="History" description="Every quiz and oral session you've finished, newest first." />
+      <PageHeader eyebrow="Progress" title="History" description="Every quiz and oral session you've finished, newest first." />
 
       <section aria-labelledby="quiz-history">
-        <h2 id="quiz-history" className="mb-4 flex items-center gap-2 font-display text-2xl">
-          <Timer size={22} className="text-accent" aria-hidden /> Quizzes
+        <h2 id="quiz-history" className="mb-5 flex items-center gap-2.5 font-display text-xl sm:text-2xl">
+          <Timer size={20} className="text-fg-subtle" aria-hidden /> Quizzes
         </h2>
         {attempts.length ? (
           <ul className="space-y-3">
@@ -32,19 +32,19 @@ export default async function HistoryPage() {
               const missed = a.answers.filter((x) => !x.correct);
               return (
                 <li key={a.id}>
-                  <details className="card group p-5">
-                    <summary className="flex cursor-pointer list-none items-center gap-4 [&::-webkit-details-marker]:hidden">
-                      <span className={clsx("w-14 shrink-0 font-display text-2xl tabular-nums", p >= 70 ? "text-accent" : "text-warning")}>{p}%</span>
+                  <details className="card group">
+                    <summary className="flex cursor-pointer list-none items-center gap-4 p-5 transition-colors hover:bg-surface-strong [&::-webkit-details-marker]:hidden">
+                      <span className={clsx("w-16 shrink-0 font-display text-2xl tabular-nums", p >= 70 ? "text-accent" : "text-warning")}>{p}%</span>
                       <span className="min-w-0 flex-1">
                         <span className="block truncate text-fg">{a.quiz_title}</span>
                         <span className="block text-sm text-fg-subtle">
                           {a.score}/{a.total} correct · {when(a.created_at)} {a.duration_sec ? `· ${mins(a.duration_sec)}` : ""}
                         </span>
                       </span>
-                      <span className="text-sm text-fg-muted group-open:hidden">{missed.length ? `Review ${missed.length} missed` : "Perfect"}</span>
+                      <span className="annot shrink-0 text-fg-muted group-open:hidden">{missed.length ? `Review ${missed.length} missed` : "Perfect"}</span>
                     </summary>
                     {missed.length > 0 && (
-                      <ol className="mt-8 space-y-5">
+                      <ol className="space-y-5 border-t border-border p-5 pt-6">
                         {missed.map((m) => {
                           const q = questionById(m.questionId);
                           if (!q || q.kind !== "mc") return null;
@@ -76,25 +76,25 @@ export default async function HistoryPage() {
       </section>
 
       <section aria-labelledby="oral-history" className="mt-12">
-        <h2 id="oral-history" className="mb-4 flex items-center gap-2 font-display text-2xl">
-          <Microphone size={22} className="text-accent" aria-hidden /> Oral sessions
+        <h2 id="oral-history" className="mb-5 flex items-center gap-2.5 font-display text-xl sm:text-2xl">
+          <Microphone size={20} className="text-fg-subtle" aria-hidden /> Oral sessions
         </h2>
         {orals.length ? (
           <ul className="space-y-3">
             {orals.map((o) => (
               <li key={o.id}>
-                <details className="card group p-5">
-                  <summary className="flex cursor-pointer list-none items-center gap-4 [&::-webkit-details-marker]:hidden">
-                    <span className="w-14 shrink-0 font-display text-2xl tabular-nums text-accent">{o.avg_score != null ? `${Math.round(Number(o.avg_score) * 100)}%` : "—"}</span>
+                <details className="card group">
+                  <summary className="flex cursor-pointer list-none items-center gap-4 p-5 transition-colors hover:bg-surface-strong [&::-webkit-details-marker]:hidden">
+                    <span className={clsx("w-16 shrink-0 font-display text-2xl tabular-nums", o.avg_score != null ? "text-accent" : "text-fg-subtle")}>{o.avg_score != null ? `${Math.round(Number(o.avg_score) * 100)}%` : "—"}</span>
                     <span className="min-w-0 flex-1">
                       <span className="block text-fg">{o.mode === "examine" ? "Mock oral exam (DPE)" : "Teach session (CFI)"}</span>
                       <span className="block text-sm text-fg-subtle">
                         {o.mode === "examine" ? `${o.grades.length} graded` : `${o.transcript.filter((t) => t.role === "user").length} questions asked`} · {when(o.updated_at)}
                       </span>
                     </span>
-                    <span className="text-sm text-fg-muted group-open:hidden">View</span>
+                    <span className="annot shrink-0 text-fg-muted group-open:hidden">View</span>
                   </summary>
-                  <div className="mt-8 space-y-5">
+                  <div className="space-y-5 border-t border-border p-5 pt-6">
                     {o.grades.map((g, i) => (
                       <div key={i} className="text-sm">
                         <p className="text-fg">{g.prompt}</p>

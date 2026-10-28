@@ -10,7 +10,7 @@ export const PLANE_POINTS: [number, number][] = [
   [214, 2], // top edge
   [222, 1],
   [229, 5],
-  [230, 12], // rounded upper-right corner
+  [230, 12], // rounded-ui upper-right corner
   [177, 143], // trailing tail point
   [104, 129], // bottom edge
   [109, 116], // notch step

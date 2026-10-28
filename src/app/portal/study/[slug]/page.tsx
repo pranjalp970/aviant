@@ -36,7 +36,7 @@ function Block({ b }: { b: LessonBlock }) {
       return (
         <div
           className={clsx(
-            "mt-6 flex gap-3 rounded-2xl border p-5 text-sm leading-relaxed",
+            "mt-6 flex gap-3 rounded-ui border p-5 text-sm leading-relaxed",
             b.tone === "tip" ? "border-green/30 bg-green/8 text-fg" : "border-warning/30 bg-warning/8 text-fg",
           )}
         >
@@ -50,7 +50,7 @@ function Block({ b }: { b: LessonBlock }) {
       );
     case "table":
       return (
-        <div className="mt-6 overflow-x-auto rounded-2xl border border-border">
+        <div className="mt-6 overflow-x-auto rounded-ui border border-border">
           <table className="w-full min-w-[480px] text-left text-sm">
             <thead className="bg-surface-strong text-fg">
               <tr>
@@ -93,7 +93,7 @@ export default async function LessonPage({ params }: PageProps<"/portal/study/[s
         <ArrowLeft size={14} aria-hidden />
         All study guides
       </Link>
-      <p className="annot text-accent">
+      <p className="annot text-fg-subtle">
         Area {area?.numeral} · {area?.name}
       </p>
       <h1 className="mt-3 font-display text-2xl sm:text-3xl leading-tight">{lesson.title}</h1>
@@ -106,7 +106,7 @@ export default async function LessonPage({ params }: PageProps<"/portal/study/[s
         ))}
       </div>
 
-      <div className="mt-14 flex flex-col gap-4 rounded-[24px] border border-green/40 bg-surface p-7 sm:flex-row sm:items-center sm:justify-between">
+      <div className="mt-14 flex flex-col gap-4 rounded-ui border border-green/40 bg-surface p-7 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <p className="font-display text-xl">Think you&rsquo;ve got it?</p>
           <p className="mt-1 text-fg-muted">Have the examiner question you on this topic out loud.</p>

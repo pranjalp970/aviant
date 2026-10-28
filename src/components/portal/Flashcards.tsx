@@ -67,17 +67,17 @@ export function Flashcards({ cards }: { cards: McQuestion[] }) {
         </span>
         <span>{q.reference}</span>
       </div>
-      <div className="h-1 overflow-hidden rounded-full bg-surface-strong" aria-hidden>
+      <div className="h-1 overflow-hidden rounded-ui bg-surface-strong" aria-hidden>
         <div className="h-full bg-green" style={{ width: `${(i / cards.length) * 100}%` }} />
       </div>
 
       <div className="card mt-6 flex min-h-[320px] flex-col p-7 sm:p-9">
-        <p className="annot text-accent">Question</p>
+        <p className="annot text-fg-subtle">Question</p>
         <p className="mt-3 text-xl leading-snug text-fg">{q.prompt}</p>
 
         {flipped ? (
           <div className="mt-8" aria-live="polite">
-            <p className="annot text-accent">Answer</p>
+            <p className="annot text-fg-subtle">Answer</p>
             <p className="mt-2 font-display text-xl text-accent">{q.choices[q.answerIndex]}</p>
             <p className="mt-3 text-sm text-fg-muted">{q.explanation}</p>
           </div>

@@ -13,11 +13,11 @@ export function QuestionCard({ q, index }: { q: Question; index: number }) {
 
   return (
     <article className="card p-6">
-      <div className="mb-3 flex flex-wrap items-center gap-2 text-xs">
-        <span className="rounded-full border border-border px-2.5 py-1 text-fg-subtle">#{index + 1}</span>
-        <span className="rounded-full bg-green/12 px-2.5 py-1 text-accent">{q.kind === "mc" ? "Multiple choice" : "Oral"}</span>
-        {q.taskId && <span className="text-fg-subtle">Task {q.taskId.split("-").slice(1).join(".")}</span>}
-      </div>
+      <p className="annot mb-3 flex flex-wrap items-center gap-x-3 gap-y-1 text-fg-subtle">
+        <span>#{index + 1}</span>
+        <span className="text-fg-muted">{q.kind === "mc" ? "Multiple choice" : "Oral"}</span>
+        {q.taskId && <span>Task {q.taskId.split("-").slice(1).join(".")}</span>}
+      </p>
       <h3 className="text-lg leading-snug text-fg">{q.prompt}</h3>
 
       {q.kind === "mc" && (
@@ -35,14 +35,14 @@ export function QuestionCard({ q, index }: { q: Question; index: number }) {
                   onClick={() => setPicked(i)}
                   aria-pressed={isPicked}
                   className={clsx(
-                    "flex min-h-12 cursor-pointer items-center gap-3 rounded-xl border px-4 py-2.5 text-left text-sm  disabled:cursor-default",
-                    picked === null && "border-border-strong",
+                    "flex min-h-12 cursor-pointer items-center gap-3 rounded-ui border px-4 py-2.5 text-left text-sm transition-colors disabled:cursor-default",
+                    picked === null && "border-border-strong hover:border-fg/35 hover:bg-surface-strong",
                     picked !== null && isAnswer && "border-green bg-green/10 text-fg",
                     picked !== null && isPicked && !isAnswer && "border-danger/60 bg-danger/10 text-fg",
                     picked !== null && !isAnswer && !isPicked && "border-border text-fg-subtle",
                   )}
                 >
-                  <span className="grid size-6 shrink-0 place-items-center rounded-full border border-current text-xs">{String.fromCharCode(65 + i)}</span>
+                  <span className="grid size-6 shrink-0 place-items-center rounded-ui border border-current text-xs">{String.fromCharCode(65 + i)}</span>
                   <span className="flex-1">{c}</span>
                   {picked !== null && isAnswer && <CheckCircle size={20} weight="fill" className="text-accent" aria-label="Correct answer" />}
                   {picked !== null && isPicked && !isAnswer && <XCircle size={20} weight="fill" className="text-danger" aria-label="Your answer, incorrect" />}
@@ -58,7 +58,7 @@ export function QuestionCard({ q, index }: { q: Question; index: number }) {
           type="button"
           onClick={() => setOpen((v) => !v)}
           aria-expanded={open}
-          className="mt-5 inline-flex min-h-11 cursor-pointer items-center gap-2 rounded-full border border-border-strong px-4 text-sm text-fg-muted"
+          className="mt-5 inline-flex min-h-11 cursor-pointer items-center gap-2 rounded-ui border border-border-strong px-4 text-sm text-fg-muted transition-colors hover:border-fg/35 hover:text-fg"
         >
           {open ? "Hide model answer" : "Reveal model answer"}
           <CaretDown size={14} className={clsx("transition-transform", open && "rotate-180")} aria-hidden />
@@ -66,7 +66,7 @@ export function QuestionCard({ q, index }: { q: Question; index: number }) {
       )}
 
       {answered && (
-        <div className="mt-5 rounded-2xl border border-border bg-inset p-5" aria-live="polite">
+        <div className="mt-5 rounded-ui border border-border bg-inset p-5" aria-live="polite">
           {q.kind === "mc" && (
             <p className={clsx("mb-2 font-medium", picked === q.answerIndex ? "text-accent" : "text-danger")}>
               {picked === q.answerIndex ? "Correct" : "Not quite"}
@@ -75,7 +75,7 @@ export function QuestionCard({ q, index }: { q: Question; index: number }) {
           {q.kind === "oral" && (
             <ul className="mb-3 flex flex-wrap gap-2">
               {q.keyPoints.map((k) => (
-                <li key={k.label} className="rounded-full bg-green/10 px-3 py-1 text-xs text-accent">
+                <li key={k.label} className="rounded-ui border border-border-strong px-3 py-1 text-xs text-fg-muted">
                   {k.label}
                 </li>
               ))}

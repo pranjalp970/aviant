@@ -195,7 +195,7 @@ export function QuizRunner({ quizId, title, rating, pool, count, timeLimitMin }:
           </p>
         )}
       </div>
-      <div className="mx-6 h-1 overflow-hidden rounded-full bg-surface-strong sm:mx-8" aria-hidden>
+      <div className="mx-6 h-1 overflow-hidden rounded-ui bg-surface-strong sm:mx-8" aria-hidden>
         <div className="h-full bg-green" style={{ width: `${((i + 1) / questions.length) * 100}%` }} />
       </div>
 
@@ -210,7 +210,7 @@ export function QuizRunner({ quizId, title, rating, pool, count, timeLimitMin }:
                 <label
                   key={k}
                   className={clsx(
-                    "flex min-h-13 cursor-pointer items-center gap-3 rounded-xl border px-4 py-3 text-sm  has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-green",
+          "flex min-h-13 cursor-pointer transition-colors hover:border-fg/35 items-center gap-3 rounded-ui border px-4 py-3 text-sm has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-green",
                     selected ? "border-green bg-green/10 text-fg" : "border-border-strong text-fg-muted",
                   )}
                 >
@@ -221,7 +221,7 @@ export function QuizRunner({ quizId, title, rating, pool, count, timeLimitMin }:
                     onChange={() => setAnswers((prev) => prev.map((v, j) => (j === i ? k : v)))}
                     className="sr-only"
                   />
-                  <span className={clsx("grid size-7 shrink-0 place-items-center rounded-full border text-xs", selected ? "border-green bg-green text-on-green" : "border-current")}>
+                  <span className={clsx("grid size-7 shrink-0 place-items-center rounded-ui border text-xs", selected ? "border-green bg-green text-on-green" : "border-current")}>
                     {String.fromCharCode(65 + k)}
                   </span>
                   {c}

@@ -22,8 +22,8 @@ export function Field({ label, name, error, hint, className, ...rest }: FieldPro
         aria-invalid={!!error}
         aria-describedby={describedBy}
         className={clsx(
-          "h-12 w-full rounded-xl border bg-inset px-4 text-base text-fg placeholder:text-fg-subtle  focus:outline-none",
-          error ? "border-danger/70 focus:border-danger" : "border-border-strong focus:border-green",
+          "h-12 w-full rounded-ui border bg-inset px-4 text-base text-fg transition-colors placeholder:text-fg-subtle hover:border-fg/30 focus:outline-none focus:ring-1",
+          error ? "border-danger/70 focus:border-danger focus:ring-danger" : "border-border-strong focus:border-green focus:ring-green",
         )}
         {...rest}
       />

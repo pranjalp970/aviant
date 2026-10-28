@@ -6,12 +6,12 @@ export function RatingPicker({ value = "ppl", waitlist = false, legend = "I’m 
   return (
     <fieldset>
       <legend className="mb-2 text-sm text-fg-muted">{legend}</legend>
-      <div className="grid gap-2 sm:grid-cols-2">
+      <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
         {RATINGS.map((r) =>
           r.available ? (
             <label
               key={r.id}
-              className="flex min-h-14 cursor-pointer items-center gap-3 rounded-xl border border-border-strong bg-inset px-4 has-[:checked]:border-green has-[:checked]:bg-green/10"
+       className="flex min-h-14 cursor-pointer transition-colors hover:border-fg/35 items-center gap-3 rounded-ui border border-border-strong bg-inset px-4 has-[:checked]:border-green has-[:checked]:bg-green/10"
             >
               <input type="radio" name="rating" value={r.id} defaultChecked={value === r.id} className="accent-[var(--green)]" />
               <span>
@@ -20,10 +20,10 @@ export function RatingPicker({ value = "ppl", waitlist = false, legend = "I’m 
               </span>
             </label>
           ) : (
-            <div key={r.id} className="rounded-xl border border-dashed border-border-strong px-4 py-2.5">
+            <div key={r.id} className="rounded-ui border border-dashed border-border-strong px-4 py-2.5">
               <p className="flex items-center justify-between gap-2 text-sm text-fg-muted">
                 {r.short}
-                <span className="rounded-full bg-green/12 px-2 py-0.5 text-xs text-accent">Coming soon</span>
+                <span className="rounded-ui bg-green/12 px-2 py-0.5 text-xs text-accent">Coming soon</span>
               </p>
               <label className="mt-1.5 flex cursor-pointer items-center gap-2 text-xs text-fg-subtle">
                 <input type="checkbox" name={`${r.id}_waitlist`} defaultChecked={waitlist} className="accent-[var(--green)]" />
