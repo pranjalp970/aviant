@@ -18,7 +18,7 @@ export default function AuthLayout({ children }: LayoutProps<"/">) {
             <br />
             <span className="text-accent">Fly better.</span>
           </p>
-          <p className="mt-6 max-w-sm text-fg-muted">Your AI CFI and examiner, ready whenever you are: between lessons, the night before, or at 2 a.m.</p>
+          <p className="mt-6 max-w-sm text-fg-muted">Your study partner for the written and the oral, ready whenever you are: between lessons, the night before, or at 2 a.m.</p>
         </div>
         <p className="annot relative text-fg-subtle">Study aid only. It does not replace an authorized instructor or examiner.</p>
       </aside>

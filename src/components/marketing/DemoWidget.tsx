@@ -54,7 +54,7 @@ export function DemoWidget() {
   return (
     <div className="overflow-hidden border border-border-strong bg-bg-elevated">
       <div className="annot flex items-center justify-between gap-4 px-5 pt-5 text-fg-subtle sm:px-8 sm:pt-7">
-        <span>AI examiner · Private Pilot</span>
+        <span>Mock oral · Private Pilot</span>
         <span>PA.I.B</span>
       </div>
       <div className="p-5 sm:p-8">

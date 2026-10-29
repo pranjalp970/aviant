@@ -44,7 +44,7 @@ export default function PrivacyPage() {
         <h2>How we use it</h2>
         <ul>
           <li>To run your account and save your progress.</li>
-          <li>To generate the AI instructor and examiner&rsquo;s replies, grade your answers, and read them aloud.</li>
+          <li>To generate replies in voice practice, grade your answers, and read them aloud.</li>
           <li>To show your history, readiness, and study recommendations.</li>
           <li>To keep the service secure, prevent abuse, and enforce fair daily usage limits.</li>
         </ul>
@@ -62,7 +62,7 @@ export default function PrivacyPage() {
             <strong>Vercel:</strong> website hosting.
           </li>
           <li>
-            <strong>Anthropic (Claude):</strong> generates the AI instructor and examiner&rsquo;s replies. Your messages, relevant study material, and any
+            <strong>Anthropic (Claude):</strong> generates the replies in voice practice and mock orals. Your messages, relevant study material, and any
             uploaded checkride files are sent to it to produce a response.
           </li>
           <li>

@@ -28,7 +28,7 @@ export const metadata: Metadata = {
     template: "%s · Aviant",
   },
   description:
-    "Aviant is an AI flight instructor and designated pilot examiner for student pilots. Rehearse your checkride oral, drill ACS-aligned questions, and study with a voice CFI that never gets tired.",
+    "Aviant is an AI study tool for student pilots. Practice your checkride oral out loud, drill ACS-aligned questions, and follow a study plan built around your test dates.",
   icons: { icon: "/icon.svg" },
 };
 

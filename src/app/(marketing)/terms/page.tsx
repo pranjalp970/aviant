@@ -16,7 +16,7 @@ export default function TermsPage() {
       <section>
         <h2>1. A study aid, not instruction</h2>
         <p>
-          Aviant provides practice questions, study material, and an AI-powered practice instructor and examiner to help you prepare for FAA knowledge and
+          Aviant is a study tool. It provides practice questions, study material, and AI-powered voice practice (a teaching mode and a mock-oral mode) to help you prepare for FAA knowledge and
           practical tests. <strong>Aviant is not affiliated with or approved by the FAA</strong>, is not a flight school, and does not provide flight
           instruction, logbook endorsements, or any official test or checkride.
         </p>

@@ -9,7 +9,7 @@ import { cta } from "./cta";
 import { HeroPlane } from "./HeroPlane";
 
 const STATEMENT =
-  "Checkride prep shouldn't wait for your instructor's schedule. Aviant is an examiner on demand: it asks the hard questions, grades you against the ACS, and explains every answer until it sticks.";
+  "Checkride prep shouldn't wait for your instructor's schedule. Aviant is a study partner on demand: it asks the hard questions, grades you against the ACS, and explains every answer until it sticks.";
 
 const pad = (n: number, len: number) => String(Math.round(n)).padStart(len, "0");
 
@@ -31,15 +31,15 @@ function Word({ children, progress, range }: { children: string; progress: Motio
 function HeroCopy() {
   return (
     <div className="flex flex-col items-center text-center">
-      <p className="tagline">AI flight instructor &amp; examiner</p>
+      <p className="tagline">The study tool for student pilots</p>
       <h1 className="mx-auto mt-6 font-display text-4xl tracking-[-0.025em] sm:text-5xl md:text-6xl">
         Train smarter.
         <br />
         Fly better.
       </h1>
       <p className="mx-auto mt-7 max-w-[46ch] text-lg text-fg-muted">
-        Talk through your private pilot oral with a voice CFI, face a by-the-book examiner, and follow a study plan built around your test
-        dates.
+        Practice the private pilot oral out loud, drill the knowledge test, and follow a study plan built around your test dates. Free while
+        in beta.
       </p>
       <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
         <Link href="/signup" className={cta.primary()}>

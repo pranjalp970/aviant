@@ -23,7 +23,7 @@ export function RunwayFinale() {
         <h2 className="mx-auto mt-6 max-w-3xl font-display text-4xl tracking-[-0.02em] sm:text-5xl md:text-6xl">
           Cleared for takeoff.
         </h2>
-        <p className="mx-auto mt-6 max-w-md text-fg-muted">Start talking to your AI CFI in under a minute. Free while Aviant is in beta.</p>
+        <p className="mx-auto mt-6 max-w-md text-fg-muted">Start your first practice session in under a minute. Free while Aviant is in beta.</p>
         <Link href="/signup" className={cta.primary("mt-10")}>
           Create your free account
           <ArrowRight size={14} weight="bold" aria-hidden />
