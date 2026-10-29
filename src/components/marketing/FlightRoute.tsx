@@ -82,7 +82,7 @@ function PlanVignette() {
 
 function TeachVignette() {
   return (
-    <Panel title="Voice CFI · Teach mode" meta={<span className="text-accent">Live</span>}>
+    <Panel title="Voice practice · Teach mode" meta={<span className="text-accent">Live</span>}>
       <div className="space-y-4 text-sm">
         <motion.div variants={item}>
           <p className="annot mb-1 text-fg-muted">CFI</p>
@@ -241,14 +241,14 @@ const PHASES = [
     fix: "DEPRT",
     phase: "Departure",
     title: "Learn it out loud",
-    body: "Teach mode is a patient voice CFI. Ask anything, hear it explained in plain language, and get quizzed until it sticks.",
+    body: "Teach mode explains things the way a patient instructor would. Ask anything out loud, hear it in plain language, and get quizzed until it sticks.",
     vignette: <TeachVignette />,
   },
   {
     fix: "CRUZE",
     phase: "Cruise",
     title: "Drill the knowledge test",
-    body: "306 practice questions across every area, drawn fresh each attempt with shuffled answers. The ones you miss come back on a spaced-repetition schedule.",
+    body: "426 practice questions across every area, including sectional charts, airport diagrams and performance charts from the FAA testing supplement. The ones you miss come back on a spaced-repetition schedule.",
     vignette: <DrillVignette />,
   },
   {

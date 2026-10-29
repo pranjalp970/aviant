@@ -3,6 +3,7 @@
 import { CaretDown, CheckCircle, XCircle } from "@phosphor-icons/react";
 import clsx from "clsx";
 import { useState } from "react";
+import { FigurePane } from "@/components/portal/FigureViewer";
 import type { Question } from "@/content/types";
 
 /** Practice card: answer an MC question or reveal the model answer for an oral one. */
@@ -17,8 +18,14 @@ export function QuestionCard({ q, index }: { q: Question; index: number }) {
         <span>#{index + 1}</span>
         <span className="text-fg-muted">{q.kind === "mc" ? "Multiple choice" : "Oral"}</span>
         {q.taskId && <span>Task {q.taskId.split("-").slice(1).join(".")}</span>}
+        {q.figure && <span>{q.figure.label}</span>}
       </p>
       <h3 className="text-lg leading-snug text-fg">{q.prompt}</h3>
+      {q.figure && (
+        <div className="mt-4">
+          <FigurePane figure={q.figure} />
+        </div>
+      )}
 
       {q.kind === "mc" && (
         <fieldset className="mt-5">

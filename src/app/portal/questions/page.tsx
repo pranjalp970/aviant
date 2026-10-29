@@ -7,7 +7,7 @@ import { buttonClass } from "@/components/ui/button";
 import { QuestionCard } from "@/components/portal/QuestionCard";
 import { EmptyState } from "@/components/ui/EmptyState";
 import { areaById, areasFor } from "@/content/acs";
-import { PPL_BANK_TOPICS } from "@/content/banks/ppl-practice-bank";
+import { PPL_BANK_TOPICS } from "@/content/banks/ppl-bank";
 import { questionsFor } from "@/content/questions";
 import { getSession } from "@/lib/auth/session";
 
@@ -25,9 +25,11 @@ export default async function QuestionsPage({ searchParams }: PageProps<"/portal
   const topic = topics.find((t) => t.id === str(sp.topic))?.id;
   const areaParam = str(sp.area);
   const areaId = areaParam && areaById(areaParam)?.rating === session.rating ? areaParam : undefined;
-  const kind = str(sp.kind) === "mc" || str(sp.kind) === "oral" ? (str(sp.kind) as "mc" | "oral") : undefined;
+  const kind = ["mc", "oral", "figure"].includes(str(sp.kind) ?? "") ? (str(sp.kind) as "mc" | "oral" | "figure") : undefined;
 
-  const all = questionsFor(session.rating, areaId).filter((q) => (!kind || q.kind === kind) && (!topic || q.topic === topic));
+  const all = questionsFor(session.rating, areaId).filter(
+    (q) => (!kind || (kind === "figure" ? !!q.figure : q.kind === kind)) && (!topic || q.topic === topic),
+  );
   const pages = Math.max(1, Math.ceil(all.length / PAGE_SIZE));
   const page = Math.min(pages, Math.max(1, Number(str(sp.page)) || 1));
   const shown = all.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
@@ -88,11 +90,12 @@ export default async function QuestionsPage({ searchParams }: PageProps<"/portal
               ))}
         </ul>
       </nav>
-      <nav aria-label="Filter by type" className="mb-8 flex gap-2">
+      <nav aria-label="Filter by type" className="-mx-5 mb-8 flex gap-2 overflow-x-auto px-5 sm:mx-0 sm:px-0">
         {[
           { k: undefined, label: "All types" },
           { k: "mc", label: "Multiple choice" },
           { k: "oral", label: "Oral" },
+          { k: "figure", label: "With figures" },
         ].map((o) => (
           <Link key={o.label} href={href({ kind: o.k })} className={chip(kind === o.k)}>
             {o.label}

@@ -5,7 +5,7 @@ import { Flashcards } from "@/components/portal/Flashcards";
 import { PageHeader } from "@/components/portal/PageHeader";
 import { QuizRunner } from "@/components/portal/QuizRunner";
 import { EmptyState } from "@/components/ui/EmptyState";
-import { PPL_BANK_TOPICS } from "@/content/banks/ppl-practice-bank";
+import { PPL_BANK_TOPICS } from "@/content/banks/ppl-bank";
 import { QUESTIONS } from "@/content/questions";
 import type { McQuestion } from "@/content/types";
 import { getSession } from "@/lib/auth/session";

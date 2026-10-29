@@ -32,6 +32,16 @@ export interface AcsArea {
   tasks: AcsTask[];
 }
 
+/** A testing-supplement figure a question refers to ("Refer to Figure 20"). */
+export interface QuestionFigure {
+  src: string; // e.g. "/figures/akts-8080-2h/figure-20.webp"
+  label: string; // e.g. "Figure 20"
+  /** Plain-language description for screen readers. */
+  alt: string;
+  width: number;
+  height: number;
+}
+
 interface QuestionBase {
   id: string;
   rating: RatingId;
@@ -43,6 +53,7 @@ interface QuestionBase {
   difficulty: 1 | 2 | 3;
   /** Study topic (practice-bank section), e.g. "airspace". */
   topic?: string;
+  figure?: QuestionFigure;
 }
 
 /** Multiple-choice, written-test style. */
@@ -87,6 +98,8 @@ export interface QuizPreset {
   areaIds: string[] | "all";
   /** Optional narrower filter by study topic. */
   topics?: string[];
+  /** Only the figure and calculation set: charts, tables and flight-computer math. */
+  figureSet?: boolean;
   count: number;
   timeLimitMin?: number;
 }

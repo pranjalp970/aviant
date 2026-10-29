@@ -5,7 +5,7 @@
 <h1 align="center">Aviant</h1>
 
 <p align="center">
-  <strong>An AI flight instructor and examiner for student pilots.</strong><br />
+  <strong>An AI study tool for student pilots.</strong><br />
   Talk through the private pilot oral, drill the knowledge test, and follow a study plan built around your test dates.
 </p>
 
@@ -23,14 +23,14 @@
 
 ## What it is
 
-Most of checkride prep happens alone, between lessons, and the oral exam is the part you can't cram from a book. Aviant gives student
-pilots two voices on demand:
+Aviant is a study tool for student pilots. Most checkride prep happens alone, between lessons, and the oral exam is the part you can't
+cram from a book, so Aviant lets you practice it out loud in two modes:
 
-- **A CFI** (Teach mode) that explains concepts out loud, answers follow-up questions, and quizzes you until it sticks.
-- **A DPE** (Examine mode) that asks scenario-based oral questions, probes weak answers, and grades every response against the FAA
-  Airman Certification Standards (ACS).
+- **Teach mode** explains concepts the way a patient instructor would, answers follow-up questions, and quizzes you until it sticks.
+- **Examine mode** runs a mock oral: scenario-based questions, follow-ups on weak answers, and a grade for every response against the
+  FAA Airman Certification Standards (ACS).
 
-Around those two voices sits everything else a student needs to get from first lesson to checkride day: a question bank, timed mock
+Around voice practice sits everything else a student needs to get from first lesson to checkride day: a question bank, timed mock
 knowledge tests, spaced-repetition review, a personalized study plan, and a readiness score that says when you are actually prepared.
 
 > Aviant is a study aid. It does not replace instruction from an authorized flight instructor, an FAA-designated pilot examiner, or
@@ -40,10 +40,10 @@ knowledge tests, spaced-repetition review, a personalized study plan, and a read
 
 | | |
 |---|---|
-| **Voice CFI & DPE** | One assistant, two modes. Streams its reply sentence by sentence through natural ElevenLabs voices, supports interruptions and hands-free conversation. |
+| **Voice practice** | One assistant, two modes: teach and mock oral. Streams its reply sentence by sentence through natural ElevenLabs voices, supports interruptions and hands-free conversation. |
 | **Graded orals** | Each answer is scored against ACS key points, with a debrief of what was covered, what was missed, and the reference to study. |
-| **Full mock checkride** | Upload your own cross-country plan and aircraft POH; the examiner questions you on *your* weather, performance, weight and balance, and go/no-go call. |
-| **Knowledge test prep** | 306 practice questions across every area, drawn fresh each attempt with shuffled answers, plus timed full-length mock tests. |
+| **Full mock checkride** | Upload your own cross-country plan and aircraft POH; the mock examiner questions you on *your* weather, performance, weight and balance, and go/no-go call. |
+| **Knowledge test prep** | 426 practice questions across every area, drawn fresh each attempt with shuffled answers, plus timed full-length mock tests. 120 of them use figures from the FAA testing supplement (sectional charts, airport diagrams, weather reports, weight and balance and performance charts) or flight-computer math, shown in a zoomable figure viewer. |
 | **Spaced repetition** | Missed questions come back first; known ones are scheduled further out, as a quiz or as flashcards. |
 | **Personalized study plan** | Onboarding and a 24-question diagnostic produce a daily session sized to your available time, weighted toward weak topics, and re-planned as you study. |
 | **Readiness & incentives** | Readiness score, predicted written score, streaks, XP and pilot ranks, badges, weekly challenges, a logbook, and a printable *Aviant Ready* certificate for your CFI. |
@@ -104,13 +104,15 @@ src/
                      study plan, mock checkride, logbook, certificate, settings
     api/             Assistant (streaming) and text-to-speech routes
   components/        UI, grouped by area (marketing, portal, plan, progress, …)
-  content/           ACS areas, question bank, lessons, quizzes
+  content/           ACS areas, question banks, lessons, quizzes
   lib/
     ai/              Claude provider, sample engine, streaming JSON helpers
     plan/            Pure study-plan engine
     progress/        Streaks, XP, badges, challenges
     supabase/, auth/ Clients, session, server actions
 supabase/            Schema, migrations, branded email templates
+public/figures/      Testing-supplement figures (WebP), built by scripts/build-figures.mjs
+docs/                Figure bank sources and review notes
 ```
 
 ## Scripts

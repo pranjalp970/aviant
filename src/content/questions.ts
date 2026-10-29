@@ -1,4 +1,4 @@
-import { PPL_PRACTICE_BANK } from "./banks/ppl-practice-bank";
+import { PPL_BANK } from "./banks/ppl-bank";
 import type { McQuestion, OralQuestion, Question, RatingId } from "./types";
 
 /**
@@ -584,13 +584,13 @@ const SAMPLE_QUESTIONS: Question[] = [
 ];
 
 /**
- * The live bank: the Private Pilot practice bank (multiple choice) supersedes
+ * The live bank: the Private Pilot bank (practice questions plus the figure set) supersedes
  * the sample PPL multiple-choice items; sample oral and IR questions remain
  * until their real banks arrive.
  */
 export const QUESTIONS: Question[] = [
   ...SAMPLE_QUESTIONS.filter((q) => !(q.rating === "ppl" && q.kind === "mc")),
-  ...PPL_PRACTICE_BANK,
+  ...PPL_BANK,
 ];
 
 export const questionsFor = (rating: RatingId, areaId?: string) =>

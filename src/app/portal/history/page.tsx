@@ -1,6 +1,7 @@
 import { CheckCircle, Circle, Microphone, Timer, XCircle } from "@phosphor-icons/react/dist/ssr";
 import clsx from "clsx";
 import type { Metadata } from "next";
+import { FigureLink } from "@/components/portal/FigureViewer";
 import { PageHeader } from "@/components/portal/PageHeader";
 import { EmptyState } from "@/components/ui/EmptyState";
 import { questionById } from "@/content/questions";
@@ -53,6 +54,7 @@ export default async function HistoryPage() {
                               <XCircle size={18} weight="fill" className="mt-0.5 shrink-0 text-danger" aria-label="Missed" />
                               <div className="text-sm">
                                 <p className="text-fg">{q.prompt}</p>
+                                {q.figure && <FigureLink figure={q.figure} />}
                                 <p className="mt-1 text-sm text-fg-subtle">Your answer: {m.chosen ?? "No answer"}</p>
                                 <p className="text-sm text-accent">Correct: {q.choices[q.answerIndex]}</p>
                                 <p className="mt-1 text-sm text-fg-muted">{q.explanation}</p>

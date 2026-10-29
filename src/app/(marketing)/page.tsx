@@ -16,7 +16,7 @@ const PLANS = [
     price: "Free",
     note: "during beta",
     status: "Available now",
-    features: ["Voice CFI & DPE, both modes", "Study plan built to your test dates", "306-question practice bank", "Mock knowledge tests", "Spaced-repetition review", "Study guides"],
+    features: ["Voice practice in teach and mock-oral modes", "Study plan built to your test dates", "426-question practice bank with FAA figures", "Mock knowledge tests", "Spaced-repetition review", "Study guides"],
     cta: { href: "/signup", label: "Start training free" },
   },
   {
@@ -38,7 +38,7 @@ const PLANS = [
 const PATHS = [
   {
     title: "I'm studying for the written",
-    body: "Drill all 306 practice questions, take timed mock tests, and see a predicted score before you book the exam.",
+    body: "Drill 426 practice questions, chart and figure questions included, take timed mock tests, and see a predicted score before you book the exam.",
     link: "Start with the written",
     href: "/signup",
   },

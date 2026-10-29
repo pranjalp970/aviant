@@ -1,6 +1,6 @@
 import "server-only";
 import { areasFor } from "@/content/acs";
-import { PPL_BANK_TOPICS } from "@/content/banks/ppl-practice-bank";
+import { PPL_BANK_TOPICS } from "@/content/banks/ppl-bank";
 import { QUESTIONS } from "@/content/questions";
 import type { McQuestion, RatingId } from "@/content/types";
 import type { OralSessionRow } from "@/lib/data/queries";

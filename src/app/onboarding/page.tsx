@@ -3,6 +3,7 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { Logo } from "@/components/brand/Logo";
 import { OnboardingWizard } from "@/components/onboarding/OnboardingWizard";
+import { PPL_FIGURE_IDS } from "@/content/banks/ppl-bank";
 import { QUESTIONS } from "@/content/questions";
 import type { McQuestion } from "@/content/types";
 import { getSession } from "@/lib/auth/session";
@@ -17,8 +18,8 @@ export default async function OnboardingPage({ searchParams }: PageProps<"/onboa
   if (!session) redirect("/login?next=/onboarding");
   const { step } = await searchParams;
 
-  // 2 questions per topic, drawn fresh on each visit
-  const pool = QUESTIONS.filter((q): q is McQuestion => q.kind === "mc" && q.rating === "ppl" && !!q.topic);
+  // 2 questions per topic, drawn fresh on each visit. Chart and calculation questions are left out to keep it to ~10 minutes.
+  const pool = QUESTIONS.filter((q): q is McQuestion => q.kind === "mc" && q.rating === "ppl" && !!q.topic && !PPL_FIGURE_IDS.has(q.id));
   const diagnostic = drawStratified(pool, 2);
 
   return (

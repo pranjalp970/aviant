@@ -1,5 +1,5 @@
 import "server-only";
-import { PPL_PRACTICE_BANK } from "@/content/banks/ppl-practice-bank";
+import { PPL_BANK } from "@/content/banks/ppl-bank";
 import type { Session } from "@/lib/auth/session";
 import type { PlanContext } from "@/lib/plan/load";
 import type { Readiness } from "@/lib/readiness";
@@ -51,7 +51,7 @@ export async function loadProgress(session: Session, ctx: PlanContext, readiness
     totalMinutes: totals.minutes,
     studyDays: totals.studyDays,
     bestStreak: streak.best,
-    bankSize: PPL_PRACTICE_BANK.length,
+    bankSize: PPL_BANK.length,
     seenQuestions: ctx.reviews.length,
     topicMastery: Object.fromEntries(readiness.groups.map((g) => [g.id, g.mastery])),
     fullMocks: ctx.attempts.filter((a) => a.total >= 60).map((a) => ({ score: a.score, total: a.total })),

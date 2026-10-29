@@ -1,5 +1,5 @@
 // Relative imports (not "@/") so the plan engine can be scenario-tested with plain Node.
-import { PPL_BANK_TOPICS, PPL_PRACTICE_BANK } from "../../content/banks/ppl-practice-bank";
+import { PPL_BANK, PPL_BANK_TOPICS } from "../../content/banks/ppl-bank";
 
 /** Study topics for the Private Pilot plan, with how much the real test leans on them. */
 export interface TopicMeta {
@@ -40,7 +40,7 @@ export const topicById = (id: string) => PLAN_TOPICS.find((t) => t.id === id);
 
 // ACS task → topic, learned from how the bank tags its questions (e.g. ppl-I-E → airspace) …
 const TASK_TOPIC = new Map<string, string>();
-for (const q of PPL_PRACTICE_BANK) if (q.taskId && q.topic && !TASK_TOPIC.has(q.taskId)) TASK_TOPIC.set(q.taskId, q.topic);
+for (const q of PPL_BANK) if (q.taskId && q.topic && !TASK_TOPIC.has(q.taskId)) TASK_TOPIC.set(q.taskId, q.topic);
 // … plus area-level fallbacks for codes the bank doesn't tag directly.
 const AREA_TOPIC: Record<string, string> = {
   I: "regulations",

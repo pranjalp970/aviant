@@ -5,6 +5,7 @@ import clsx from "clsx";
 import Link from "next/link";
 import { useState } from "react";
 import { buttonClass } from "@/components/ui/button";
+import { FigurePane } from "@/components/portal/FigureViewer";
 import { EmptyState } from "@/components/ui/EmptyState";
 import type { McQuestion } from "@/content/types";
 import { recordFlashcard } from "@/lib/data/actions";
@@ -74,6 +75,11 @@ export function Flashcards({ cards }: { cards: McQuestion[] }) {
       <div className="card mt-6 flex min-h-[320px] flex-col p-7 sm:p-9">
         <p className="annot text-fg-subtle">Question</p>
         <p className="mt-3 text-xl leading-snug text-fg">{q.prompt}</p>
+        {q.figure && (
+          <div className="mt-5">
+            <FigurePane key={q.id} figure={q.figure} eager />
+          </div>
+        )}
 
         {flipped ? (
           <div className="mt-8" aria-live="polite">

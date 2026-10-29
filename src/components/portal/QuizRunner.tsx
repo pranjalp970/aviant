@@ -4,6 +4,7 @@ import { ArrowLeft, ArrowRight, CheckCircle, Timer, XCircle } from "@phosphor-ic
 import clsx from "clsx";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
+import { FigureLink, FigurePane, preloadFigure } from "@/components/portal/FigureViewer";
 import { buttonClass } from "@/components/ui/button";
 import { ProgressRing } from "@/components/ui/ProgressRing";
 import type { McQuestion, RatingId } from "@/content/types";
@@ -56,6 +57,11 @@ export function QuizRunner({ quizId, title, rating, pool, count, timeLimitMin }:
       .then((r) => setSaveStatus(r.ok ? "saved" : "error"))
       .catch(() => setSaveStatus("error"));
   }, [done, questions, answers, quizId, title, rating]);
+
+  // Fetch the next question's figure while this one is being answered.
+  useEffect(() => {
+    preloadFigure(questions?.[i + 1]?.figure);
+  }, [questions, i]);
 
   useEffect(() => {
     if (left === null || done) return;
@@ -162,6 +168,7 @@ export function QuizRunner({ quizId, title, rating, pool, count, timeLimitMin }:
                     )}
                     <div>
                       <p className="text-fg">{qq.prompt}</p>
+                      {qq.figure && <FigureLink figure={qq.figure} />}
                       {!ok && (
                         <p className="mt-2 text-sm text-fg-subtle">
                           Your answer: {a === null ? "No answer" : qq.choices[a]}
@@ -201,6 +208,11 @@ export function QuizRunner({ quizId, title, rating, pool, count, timeLimitMin }:
 
       <div className="p-6 sm:p-8">
         <h2 className="text-xl leading-snug text-fg">{q.prompt}</h2>
+        {q.figure && (
+          <div className="mt-5">
+            <FigurePane key={q.id} figure={q.figure} eager />
+          </div>
+        )}
         <fieldset className="mt-6">
           <legend className="sr-only">Choose an answer</legend>
           <div className="grid gap-2">

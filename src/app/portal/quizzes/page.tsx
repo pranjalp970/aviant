@@ -29,7 +29,7 @@ export default async function QuizzesPage() {
         }
       />
 
-      <ul className="grid grid-cols-1 gap-4 md:grid-cols-2">
+      <ul className="grid grid-cols-1 gap-4 md:grid-cols-3">
         {featured.map((q) => {
           const n = attemptSize(q);
           const pool = quizPool(q).length;
