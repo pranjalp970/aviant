@@ -228,12 +228,13 @@ function FigureDialog({ figure, onClose }: { figure: QuestionFigure; onClose: ()
   );
 }
 
-/** The figure inline with its question, zoomable in place or full screen. */
-export function FigurePane({ figure, eager }: { figure: QuestionFigure; eager?: boolean }) {
+/** The figure inline with its question (or study guide), zoomable in place or full screen. */
+export function FigurePane({ figure, eager, caption }: { figure: QuestionFigure; eager?: boolean; caption?: string }) {
   const [full, setFull] = useState(false);
   return (
     <figure className="overflow-hidden rounded-ui border border-border">
       <ZoomView figure={figure} eager={eager} onFullScreen={() => setFull(true)} />
+      {caption && <figcaption className="border-t border-border px-4 py-3 text-sm leading-relaxed text-fg-muted">{caption}</figcaption>}
       {full && <FigureDialog figure={figure} onClose={() => setFull(false)} />}
     </figure>
   );

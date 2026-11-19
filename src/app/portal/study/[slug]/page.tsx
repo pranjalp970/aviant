@@ -1,10 +1,12 @@
-import { ArrowLeft, Lightbulb, Microphone, Warning } from "@phosphor-icons/react/dist/ssr";
+import { ArrowLeft, ChatCircleText, Lightbulb, Microphone, Warning } from "@phosphor-icons/react/dist/ssr";
 import clsx from "clsx";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { FigurePane } from "@/components/portal/FigureViewer";
 import { buttonClass } from "@/components/ui/button";
 import { areaById } from "@/content/acs";
+import { PPL_BANK_TOPICS } from "@/content/banks/ppl-bank";
 import { lessonBySlug, lessonsFor } from "@/content/lessons";
 import type { LessonBlock } from "@/content/types";
 import { getSession } from "@/lib/auth/session";
@@ -48,6 +50,12 @@ function Block({ b }: { b: LessonBlock }) {
           <p>{b.text}</p>
         </div>
       );
+    case "figure":
+      return (
+        <div className="mt-6">
+          <FigurePane figure={b.figure} caption={b.caption} />
+        </div>
+      );
     case "table":
       return (
         <div className="mt-6 overflow-x-auto rounded-ui border border-border">
@@ -84,6 +92,7 @@ export default async function LessonPage({ params }: PageProps<"/portal/study/[s
   const session = await getSession();
   await markLessonViewed(lesson.slug, lesson.minutes, session?.timezone ?? null); // progress + study time
   const area = areaById(lesson.areaId);
+  const topic = PPL_BANK_TOPICS.find((t) => t.id === lesson.topic);
   const siblings = lessonsFor(lesson.rating);
   const next = siblings[siblings.findIndex((l) => l.slug === lesson.slug) + 1];
 
@@ -93,9 +102,7 @@ export default async function LessonPage({ params }: PageProps<"/portal/study/[s
         <ArrowLeft size={14} aria-hidden />
         All study guides
       </Link>
-      <p className="annot text-fg-subtle">
-        Area {area?.numeral} · {area?.name}
-      </p>
+      <p className="annot text-fg-subtle">{topic ? topic.title.replace(/^./, (c) => c.toUpperCase()) : `Area ${area?.numeral} · ${area?.name}`}</p>
       <h1 className="mt-3 font-display text-2xl sm:text-3xl leading-tight">{lesson.title}</h1>
       <p className="mt-3 text-lg text-fg-muted">{lesson.summary}</p>
       <p className="mt-4 text-sm text-fg-subtle">{lesson.minutes} min read · Sources: {lesson.reference}</p>
@@ -109,12 +116,20 @@ export default async function LessonPage({ params }: PageProps<"/portal/study/[s
       <div className="mt-14 flex flex-col gap-4 rounded-ui border border-green/40 bg-surface p-7 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <p className="font-display text-xl">Think you&rsquo;ve got it?</p>
-          <p className="mt-1 text-fg-muted">Have the examiner question you on this topic out loud.</p>
+          <p className="mt-1 text-fg-muted">Talk it through with the Voice CFI, or have the examiner question you out loud.</p>
         </div>
-        <Link href="/portal/assistant?mode=examine" className={buttonClass("primary")}>
-          <Microphone size={16} weight="fill" aria-hidden />
-          Start a mock oral
-        </Link>
+        <div className="flex shrink-0 flex-wrap gap-3">
+          {topic && (
+            <Link href={`/portal/assistant?topic=${topic.id}`} className={buttonClass("glass")}>
+              <ChatCircleText size={16} aria-hidden />
+              Ask the Voice CFI
+            </Link>
+          )}
+          <Link href="/portal/assistant?mode=examine" className={buttonClass("primary")}>
+            <Microphone size={16} weight="fill" aria-hidden />
+            Start a mock oral
+          </Link>
+        </div>
       </div>
 
       {next && (
@@ -127,7 +142,10 @@ export default async function LessonPage({ params }: PageProps<"/portal/study/[s
         </Link>
       )}
 
-      <p className="mt-10 text-xs text-fg-subtle">Sample content for the preview build. Verify against current FAA publications.</p>
+      <p className="mt-10 text-xs text-fg-subtle">
+        Written from the FAA sources listed above. Regulations and the AIM change, so check the current versions, use your own airplane&rsquo;s POH,
+        and ask your CFI when in doubt.
+      </p>
     </article>
   );
 }

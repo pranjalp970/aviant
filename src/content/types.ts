@@ -77,12 +77,15 @@ export type LessonBlock =
   | { type: "h"; text: string }
   | { type: "list"; items: string[] }
   | { type: "callout"; tone: "tip" | "warning"; text: string }
-  | { type: "table"; head: string[]; rows: string[][] };
+  | { type: "table"; head: string[]; rows: string[][] }
+  | { type: "figure"; figure: QuestionFigure; caption: string };
 
 export interface Lesson {
   slug: string;
   rating: RatingId;
   areaId: string;
+  /** Study topic it teaches (practice-bank section), so the study plan can assign it. */
+  topic?: string;
   title: string;
   summary: string;
   minutes: number;

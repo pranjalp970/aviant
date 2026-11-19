@@ -41,9 +41,10 @@ knowledge tests, spaced-repetition review, a personalized study plan, and a read
 | | |
 |---|---|
 | **Voice practice** | One assistant, two modes: teach and mock oral. Streams its reply sentence by sentence through natural ElevenLabs voices, supports interruptions and hands-free conversation. |
-| **Graded orals** | Each answer is scored against ACS key points, with a debrief of what was covered, what was missed, and the reference to study. |
+| **Graded orals** | 120 oral exam questions mapped to ACS tasks. Each answer is scored against key points, with a debrief of what was covered, what was missed, and the reference to study. |
 | **Full mock checkride** | Upload your own cross-country plan and aircraft POH; the mock examiner questions you on *your* weather, performance, weight and balance, and go/no-go call. |
 | **Knowledge test prep** | 426 practice questions across every area, drawn fresh each attempt with shuffled answers, plus timed full-length mock tests. 120 of them use figures from the FAA testing supplement (sectional charts, airport diagrams, weather reports, weight and balance and performance charts) or flight-computer math, shown in a zoomable figure viewer. |
+| **Study guides** | 24 guides, two for every knowledge-test topic, written from 14 CFR, the AIM, the PHAK and the Aviation Weather Handbook, with tables, memory aids and zoomable FAA figures. The study plan assigns them to weak topics. |
 | **Spaced repetition** | Missed questions come back first; known ones are scheduled further out, as a quiz or as flashcards. |
 | **Personalized study plan** | Onboarding and a 24-question diagnostic produce a daily session sized to your available time, weighted toward weak topics, and re-planned as you study. |
 | **Readiness & incentives** | Readiness score, predicted written score, streaks, XP and pilot ranks, badges, weekly challenges, a logbook, and a printable *Aviant Ready* certificate for your CFI. |
@@ -104,7 +105,7 @@ src/
                      study plan, mock checkride, logbook, certificate, settings
     api/             Assistant (streaming) and text-to-speech routes
   components/        UI, grouped by area (marketing, portal, plan, progress, …)
-  content/           ACS areas, question banks, lessons, quizzes
+  content/           ACS areas, question banks (written and oral), study guides, quizzes
   lib/
     ai/              Claude provider, sample engine, streaming JSON helpers
     plan/            Pure study-plan engine

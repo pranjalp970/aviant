@@ -27,9 +27,9 @@ export default async function QuestionsPage({ searchParams }: PageProps<"/portal
   const areaId = areaParam && areaById(areaParam)?.rating === session.rating ? areaParam : undefined;
   const kind = ["mc", "oral", "figure"].includes(str(sp.kind) ?? "") ? (str(sp.kind) as "mc" | "oral" | "figure") : undefined;
 
-  const all = questionsFor(session.rating, areaId).filter(
-    (q) => (!kind || (kind === "figure" ? !!q.figure : q.kind === kind)) && (!topic || q.topic === topic),
-  );
+  const ofKind = questionsFor(session.rating, areaId).filter((q) => !kind || (kind === "figure" ? !!q.figure : q.kind === kind));
+  const all = ofKind.filter((q) => !topic || q.topic === topic);
+  const countFor = (topicId: string) => ofKind.filter((q) => q.topic === topicId).length;
   const pages = Math.max(1, Math.ceil(all.length / PAGE_SIZE));
   const page = Math.min(pages, Math.max(1, Number(str(sp.page)) || 1));
   const shown = all.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
@@ -77,7 +77,7 @@ export default async function QuestionsPage({ searchParams }: PageProps<"/portal
                 <li key={t.id}>
                   <Link href={href({ topic: t.id, area: undefined })} className={chip(topic === t.id)} aria-current={topic === t.id ? "page" : undefined}>
                     {t.title.replace(/^./, (c) => c.toUpperCase())}
-                    <span className="annot ml-2 text-fg-subtle">{t.count}</span>
+                    <span className="annot ml-2 text-fg-subtle">{countFor(t.id)}</span>
                   </Link>
                 </li>
               ))

@@ -1,5 +1,6 @@
 // Relative imports (not "@/") so the plan engine can be scenario-tested with plain Node.
 import { PPL_BANK, PPL_BANK_TOPICS } from "../../content/banks/ppl-bank";
+import { PPL_GUIDES } from "../../content/guides/ppl";
 
 /** Study topics for the Private Pilot plan, with how much the real test leans on them. */
 export interface TopicMeta {
@@ -22,18 +23,15 @@ const EMPHASIS: Record<string, number> = {
   regulations: 1.05,
 };
 
-const LESSONS_BY_TOPIC: Record<string, string[]> = {
-  airspace: ["airspace-classes", "vfr-weather-minimums"],
-  airworthiness: ["documents-and-inspections"],
-  aerodynamics: ["stalls-and-load-factor"],
-};
+// Study guides teach a topic each; the plan assigns them in the order they're written.
+const lessonsFor = (topic: string) => PPL_GUIDES.filter((g) => g.topic === topic).map((g) => g.slug);
 
 export const PLAN_TOPICS: TopicMeta[] = PPL_BANK_TOPICS.map((t) => ({
   id: t.id,
   title: t.title.charAt(0).toUpperCase() + t.title.slice(1),
   count: t.count,
   emphasis: EMPHASIS[t.id] ?? 1,
-  lessons: LESSONS_BY_TOPIC[t.id] ?? [],
+  lessons: lessonsFor(t.id),
 }));
 
 export const topicById = (id: string) => PLAN_TOPICS.find((t) => t.id === id);

@@ -3,6 +3,7 @@ import Anthropic from "@anthropic-ai/sdk";
 import { betaZodOutputFormat } from "@anthropic-ai/sdk/helpers/beta/zod";
 import { z } from "zod";
 import { areasFor, ratingById } from "@/content/acs";
+import { PPL_FIGURE_IDS } from "@/content/banks/ppl-bank";
 import { QUESTIONS } from "@/content/questions";
 import type { RatingId } from "@/content/types";
 import { partialStringField } from "./partial-json";
@@ -43,7 +44,8 @@ function grounding(rating: RatingId): string {
   const oral = QUESTIONS.filter((q) => q.rating === rating && q.kind === "oral")
     .map((q) => (q.kind === "oral" ? `[${q.id}] ${q.prompt}\n  Key points: ${q.keyPoints.map((k) => k.label).join("; ")}\n  Model answer: ${q.explanation}\n  Ref: ${q.reference}` : ""))
     .join("\n");
-  const facts = QUESTIONS.filter((q) => q.rating === rating && q.kind === "mc")
+  // Figure and calculation questions need the testing supplement in front of you, so they're left out.
+  const facts = QUESTIONS.filter((q) => q.rating === rating && q.kind === "mc" && !PPL_FIGURE_IDS.has(q.id))
     .map((q) => (q.kind === "mc" ? `- ${q.prompt} → ${q.choices[q.answerIndex]} (${q.explanation} Ref: ${q.reference})` : ""))
     .join("\n");
   const text = `ACS AREAS OF OPERATION (${ratingById(rating).acsCode}):\n${areas}\n\nORAL QUESTION BANK (with grading key points):\n${oral}\n\nVERIFIED FACTS FROM THE PRACTICE BANK:\n${facts}`;

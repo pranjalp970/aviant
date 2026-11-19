@@ -777,7 +777,7 @@ export const PPL_FIGURE_BANK: McQuestion[] = [
     "figure": {
       "src": "/figures/akts-8080-2h/figure-47.webp",
       "label": "Figure 47",
-      "alt": "Illustrations of two-bar VASI light combinations as seen on approach, labeled A through F.",
+      "alt": "Illustrations of two-bar VASI light combinations as seen on approach, labeled A through D.",
       "width": 1384,
       "height": 1472
     }
@@ -802,7 +802,7 @@ export const PPL_FIGURE_BANK: McQuestion[] = [
     "figure": {
       "src": "/figures/akts-8080-2h/figure-47.webp",
       "label": "Figure 47",
-      "alt": "Illustrations of two-bar VASI light combinations as seen on approach, labeled A through F.",
+      "alt": "Illustrations of two-bar VASI light combinations as seen on approach, labeled A through D.",
       "width": 1384,
       "height": 1472
     }
@@ -827,7 +827,7 @@ export const PPL_FIGURE_BANK: McQuestion[] = [
     "figure": {
       "src": "/figures/akts-8080-2h/figure-47.webp",
       "label": "Figure 47",
-      "alt": "Illustrations of two-bar VASI light combinations as seen on approach, labeled A through F.",
+      "alt": "Illustrations of two-bar VASI light combinations as seen on approach, labeled A through D.",
       "width": 1384,
       "height": 1472
     }
@@ -1027,7 +1027,7 @@ export const PPL_FIGURE_BANK: McQuestion[] = [
     "figure": {
       "src": "/figures/akts-8080-2h/figure-65.webp",
       "label": "Figure 65",
-      "alt": "Panel of U.S. airport signs labeled A through F, including red mandatory signs and yellow and black location and direction signs.",
+      "alt": "Panel of U.S. airport signs and markings labeled A through N, including red mandatory signs, yellow direction and destination signs, and black location and distance signs.",
       "width": 1292,
       "height": 1747
     }
@@ -1052,7 +1052,7 @@ export const PPL_FIGURE_BANK: McQuestion[] = [
     "figure": {
       "src": "/figures/akts-8080-2h/figure-65.webp",
       "label": "Figure 65",
-      "alt": "Panel of U.S. airport signs labeled A through F, including red mandatory signs and yellow and black location and direction signs.",
+      "alt": "Panel of U.S. airport signs and markings labeled A through N, including red mandatory signs, yellow direction and destination signs, and black location and distance signs.",
       "width": 1292,
       "height": 1747
     }
@@ -1077,7 +1077,7 @@ export const PPL_FIGURE_BANK: McQuestion[] = [
     "figure": {
       "src": "/figures/akts-8080-2h/figure-65.webp",
       "label": "Figure 65",
-      "alt": "Panel of U.S. airport signs labeled A through F, including red mandatory signs and yellow and black location and direction signs.",
+      "alt": "Panel of U.S. airport signs and markings labeled A through N, including red mandatory signs, yellow direction and destination signs, and black location and distance signs.",
       "width": 1292,
       "height": 1747
     }
@@ -1102,7 +1102,7 @@ export const PPL_FIGURE_BANK: McQuestion[] = [
     "figure": {
       "src": "/figures/akts-8080-2h/figure-65.webp",
       "label": "Figure 65",
-      "alt": "Panel of U.S. airport signs labeled A through F, including red mandatory signs and yellow and black location and direction signs.",
+      "alt": "Panel of U.S. airport signs and markings labeled A through N, including red mandatory signs, yellow direction and destination signs, and black location and distance signs.",
       "width": 1292,
       "height": 1747
     }
@@ -1127,7 +1127,7 @@ export const PPL_FIGURE_BANK: McQuestion[] = [
     "figure": {
       "src": "/figures/akts-8080-2h/figure-65.webp",
       "label": "Figure 65",
-      "alt": "Panel of U.S. airport signs labeled A through F, including red mandatory signs and yellow and black location and direction signs.",
+      "alt": "Panel of U.S. airport signs and markings labeled A through N, including red mandatory signs, yellow direction and destination signs, and black location and distance signs.",
       "width": 1292,
       "height": 1747
     }
@@ -2299,7 +2299,7 @@ export const PPL_FIGURE_BANK: McQuestion[] = [
     "figure": {
       "src": "/figures/akts-8080-2h/figure-36.webp",
       "label": "Figure 36",
-      "alt": "Crosswind component graph: wind angle arcs and wind speed lines read against headwind (vertical axis) and crosswind (horizontal axis) components.",
+      "alt": "Crosswind component graph: straight lines for the angle between wind and runway (0 to 90 degrees) and arcs for wind velocity, read against headwind (vertical axis) and crosswind (horizontal axis) components.",
       "width": 1384,
       "height": 1137
     }
@@ -2324,7 +2324,7 @@ export const PPL_FIGURE_BANK: McQuestion[] = [
     "figure": {
       "src": "/figures/akts-8080-2h/figure-36.webp",
       "label": "Figure 36",
-      "alt": "Crosswind component graph: wind angle arcs and wind speed lines read against headwind (vertical axis) and crosswind (horizontal axis) components.",
+      "alt": "Crosswind component graph: straight lines for the angle between wind and runway (0 to 90 degrees) and arcs for wind velocity, read against headwind (vertical axis) and crosswind (horizontal axis) components.",
       "width": 1384,
       "height": 1137
     }
@@ -2349,7 +2349,7 @@ export const PPL_FIGURE_BANK: McQuestion[] = [
     "figure": {
       "src": "/figures/akts-8080-2h/figure-36.webp",
       "label": "Figure 36",
-      "alt": "Crosswind component graph: wind angle arcs and wind speed lines read against headwind (vertical axis) and crosswind (horizontal axis) components.",
+      "alt": "Crosswind component graph: straight lines for the angle between wind and runway (0 to 90 degrees) and arcs for wind velocity, read against headwind (vertical axis) and crosswind (horizontal axis) components.",
       "width": 1384,
       "height": 1137
     }
